@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F3.1 - Lienzo Propuesta de Valor: Productores GiroCampo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c5530 0%, #4a7c59 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c5530, #4a7c59);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.1"><circle cx="30" cy="30" r="4"/></g></svg>') repeat;
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stats-bar {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 3px solid #e9ecef;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #4a7c59;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c5530;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .canvas-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 800px;
+        }
+
+        .customer-profile, .value-map {
+            padding: 40px;
+            position: relative;
+        }
+
+        .customer-profile {
+            background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+            border-right: 3px solid #4a7c59;
+        }
+
+        .value-map {
+            background: linear-gradient(135deg, #fff7e6, #fffaf0);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #2c5530;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: #4a7c59;
+            border-radius: 2px;
+        }
+
+        .element-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #4a7c59;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .element-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .element-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c5530;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            background: #4a7c59;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .element-content {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .element-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .element-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .element-list li:last-child {
+            border-bottom: none;
+        }
+
+        .element-list li::before {
+            content: '✓';
+            color: #4a7c59;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .data-insights {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .insight-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4a7c59;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .insight-percentage {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c5530;
+            display: block;
+        }
+
+        .methodology-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px;
+        }
+
+        .methodology-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c5530;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .fit-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #4a7c59;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .canvas-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .customer-profile {
+                border-right: none;
+                border-bottom: 3px solid #4a7c59;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .stat-item {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lienzo de Propuesta de Valor</h1>
+            <div class="subtitle">Segmento Productores Agropecuarios - Plataforma GiroCampo</div>
+            <div class="fit-indicator">Encaje: FUERTE</div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number">932</div>
+                <div class="stat-label">Productores Encuestados</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">75</div>
+                <div class="stat-label">Días Promedio de Pago</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">68%</div>
+                <div class="stat-label">En Exclusión Financiera</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Días de Adelanto GiroCampo</div>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <div class="customer-profile">
+                <h2 class="section-title">Perfil del Cliente</h2>
+                
+                <div class="element-card">
+                    <h3 class="element-title">
+                        <span class="icon">🎯</span>
+                        Trabajos del Cliente (Customer Jobs)
+                    </h3>
+                    <ul class="element-list">
+                        <li>Vender su producción de leche de manera consistente</li>
+                        <li>Obtener liquidez y capital de trabajo para sus operaciones</li>
+                        <li>Mejorar la rentabilidad de su negocio</li>
+                        <li>Establecer un historial crediticio formal</li>
+                        <li>Acceder a financiamiento formal con trámites ágiles</li>
+                    </ul>
+                </div>
+
+                <div class="element-card">
+                    <h3 class="element-title">
+                        <span class="icon">😰</span>
+                        Puntos de Dolor (Customer Pains)
+                    </h3>
+                    <ul class="element-list">
+                        <li><strong>Baja liquidez:</strong> Esperan 60-90 días para recibir pagos (75 días promedio)</li>
+                        <li><strong>Acceso limitado al crédito formal:</strong> Trámites complejos, falta de garantías</li>
+                        <li><strong>Dependencia de informalidad:</strong> Préstamos con condiciones desfavorables</li>
+                        <li><strong>Baja educación financiera y digital</strong></li>
+                        <li><strong>Estrés financiero:</strong> Incertidumbre en el flujo de caja</li>
+                    </ul>
+                </div>
+
+                <div class="element-card">
+                    <h3 class="element-title">
+                        <span class="icon">🎉</span>
+                        Beneficios Esperados (Customer Gains)
+                    </h3>
+                    <ul class="element-list">
+                        <li>Recibir pagos de manera rápida y predecible</li>
+                        <li>Acceder a financiamiento sencillo con trámites ágiles</li>
+                        <li>Reducir el estrés financiero y la incertidumbre</li>
+                        <li>Mejorar la gestión del negocio y control financiero</li>
+                        <li>Facilidad para diversificar en un sector con alto potencial</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="value-map">
+                <h2 class="section-title">Mapa de Valor</h2>
+                
+                <div class="element-card">
+                    <h3 class="element-title">
+                        <span class="icon">📱</span>
+                        Productos y Servicios
+                    </h3>
+                    <ul class="element-list">
+                        <li><strong>GiroCampo:</strong> Aplicación móvil para registro de acopio y herramientas de gestión</li>
+                        <li><strong>Factoring Inverso:</strong> Mecanismo para adelantar el pago de facturas de venta de leche</li>
+                        <li><strong>Generación de data valiosa:</strong> Para evaluación crediticia futura</li>
+                        <li><strong>Herramientas de gestión financiera</strong> integradas en la plataforma</li>
+                    </ul>
+                </div>
+
+                <div class="element-card">
+                    <h3 class="element-title">
+                        <span class="icon">💊</span>
+                        Aliviadores de Dolor (Pain Relievers)
+                    </h3>
+                    <ul class="element-list">
+                        <li><strong>Liquidez Inmediata:</strong> Adelanto de pago en 7 días vs 60-90 días tradicionales</li>
+                        <li><strong>Simplificación del Acceso:</strong> Usa facturas digitales como colateral, sin garantías físicas</li>
+                        <li><strong>Eliminación de trámites complejos:</strong> Proceso 100% digital y ágil</li>
+                        <li><strong>Inclusión Digital:</strong> Plataforma móvil adaptada a la adopción tecnológica rural</li>
+                    </ul>
+                </div>
+
+                <div class="element-card">
+                    <h3 class="element-title">
+                        <span class="icon">🚀</span>
+                        Creadores de Beneficios (Gain Creators)
+                    </h3>
+                    <ul class="element-list">
+                        <li><strong>Estabilidad Financiera:</strong> Flujo de caja predecible para mejor planificación</li>
+                        <li><strong>Empoderamiento Económico:</strong> Fomenta productividad e inversión en el negocio</li>
+                        <li><strong>Visibilidad Crediticia:</strong> Data generada mejora acceso a futuros créditos</li>
+                        <li><strong>Desarrollo de historial crediticio formal</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-insights">
+            <h3 class="methodology-title">Insights Clave de la Investigación de Campo</h3>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <span class="insight-percentage">84%</span>
+                    <p>de los productores utilizan smartphones y están cómodos con aplicaciones móviles</p>
+                </div>
+                <div class="insight-card">
+                    <span class="insight-percentage">92%</span>
+                    <p>considera muy importante la rapidez en el acceso a financiamiento</p>
+                </div>
+                <div class="insight-card">
+                    <span class="insight-percentage">76%</span>
+                    <p>prefiere WhatsApp como medio de comunicación para trámites financieros</p>
+                </div>
+                <div class="insight-card">
+                    <span class="insight-percentage">68%</span>
+                    <p>utiliza adelantos de procesadoras o préstamos informales como fuente principal</p>
+                </div>
+                <div class="insight-card">
+                    <span class="insight-percentage">89%</span>
+                    <p>valora altamente la facilidad de trámites (sin papeleos complejos)</p>
+                </div>
+                <div class="insight-card">
+                    <span class="insight-percentage">71%</span>
+                    <p>destina el financiamiento a comida para animales y gastos operativos urgentes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="methodology-section">
+            <h3 class="methodology-title">Metodología y Validación</h3>
+            <div class="element-content">
+                <p><strong>Marco Metodológico:</strong> Análisis basado en el Value Proposition Canvas de Osterwalder & Pigneur, validado con datos primarios de investigación de campo.</p>
+                
+                <p><strong>Fuentes de Datos:</strong></p>
+                <ul style="margin: 15px 0; padding-left: 20px;">
+                    <li>932 encuestas estructuradas a productores lácteos de Cundinamarca (Ubaté, Choconta, Cajicá, La Calera)</li>
+                    <li>Análisis de patrones de comportamiento financiero y digital</li>
+                    <li>Validación cruzada con datos del sector lácteo colombiano</li>
+                    <li>Benchmarking con casos de éxito internacionales en AgriFintech</li>
+                </ul>
+
+                <p><strong>Nivel de Encaje (Product-Market Fit):</strong> <span style="color: #2c5530; font-weight: bold;">FUERTE</span> - La propuesta de valor aborda directamente los principales pain points identificados y crea beneficios alineados con las necesidades expresadas por el segmento objetivo.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add subtle animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Apply animation to all cards
+        document.querySelectorAll('.element-card, .insight-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Add click interactions for better UX
+        document.querySelectorAll('.element-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+
+        // Add hover effects to stat items
+        document.querySelectorAll('.stat-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+                this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+            });
+        });
+    </script>
+</body>
+</html>

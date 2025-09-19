@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F5.1 - Estructura Organizacional: Tierra Fintech Solutions</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .organizational-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .overview-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+            text-align: center;
+        }
+
+        .overview-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .overview-label {
+            font-size: 1.2em;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .overview-description {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+
+        .organigram-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .organigram-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .organigram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .org-level {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .org-position {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            min-width: 200px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .org-position:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .org-ceo {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .org-executive {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+        }
+
+        .org-manager {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+        }
+
+        .org-specialist {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+        }
+
+        .position-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .position-title {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .team-profiles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5em;
+            margin-right: 15px;
+        }
+
+        .profile-info h3 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+
+        .profile-role {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .profile-details {
+            display: grid;
+            gap: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .functions-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .functions-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .functions-list {
+            font-size: 0.9em;
+            color: #495057;
+            line-height: 1.5;
+        }
+
+        .kpis-section {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .kpis-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .kpis-list {
+            font-size: 0.8em;
+            color: #495057;
+            line-height: 1.4;
+        }
+
+        .platform-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .platform-tag {
+            background: #667eea;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .compensation-chart {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .chart-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .competencies-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .competencies-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .competencies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .competency-area {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .competency-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .competency-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: #667eea;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .governance-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .governance-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .governance-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .governance-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .governance-item-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .governance-item-text {
+            color: #495057;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .organizational-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-profiles {
+                grid-template-columns: 1fr;
+            }
+            
+            .org-level {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>👥 Estructura Organizacional</h1>
+            <p class="subtitle">Perfiles del Equipo Fundador y Directivo - Tierra Fintech Solutions</p>
+            <p class="subtitle">(Nombres Ficticios del equipo usados para validacion en pruebas de usabilidad)</p>
+        </div>
+
+        <div class="organizational-overview">
+            <div class="overview-card">
+                <div class="overview-number">14</div>
+                <div class="overview-label">Colaboradores Totales</div>
+                <div class="overview-description">Equipo multidisciplinario distribuido estratégicamente por plataformas</div>
+            </div>
+            
+            <div class="overview-card">
+                <div class="overview-number">4</div>
+                <div class="overview-label">Ejecutivos C-Level</div>
+                <div class="overview-description">CEO, CTO, CMO y CRO con experiencia promedio de 7 años</div>
+            </div>
+            
+            <div class="overview-card">
+                <div class="overview-number">6</div>
+                <div class="overview-label">Equipo Tecnológico</div>
+                <div class="overview-description">43% del team dedicado a I+D y desarrollo de producto</div>
+            </div>
+            
+            <div class="overview-card">
+                <div class="overview-number">$48K</div>
+                <div class="overview-label">Costo Mensual Nómina</div>
+                <div class="overview-description">Estructura competitiva para retener talento especializado. (incluye cargas prestacionales).</div>
+            </div>
+        </div>
+
+        <div class="organigram-section">
+            <h3 class="organigram-title">📊 Organigrama Funcional</h3>
+            <div class="organigram">
+                <div class="org-level">
+                    <div class="org-position org-ceo" onclick="showProfile('E-0001')">
+                        <div class="position-name">Andrés Cárdenas</div>
+                        <div class="position-title">CEO</div>
+                    </div>
+                </div>
+                
+                <div class="org-level">
+                    <div class="org-position org-executive" onclick="showProfile('E-0005')">
+                        <div class="position-name">Juan Pablo Gómez</div>
+                        <div class="position-title">CTO</div>
+                    </div>
+                    <div class="org-position org-executive" onclick="showProfile('E-0002')">
+                        <div class="position-name">Sofía Valdés</div>
+                        <div class="position-title">CMO</div>
+                    </div>
+                    <div class="org-position org-executive" onclick="showProfile('E-0004')">
+                        <div class="position-name">Camila Díaz</div>
+                        <div class="position-title">CRO</div>
+                    </div>
+                    <div class="org-position org-manager" onclick="showProfile('E-0003')">
+                        <div class="position-name">Diego Ruiz</div>
+                        <div class="position-title">COO</div>
+                    </div>
+                </div>
+                
+                <div class="org-level">
+                    <div class="org-position org-specialist" onclick="showProfile('E-0006')">
+                        <div class="position-name">Laura Herrera</div>
+                        <div class="position-title">Dev Senior</div>
+                    </div>
+                    <div class="org-position org-specialist" onclick="showProfile('E-0007')">
+                        <div class="position-name">Pedro Ramírez</div>
+                        <div class="position-title">Frontend</div>
+                    </div>
+                    <div class="org-position org-specialist" onclick="showProfile('E-0008')">
+                        <div class="position-name">Ana María Castro</div>
+                        <div class="position-title">Data & BI</div>
+                    </div>
+                    <div class="org-position org-specialist" onclick="showProfile('E-0009')">
+                        <div class="position-name">Felipe Torres</div>
+                        <div class="position-title">UX/UI</div>
+                    </div>
+                </div>
+                
+                <div class="org-level">
+                    <div class="org-position org-specialist" onclick="showProfile('E-00010')">
+                        <div class="position-name">Paula Mendoza</div>
+                        <div class="position-title">Marketing Digital</div>
+                    </div>
+                    <div class="org-position org-specialist" onclick="showProfile('E-00011')">
+                        <div class="position-name">Carlos Vargas</div>
+                        <div class="position-title">Legal & Riesgo</div>
+                    </div>
+                    <div class="org-position org-specialist" onclick="showProfile('E-00012')">
+                        <div class="position-name">Liliana Morales</div>
+                        <div class="position-title">Soporte</div>
+                    </div>
+                    <div class="org-position org-specialist" onclick="showProfile('E-00013')">
+                        <div class="position-name">Mario López</div>
+                        <div class="position-title">Soporte</div>
+                    </div>
+                    <div class="org-position org-specialist" onclick="showProfile('E-00014')">
+                        <div class="position-name">Mónica Restrepo</div>
+                        <div class="position-title">Investor Relations</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="team-profiles">
+            <div class="profile-card" id="profile-E-0001">
+                <div class="profile-header">
+                    <div class="profile-avatar">AC</div>
+                    <div class="profile-info">
+                        <h3>Andrés Cárdenas</h3>
+                        <div class="profile-role">Chief Executive Officer (CEO)</div>
+                    </div>
+                </div>
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Experiencia:</span>
+                        <span class="detail-value">8 años</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tipo Contrato:</span>
+                        <span class="detail-value">Interno</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Compensación Total:</span>
+                        <span class="detail-value">$6,840 USD/mes</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Clasificación OPEX:</span>
+                        <span class="detail-value">G&A</span>
+                    </div>
+                </div>
+                <div class="functions-section">
+                    <div class="functions-title">🎯 Funciones Estratégicas:</div>
+                    <div class="functions-list">
+                        Liderar la visión y estrategia de negocio del ecosistema Tierra Fintech. Definir la dirección estratégica a largo plazo y asegurar la alineación organizacional con los objetivos de triple impacto.
+                    </div>
+                </div>
+                <div class="kpis-section">
+                    <div class="kpis-title">📊 KPIs Principales:</div>
+                    <div class="kpis-list">Crecimiento de ingresos, Rentabilidad global, Captación de inversión, Indicadores ESG</div>
+                </div>
+                <div class="platform-tags">
+                    <span class="platform-tag">Tierra Fintech</span>
+                </div>
+            </div>
+
+            <div class="profile-card" id="profile-E-0005">
+                <div class="profile-header">
+                    <div class="profile-avatar">JG</div>
+                    <div class="profile-info">
+                        <h3>Juan Pablo Gómez</h3>
+                        <div class="profile-role">Chief Technology Officer (CTO)</div>
+                    </div>
+                </div>
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Experiencia:</span>
+                        <span class="detail-value">8 años</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tipo Contrato:</span>
+                        <span class="detail-value">Interno</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Compensación Total:</span>
+                        <span class="detail-value">$3,475 USD/mes</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Clasificación OPEX:</span>
+                        <span class="detail-value">I+D</span>
+                    </div>
+                </div>
+                <div class="functions-section">
+                    <div class="functions-title">🎯 Funciones Tecnológicas:</div>
+                    <div class="functions-list">
+                        Diseñar la arquitectura tecnológica, supervisar el desarrollo de las tres plataformas, garantizar la ciberseguridad y gestionar la integración de APIs con entidades financieras y terceros.
+                    </div>
+                </div>
+                <div class="kpis-section">
+                    <div class="kpis-title">📊 KPIs Principales:</div>
+                    <div class="kpis-list">Velocidad de desarrollo de features, Disponibilidad del sistema (99.9%), Seguridad de datos, Time-to-market</div>
+                </div>
+                <div class="platform-tags">
+                    <span class="platform-tag">Tierra Fintech</span>
+                </div>
+            </div>
+
+            <div class="profile-card" id="profile-E-0002">
+                <div class="profile-header">
+                    <div class="profile-avatar">SV</div>
+                    <div class="profile-info">
+                        <h3>Sofía Valdés</h3>
+                        <div class="profile-role">Chief Marketing Officer (CMO)</div>
+                    </div>
+                </div>
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Experiencia:</span>
+                        <span class="detail-value">6 años</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tipo Contrato:</span>
+                        <span class="detail-value">Interno</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Compensación Total:</span>
+                        <span class="detail-value">$4,170 USD/mes</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Clasificación OPEX:</span>
+                        <span class="detail-value">I+D</span>
+                    </div>
+                </div>
+                <div class="functions-section">
+                    <div class="functions-title">🎯 Funciones de Producto:</div>
+                    <div class="functions-list">
+                        Priorizar funcionalidades del producto, ejecutar estrategia comercial, liderar marketing sectorial y optimizar la captación de usuarios across plataformas.
+                    </div>
+                </div>
+                <div class="kpis-section">
+                    <div class="kpis-title">📊 KPIs Principales:</div>
+                    <div class="kpis-list">CAC, Adopción de apps, Tasa de conversión B2B, Crecimiento de usuarios activos</div>
+                </div>
+                <div class="platform-tags">
+                    <span class="platform-tag">GiroCampo</span>
+                    <span class="platform-tag">FabriCash</span>
+                </div>
+            </div>
+
+            <div class="profile-card" id="profile-E-0004">
+                <div class="profile-header">
+                    <div class="profile-avatar">CD</div>
+                    <div class="profile-info">
+                        <h3>Camila Díaz</h3>
+                        <div class="profile-role">Chief Risk Officer (CRO)</div>
+                    </div>
+                </div>
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Experiencia:</span>
+                        <span class="detail-value">7 años</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tipo Contrato:</span>
+                        <span class="detail-value">Consultor Externo</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Compensación Total:</span>
+                        <span class="detail-value">$3,475 USD/mes</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Clasificación OPEX:</span>
+                        <span class="detail-value">G&A</span>
+                    </div>
+                </div>
+                <div class="functions-section">
+                    <div class="functions-title">🎯 Funciones Financieras:</div>
+                    <div class="functions-list">
+                        Evaluación crediticia, gestión de cartera de factoring, análisis financiero integral y desarrollo de modelos de riesgo para Interra Invierte.
+                    </div>
+                </div>
+                <div class="kpis-section">
+                    <div class="kpis-title">📊 KPIs Principales:</div>
+                    <div class="kpis-list">Tasa de retorno anualizada, Score de riesgo crediticio, Tasa de default, NPL ratio</div>
+                </div>
+                <div class="platform-tags">
+                    <span class="platform-tag">Interra Invierte</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="compensation-chart">
+            <h3 class="chart-title">📊 Distribución del Equipo por Departamentos</h3>
+            <canvas id="departmentChart" width="400" height="200"></canvas>
+        </div>
+
+        <div class="competencies-section">
+            <h3 class="competencies-title">🎯 Mapa de Competencias Organizacionales</h3>
+            <div class="competencies-grid">
+                <div class="competency-area">
+                    <div class="competency-title">📈 FinTech y Riesgo</div>
+                    <div class="competency-skills">
+                        <span class="skill-tag">Factoring Inverso</span>
+                        <span class="skill-tag">Evaluación Crediticia</span>
+                        <span class="skill-tag">Modelos de Riesgo</span>
+                        <span class="skill-tag">Regulación SFC</span>
+                        <span class="skill-tag">SARLAFT</span>
+                        <span class="skill-tag">Compliance</span>
+                    </div>
+                </div>
+
+                <div class="competency-area">
+                    <div class="competency-title">🌾 Conocimiento Sectorial</div>
+                    <div class="competency-skills">
+                        <span class="skill-tag">Sector Lácteo</span>
+                        <span class="skill-tag">Cadena de Suministro</span>
+                        <span class="skill-tag">Productores Rurales</span>
+                        <span class="skill-tag">Procesadoras</span>
+                        <span class="skill-tag">AgTech</span>
+                        <span class="skill-tag">Sostenibilidad</span>
+                    </div>
+                </div>
+
+                <div class="competency-area">
+                    <div class="competency-title">🎯 Marketing y Ventas</div>
+                    <div class="competency-skills">
+                        <span class="skill-tag">Marketing Digital</span>
+                        <span class="skill-tag">Growth Hacking</span>
+                        <span class="skill-tag">B2B Sales</span>
+                        <span class="skill-tag">Customer Success</span>
+                        <span class="skill-tag">Educación Financiera</span>
+                        <span class="skill-tag">Brand Building</span>
+                    </div>
+                </div>
+
+                <div class="competency-area">
+                    <div class="competency-title">⚖️ Legal y Operaciones</div>
+                    <div class="competency-skills">
+                        <span class="skill-tag">Derecho Financiero</span>
+                        <span class="skill-tag">Habeas Data</span>
+                        <span class="skill-tag">Contratos FinTech</span>
+                        <span class="skill-tag">Gestión Operativa</span>
+                        <span class="skill-tag">Procesos</span>
+                        <span class="skill-tag">Auditoría</span>
+                    </div>
+                </div>
+
+                 <div class="competency-area">
+                    <div class="competency-title">💻 Tecnología e Innovación</div>
+                    <div class="competency-skills">
+                        <span class="skill-tag">Desarrollo Full-Stack</span>
+                        <span class="skill-tag">Arquitectura Cloud</span>
+                        <span class="skill-tag">Ciberseguridad</span>
+                        <span class="skill-tag">APIs Financieras</span>
+                        <span class="skill-tag">Data Analytics</span>
+                        <span class="skill-tag">UX/UI Design</span>
+                    </div>
+                </div>
+
+                <div class="competency-area">
+                    <div class="competency-title">📊 Análisis y Estrategia</div>
+                    <div class="competency-skills">
+                        <span class="skill-tag">Business Intelligence</span>
+                        <span class="skill-tag">KPIs Financieros</span>
+                        <span class="skill-tag">Data Science</span>
+                        <span class="skill-tag">Planificación Estratégica</span>
+                        <span class="skill-tag">Métricas de Impacto</span>
+                        <span class="skill-tag">Reporting</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="compensation-chart">
+            <h3 class="chart-title">💰 Estructura de Compensación por Niveles</h3>
+            <canvas id="salaryChart" width="400" height="200"></canvas>
+        </div>
+
+        <div class="governance-section">
+            <h3 class="governance-title">🏛️ Gobernanza y Estructuras de Decisión</h3>
+            <div class="governance-content">
+                <div class="governance-item">
+                    <div class="governance-item-title">🎯 Comité Ejecutivo</div>
+                    <div class="governance-item-text">
+                        Conformado por CEO, CTO, CMO y CRO. Se reúne semanalmente para decisiones estratégicas, revisión de KPIs y alineación operativa. Responsable de la ejecución de la visión empresarial y la gestión del riesgo organizacional.
+                    </div>
+                </div>
+
+                <div class="governance-item">
+                    <div class="governance-item-title">📊 Consejo de Administración</div>
+                    <div class="governance-item-text">
+                        Integrado por fundadores, inversionistas Serie A y un consejero independiente con experiencia FinTech. Supervisión trimestral de resultados, aprobación de presupuestos anuales y decisiones de inversión superiores a $100K USD.
+                    </div>
+                </div>
+
+                <div class="governance-item">
+                    <div class="governance-item-title">⚖️ Comité de Riesgos</div>
+                    <div class="governance-item-text">
+                        Liderado por la CRO con participación del CEO y asesor legal. Evaluación mensual de riesgos operativos, tecnológicos y regulatorios. Responsable del cumplimiento SARLAFT y reportes a la SFC.
+                    </div>
+                </div>
+
+                <div class="governance-item">
+                    <div class="governance-item-title">🔬 Comité de Producto</div>
+                    <div class="governance-item-text">
+                        Dirigido por la CMO con participación del CTO y líderes de desarrollo. Priorización quincenal de roadmap, validación de hipótesis de producto y métricas de usabilidad. Metodología ágil con sprints de 2 semanas.
+                    </div>
+                </div>
+
+                <div class="governance-item">
+                    <div class="governance-item-title">💡 Política de Equity</div>
+                    <div class="governance-item-text">
+                        Pool de equity del 15% destinado a empleados clave. Vesting de 4 años con cliff de 1 año. Distribución basada en performance, antigüedad y criticidad del rol. Revisión anual del pool con posibilidad de expansión.
+                    </div>
+                </div>
+
+                <div class="governance-item">
+                    <div class="governance-item-title">🎓 Desarrollo del Talento</div>
+                    <div class="governance-item-text">
+                        Presupuesto anual de $50K USD para capacitación técnica, certificaciones FinTech y conferencias sectoriales. Programa de mentoring interno y acceso a cursos especializados en AgTech y servicios financieros rurales.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CAMBIO: Configuración global de Chart.js para v2.9.4
+        Chart.defaults.global.defaultFontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        Chart.defaults.global.defaultFontSize = 12;
+
+        // Gráfico de Distribución por Departamentos
+        var departmentCtx = document.getElementById('departmentChart').getContext('2d');
+        new Chart(departmentCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['I+D (6 personas)', 'G&A (5 personas)', 'Marketing (2 personas)', 'Soporte (1 persona)'],
+                datasets: [{
+                    data: [6, 5, 2, 1],
+                    backgroundColor: [
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(52, 152, 219, 0.8)', 
+                        'rgba(46, 204, 113, 0.8)',
+                        'rgba(241, 196, 15, 0.8)'
+                    ],
+                    borderColor: [
+                        '#667eea',
+                        '#3498db',
+                        '#2ecc71',
+                        '#f1c40f'
+                    ],
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                // CAMBIO: Sintaxis de leyenda para v2.9.4
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true
+                    }
+                },
+                // CAMBIO: Sintaxis de tooltips para v2.9.4
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var total = dataset.data.reduce(function(previousValue, currentValue) {
+                                return previousValue + currentValue;
+                            });
+                            var currentValue = dataset.data[tooltipItem.index];
+                            var percentage = ((currentValue / total) * 100).toFixed(1);
+                            return data.labels[tooltipItem.index] + ': ' + percentage + '%';
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Estructura Salarial
+        var salaryCtx = document.getElementById('salaryChart').getContext('2d');
+        new Chart(salaryCtx, {
+            type: 'bar',
+            data: {
+                labels: ['CEO', 'C-Level', 'Managers', 'Specialists', 'Support'],
+                datasets: [{
+                    label: 'Compensación Mensual (USD)',
+                    data: [6840, 3475, 4170, 2780, 1390],
+                    backgroundColor: [
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(52, 152, 219, 0.8)',
+                        'rgba(46, 204, 113, 0.8)',
+                        'rgba(243, 156, 18, 0.8)',
+                        'rgba(155, 89, 182, 0.8)'
+                    ],
+                    borderColor: [
+                        '#667eea',
+                        '#3498db',
+                        '#2ecc71',
+                        '#f39c12',
+                        '#9b59b6'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                // CAMBIO: Sintaxis de escalas para v2.9.4
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    }]
+                },
+                // CAMBIO: Sintaxis de leyenda para v2.9.4
+                legend: {
+                    display: false
+                },
+                // CAMBIO: Sintaxis de tooltips para v2.9.4
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += '$' + tooltipItem.yLabel.toLocaleString() + ' USD/mes';
+                            return label;
+                        }
+                    }
+                }
+            }
+        });
+
+        // Funcionalidad interactiva (sin cambios)
+        function showProfile(employeeId) {
+            const allProfiles = document.querySelectorAll('.profile-card');
+            allProfiles.forEach(profile => {
+                profile.style.transform = 'translateY(0)';
+                profile.style.boxShadow = '0 8px 25px rgba(0,0,0,0.1)';
+            });
+
+            const selectedProfile = document.getElementById('profile-' + employeeId);
+            if (selectedProfile) {
+                selectedProfile.style.transform = 'translateY(-10px)';
+                selectedProfile.style.boxShadow = '0 15px 40px rgba(102, 126, 234, 0.3)';
+                selectedProfile.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        // El resto del script no depende de la versión de Chart.js y permanece igual
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.overview-card, .profile-card, .competency-area, .governance-item');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
+                    card.style.transition = 'all 0.6s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 100);
+            });
+
+            const orgPositions = document.querySelectorAll('.org-position');
+            orgPositions.forEach(position => {
+                position.addEventListener('mouseover', function() {
+                    this.style.transform = 'translateY(-5px) scale(1.05)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+                
+                position.addEventListener('mouseout', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            function validateOrganizationalStructure() {
+                const totalEmployees = 14;
+                const cLevelCount = 4;
+                const techTeamSize = 6;
+                const monthlyPayroll = 148000;
+                
+                console.log('👥 Validación Estructura Organizacional:');
+                console.log('✅ Total empleados:', totalEmployees);
+                console.log('✅ C-Level ratio:', ((cLevelCount/totalEmployees)*100).toFixed(1) + '%');
+                console.log('✅ % Equipo técnico:', ((techTeamSize/totalEmployees)*100).toFixed(1) + '%');
+                console.log('✅ Payroll mensual: $' + monthlyPayroll.toLocaleString());
+                
+                if (techTeamSize/totalEmployees >= 0.40) {
+                    console.log('🚀 Estructura tech-first validada');
+                }
+                
+                return {
+                    totalEmployees,
+                    cLevelRatio: cLevelCount/totalEmployees,
+                    techRatio: techTeamSize/totalEmployees,
+                    avgCompensation: monthlyPayroll/totalEmployees
+                };
+            }
+
+            function calculateCompetencyMetrics() {
+                const competencyAreas = 6;
+                const totalSkills = 36;
+                const experienceAverage = 5.8;
+                
+                console.log('🎯 Métricas de Competencias:');
+                console.log('- Áreas de competencia:', competencyAreas);
+                console.log('- Skills identificados:', totalSkills);
+                console.log('- Experiencia promedio:', experienceAverage + ' años');
+                console.log('- Skills per área:', (totalSkills/competencyAreas).toFixed(1));
+                
+                return {
+                    areas: competencyAreas,
+                    skills: totalSkills,
+                    avgExperience: experienceAverage
+                };
+            }
+
+            console.log('👥 F5.1 - Estructura Organizacional');
+            validateOrganizationalStructure();
+            calculateCompetencyMetrics();
+            console.log('✅ Equipo fundador validado para escalabilidad');
+        });
+    </script>
+</body>
+</html>

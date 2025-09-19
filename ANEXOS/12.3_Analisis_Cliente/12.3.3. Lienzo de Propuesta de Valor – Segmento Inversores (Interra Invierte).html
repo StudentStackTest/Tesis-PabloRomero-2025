@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lienzo de Propuesta de Valor - Segmento Inversores: Interra Invierte</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .methodology-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .canvas-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #2E7D32;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #4CAF50;
+            font-weight: 600;
+        }
+
+        .canvas-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .customer-profile, .value-map {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .customer-profile:hover, .value-map:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .profile-section {
+            margin-bottom: 25px;
+        }
+
+        .profile-section h3 {
+            color: #1565C0;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: linear-gradient(90deg, #E3F2FD 0%, #BBDEFB 100%);
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .jobs-list, .pains-list, .gains-list, .products-list, .relievers-list, .creators-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .jobs-list li, .pains-list li, .gains-list li, .products-list li, .relievers-list li, .creators-list li {
+            background: white;
+            margin: 8px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .jobs-list li { border-left-color: #4CAF50; }
+        .pains-list li { border-left-color: #F44336; }
+        .gains-list li { border-left-color: #FF9800; }
+        .products-list li { border-left-color: #9C27B0; }
+        .relievers-list li { border-left-color: #2196F3; }
+        .creators-list li { border-left-color: #FFC107; }
+
+        .jobs-list li:hover, .pains-list li:hover, .gains-list li:hover, 
+        .products-list li:hover, .relievers-list li:hover, .creators-list li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .chart-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+        }
+
+        .chart-container h3 {
+            color: #2E7D32;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+
+        .insights-section {
+            background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid #4CAF50;
+        }
+
+        .insights-title {
+            color: #1B5E20;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .insight-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4CAF50;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .insight-card h4 {
+            color: #2E7D32;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .fit-analysis {
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid #FF9800;
+        }
+
+        .fit-score {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .fit-score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(#4CAF50 0deg 306deg, #e0e0e0 306deg 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            position: relative;
+        }
+
+        .fit-score-inner {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2E7D32;
+        }
+
+        .demographics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .demographics-table th {
+            background: #2E7D32;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .demographics-table td {
+            background: white;
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .demographics-table tr:hover td {
+            background: #f5f5f5;
+        }
+
+        .risk-matrix {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .risk-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .risk-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        .risk-high { border-color: #F44336; background: #FFEBEE; }
+        .risk-medium { border-color: #FF9800; background: #FFF3E0; }
+        .risk-low { border-color: #4CAF50; background: #E8F5E8; }
+
+        .footer {
+            background: #2E7D32;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .canvas-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .data-source {
+            background: #E3F2FD;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .data-source h4 {
+            color: #1565C0;
+            margin-bottom: 8px;
+        }
+
+        .data-source p {
+            color: #424242;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lienzo de Propuesta de Valor - Segmento Inversores</h1>
+            <p>Plataforma Interra Invierte | Tierra Fintech Solutions</p>
+            <div class="methodology-badge">Metodología: Value Proposition Canvas (Osterwalder & Pigneur)</div>
+        </div>
+
+        <div class="content">
+            <div class="data-source">
+                <h4>📊 Fuentes de Datos Primarias</h4>
+                <p><strong>Base:</strong> EncuestaInversorBuyerPersona (apppUlbYDTnSEzRVl) | <strong>Muestra:</strong> 380 inversores encuestados | <strong>Tablas:</strong> inversoresperfil, factoresimportancia, percepcionesriesgo, analisiscompetitivo, valoracionesempresa</p>
+            </div>
+
+            <div class="canvas-section">
+                <h2 class="section-title">🎯 Lienzo de Propuesta de Valor</h2>
+                
+                <div class="canvas-grid">
+                    <div class="customer-profile">
+                        <h2 style="color: #1565C0; text-align: center; margin-bottom: 25px; font-size: 1.6em;">👥 Perfil del Cliente - Inversores</h2>
+                        
+                        <div class="profile-section">
+                            <h3>🎯 Trabajos del Cliente (Customer Jobs)</h3>
+                            <ul class="jobs-list">
+                                <li><strong>Buscar oportunidades de inversión con retornos atractivos</strong> - Rentabilidad competitiva vs mercado tradicional</li>
+                                <li><strong>Diversificar cartera de inversiones</strong> - Exposición a sector agropecuario estratégico</li>
+                                <li><strong>Realizar inversiones con impacto social/ambiental</strong> - Triple impacto: financiero, social, ambiental</li>
+                                <li><strong>Acceder a mercados específicos</strong> - Sector lácteo colombiano con potencial de crecimiento</li>
+                                <li><strong>Gestionar el riesgo de inversiones</strong> - Balance entre rentabilidad y seguridad</li>
+                            </ul>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>😣 Frustraciones del Cliente (Customer Pains)</h3>
+                            <ul class="pains-list">
+                                <li><strong>Falta de oportunidades de inversión de impacto</strong> - Dificultad para encontrar proyectos que combinen rentabilidad con impacto social claro</li>
+                                <li><strong>Información limitada o asimétrica</strong> - Carencia de datos transparentes sobre rendimiento e impacto de inversiones</li>
+                                <li><strong>Riesgos percibidos en sectores específicos</strong> - Temor a volatilidad del sector agropecuario</li>
+                                <li><strong>Procesos de inversión complejos o lentos</strong> - Dificultades burocráticas para invertir en ciertos activos</li>
+                                <li><strong>Barreras de entrada al sector rural</strong> - Sector puede parecer riesgoso o inaccesible</li>
+                            </ul>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>😊 Beneficios Esperados (Customer Gains)</h3>
+                            <ul class="gains-list">
+                                <li><strong>Retornos competitivos</strong> - Rentabilidad atractiva por capital invertido</li>
+                                <li><strong>Diversificación del portafolio</strong> - Inversión en sector agropecuario estratégico</li>
+                                <li><strong>Impacto social medible</strong> - Contribuir al desarrollo de pequeños productores con informes de impacto</li>
+                                <li><strong>Transparencia y seguridad</strong> - Información clara sobre riesgos y operación</li>
+                                <li><strong>Facilidad de inversión</strong> - Procesos digitales y ágiles</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="value-map">
+                        <h2 style="color: #7B1FA2; text-align: center; margin-bottom: 25px; font-size: 1.6em;">💎 Mapa de Valor - Interra Invierte</h2>
+                        
+                        <div class="profile-section">
+                            <h3>📦 Productos y Servicios</h3>
+                            <ul class="products-list">
+                                <li><strong>Portal de crowdfunding Interra Invierte</strong> - Plataforma digital para inversores</li>
+                                <li><strong>Facturas digitalizadas de procesadoras</strong> - Oportunidades de inversión estructuradas</li>
+                                <li><strong>Dashboard de rendimiento</strong> - Monitoreo en tiempo real de inversiones</li>
+                                <li><strong>Reportes de impacto social</strong> - Medición cuantitativa del impacto generado</li>
+                                <li><strong>Herramientas de simulación</strong> - Calculadoras de retorno de inversión</li>
+                            </ul>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>💊 Aliviadores de Frustraciones (Pain Relievers)</h3>
+                            <ul class="relievers-list">
+                                <li><strong>Acceso a inversiones de impacto</strong> - Facilita inversión en sector agropecuario a través del fondeo de facturas</li>
+                                <li><strong>Transparencia y gestión de riesgos</strong> - Información sobre riesgos, comisiones y diversificación en carteras</li>
+                                <li><strong>Procesos simplificados</strong> - Inversiones 100% digitales y ágiles</li>
+                                <li><strong>Mitigación de riesgos</strong> - Inversiones respaldadas por facturas de procesadoras consolidadas</li>
+                                <li><strong>Acceso simplificado</strong> - Crowdfunding reduce barreras de entrada al sector</li>
+                            </ul>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>🚀 Creadores de Beneficios (Gain Creators)</h3>
+                            <ul class="creators-list">
+                                <li><strong>Retornos atractivos</strong> - Rentabilidades superiores a banca tradicional</li>
+                                <li><strong>Diversificación estratégica</strong> - Exposición a sector en crecimiento con alto potencial</li>
+                                <li><strong>Validación de impacto</strong> - Herramientas para ver y comunicar impacto positivo generado</li>
+                                <li><strong>Doble retorno</strong> - Genera retornos financieros y contribuye al desarrollo rural sostenible</li>
+                                <li><strong>Transparencia mejorada</strong> - Dashboards aumentan visibilidad y confianza</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="canvas-section">
+                <h2 class="section-title">📈 Análisis Empírico del Segmento Inversor</h2>
+                
+                <div class="analysis-grid">
+                    <div class="chart-container">
+                        <h3>Perfil Demográfico</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="demographicsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Factores de Importancia</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="importanceChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Percepción de Riesgos</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="riskChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Experiencia vs Monto Inversión</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="experienceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="canvas-section">
+                <h2 class="section-title">👤 Perfil Detallado del Segmento Inversor</h2>
+                
+                <table class="demographics-table">
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>Distribución</th>
+                            <th>Impacto en Propuesta de Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Tipo de Inversor</strong></td>
+                            <td>80% Inversor Individual, 20% HNWI</td>
+                            <td>Enfoque en simplicidad y accesibilidad</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rango de Edad</strong></td>
+                            <td>80% 31-45 años, 20% 46-60 años</td>
+                            <td>Segmento tech-savvy, canal digital prioritario</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Experiencia Inversora</strong></td>
+                            <td>50% 1-4 años, 20% +10 años</td>
+                            <td>Necesidad de educación financiera y transparencia</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Monto de Inversión</strong></td>
+                            <td>60% <50M COP, 30% >250M COP</td>
+                            <td>Modelo de micro-inversiones y grandes tickets</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Motivación Principal</strong></td>
+                            <td>40% Ingresos estables, 40% Sector agropecuario, 20% Diversificación</td>
+                            <td>Enfoque en estabilidad e impacto sectorial</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="canvas-section">
+                <h2 class="section-title">⚠️ Matriz de Percepción de Riesgos</h2>
+                
+                <div class="risk-matrix">
+                    <div class="risk-item risk-high">
+                        <h4>🏛️ Político</h4>
+                        <p><strong>Impacto: 5/5</strong></p>
+                        <p>Devaluación, cambios regulatorios</p>
+                    </div>
+                    <div class="risk-item risk-high">
+                        <h4>💰 Económico</h4>
+                        <p><strong>Impacto: 5/5</strong></p>
+                        <p>Impuestos sobre rendimientos</p>
+                    </div>
+                    <div class="risk-item risk-high">
+                        <h4>🌍 Social</h4>
+                        <p><strong>Impacto: 5/5</strong></p>
+                        <p>Impacto del cambio climático</p>
+                    </div>
+                    <div class="risk-item risk-medium">
+                        <h4>💻 Tecnológico</h4>
+                        <p><strong>Percepción: 4/5</strong></p>
+                        <p>Riesgo de plataforma digital</p>
+                    </div>
+                    <div class="risk-item risk-medium">
+                        <h4>⚖️ Legal</h4>
+                        <p><strong>Percepción: 4.5/5</strong></p>
+                        <p>Marco regulatorio Fintech</p>
+                    </div>
+                    <div class="risk-item risk-medium">
+                        <h4>🌱 Ambiental</h4>
+                        <p><strong>Percepción: 4.3/5</strong></p>
+                        <p>Sostenibilidad del sector</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fit-analysis">
+                <h2 style="color: #E65100; text-align: center; margin-bottom: 25px; font-size: 1.8em;">🎯 Análisis de Encaje (Fit)</h2>
+                
+                <div class="fit-score">
+                    <div class="fit-score-circle">
+                        <div class="fit-score-inner">85%</div>
+                    </div>
+                    <h3 style="color: #E65100;">Nivel de Encaje: FUERTE</h3>
+                </div>
+
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <h4>💰 Encaje Financiero</h4>
+                        <p>La propuesta de rentabilidades superiores a la banca tradicional (Pain Reliever) conecta directamente con la búsqueda de retornos atractivos (Customer Job). Factoring inverso ofrece retornos predecibles del 8-12% anual.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>🌱 Encaje de Impacto</h4>
+                        <p>Los reportes de impacto social medible (Gain Creator) resuelven la frustración de falta de transparencia (Customer Pain), permitiendo a inversores cuantificar y comunicar su contribución al desarrollo rural.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>🚀 Encaje Operacional</h4>
+                        <p>Los procesos 100% digitales (Pain Reliever) eliminan las dificultades burocráticas (Customer Pain), mientras el dashboard en tiempo real (Product) satisface la necesidad de transparencia (Customer Gain).</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>🎯 Encaje de Diversificación</h4>
+                        <p>El acceso al sector agropecuario vía crowdfunding (Gain Creator) permite diversificación estratégica (Customer Job) sin las barreras tradicionales de entrada al sector rural (Customer Pain).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insights-section">
+                <h2 class="insights-title">💡 Insights Estratégicos del Segmento</h2>
+                
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <h4>🎯 Segmentación Dual</h4>
+                        <p>Coexisten dos sub-segmentos: micro-inversores (<50M COP) motivados por estabilidad e HNWI (>250M COP) enfocados en diversificación. Requiere estrategias diferenciadas.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>📊 Preferencia por Transparencia</h4>
+                        <p>100% de inversores valoran transparencia (4-5/5). Dashboard y reportes de impacto son diferenciadores críticos vs alternativas tradicionales de inversión.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>🛡️ Gestión de Riesgos Clave</h4>
+                        <p>Riesgos político-económicos son percibidos como altos (5/5). Estrategia de mitigación debe enfocarse en estabilidad de procesadoras como deudores primarios.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>💚 Impacto como Valor Agregado</h4>
+                        <p>80% valoran impacto social (4-5/5). No es solo filantropía, sino valor agregado que justifica dedicación de tiempo y recursos al sector agropecuario.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>⚡ Agilidad Operacional</h4>
+                        <p>Generación tech-savvy (31-45 años) demanda procesos digitales ágiles. Factoring de 7 días vs 60-90 días tradicionales es ventaja competitiva clave.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="canvas-section">
+                <h2 class="section-title">🎯 Recomendaciones Estratégicas</h2>
+                
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <h4>1. Estrategia de Comunicación Diferenciada</h4>
+                        <p><strong>Micro-inversores:</strong> Enfoque en estabilidad, educación financiera y accesibilidad.<br>
+                        <strong>HNWI:</strong> Enfoque en diversificación, impacto medible y exclusividad.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>2. Dashboard de Transparencia Avanzada</h4>
+                        <p>Desarrollar métricas en tiempo real: ROI por cartera, impacto social cuantificado (productores beneficiados, litros de leche financiados), análisis de riesgo dinámico.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>3. Programa de Educación Financiera</h4>
+                        <p>50% de inversores tienen <4 años de experiencia. Crear contenido educativo sobre factoring, riesgos del sector agropecuario y estrategias de diversificación.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>4. Mitigación de Riesgos Percibidos</h4>
+                        <p>Comunicar claramente cómo la evaluación se centra en procesadoras (grandes empresas) como deudores, no en productores individuales.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="canvas-section">
+                <h2 class="section-title">📊 Métricas de Validación del Encaje</h2>
+                
+                <table class="demographics-table">
+                    <thead>
+                        <tr>
+                            <th>Métrica</th>
+                            <th>Valor Actual</th>
+                            <th>Objetivo</th>
+                            <th>Indicador de Encaje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Net Promoter Score (NPS)</strong></td>
+                            <td>N/A (Pre-lanzamiento)</td>
+                            <td>>50</td>
+                            <td>Satisfacción general con propuesta</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tasa de Conversión</strong></td>
+                            <td>N/A (Validación)</td>
+                            <td>>15%</td>
+                            <td>Interés real vs declarado</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ticket Promedio</strong></td>
+                            <td>Target: 50M-250M COP</td>
+                            <td>100M COP</td>
+                            <td>Alineación con perfil de riesgo</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tiempo de Due Diligence</strong></td>
+                            <td>Target: <7 días</td>
+                            <td><5 días</td>
+                            <td>Agilidad operacional</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Retorno Anualizado</strong></td>
+                            <td>Target: 8-12%</td>
+                            <td>10% promedio</td>
+                            <td>Competitividad financiera</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="canvas-section">
+                <h2 class="section-title">🔬 Marco Metodológico y Fuentes</h2>
+                
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <h4>📚 Metodología Aplicada</h4>
+                        <p><strong>Value Proposition Canvas (Osterwalder & Pigneur, 2014):</strong> Framework sistemático para mapear trabajos, frustraciones y alegrías del cliente vs productos, aliviadores y creadores de valor.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>📊 Rigor Estadístico</h4>
+                        <p><strong>Muestra:</strong> 380 inversores encuestados con metodología estructurada. <strong>Confiabilidad:</strong> Datos normalizados en 5 tablas relacionales para análisis multidimensional.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>🔄 Iteración Continua</h4>
+                        <p><strong>Customer Development (Steve Blank):</strong> Validación iterativa de hipóteses con feedback directo del segmento objetivo para refinamiento continuo.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>📈 Análisis Cuantitativo</h4>
+                        <p><strong>Datos Estructurados:</strong> Sistema de scoring 1-5, categorización por importancia, análisis de correlaciones entre variables demográficas y preferencias.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <p><strong></strong> | Tierra Fintech Solutions - Tesis MBA | Metodología: Value Proposition Canvas</p>
+            <p>Fuente de Datos: EncuestaInversorBuyerPersona (Airtable) | Análisis: Abril-Mayo 2025</p>
+        </div>
+    </div>
+
+    <script>
+        // --- CÓDIGO JAVASCRIPT AJUSTADO PARA CHART.JS v2.9.4 ---
+
+        // Datos demográficos
+        var demographicsCtx = document.getElementById('demographicsChart').getContext('2d');
+        new Chart(demographicsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['31-45 años', '46-60 años'],
+                datasets: [{
+                    data: [80, 20],
+                    backgroundColor: ['#4CAF50', '#2E7D32'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        fontSize: 12
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Distribución por Edad',
+                    fontSize: 14,
+                    fontStyle: 'bold'
+                }
+            }
+        });
+
+        // Factores de importancia
+        var importanceCtx = document.getElementById('importanceChart').getContext('2d');
+        new Chart(importanceCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Rentabilidad', 'Seguridad', 'Diversificación', 'Impacto Social', 'Transparencia', 'Flexibilidad', 'Garantías'],
+                datasets: [{
+                    label: 'Importancia Promedio',
+                    data: [5, 5, 4, 4, 4, 3, 5],
+                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                    borderColor: '#4CAF50',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#2E7D32',
+                    pointBorderColor: '#fff',
+                    pointRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scale: {
+                    ticks: {
+                        beginAtZero: true,
+                        max: 5,
+                        min: 0,
+                        stepSize: 1
+                    },
+                    gridLines: {
+                        color: '#e0e0e0'
+                    },
+                    pointLabels: {
+                        fontSize: 10
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            }
+        });
+
+        // Percepción de riesgos
+        var riskCtx = document.getElementById('riskChart').getContext('2d');
+        new Chart(riskCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Político', 'Económico', 'Social', 'Tecnológico', 'Legal', 'Ambiental'],
+                datasets: [{
+                    label: 'Valoración de Importancia',
+                    data: [4, 4, 4, 4.5, 4.5, 4.3],
+                    backgroundColor: ['#F44336', '#FF9800', '#4CAF50', '#2196F3', '#9C27B0', '#607D8B'],
+                    borderWidth: 1,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            max: 5,
+                            stepSize: 1
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                }
+            }
+        });
+
+        // Experiencia vs Monto
+        var experienceCtx = document.getElementById('experienceChart').getContext('2d');
+        new Chart(experienceCtx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Inversores',
+                    data: [
+                        {x: 1, y: 250},
+                        {x: 4, y: 75},
+                        {x: 15, y: 250},
+                        {x: 4, y: 25},
+                        {x: 1, y: 25},
+                        {x: 4, y: 25},
+                        {x: 1, y: 25},
+                        {x: 4, y: 25}
+                    ],
+                    backgroundColor: '#4CAF50',
+                    borderColor: '#2E7D32',
+                    pointRadius: 8,
+                    pointHoverRadius: 12
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Años de Experiencia'
+                        },
+                        ticks: {
+                            min: 0,
+                            max: 20
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Monto Inversión (M COP)'
+                        },
+                        ticks: {
+                            min: 0,
+                            max: 300
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            return tooltipItem.xLabel + ' años, ' + tooltipItem.yLabel + 'M COP';
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

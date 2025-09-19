@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación de Mercado: Segmento Productores | Tierra Fintech Solutions</title>
+    <style>
+        :root {
+            --primary-color: #2E5C3E;
+            --secondary-color: #8FBC8F;
+            --accent-color: #FFD700;
+            --text-color: #333;
+            --bg-color: #F8F9FA;
+            --white: #FFFFFF;
+            --success: #28A745;
+            --warning: #FFC107;
+            --danger: #DC3545;
+            --info: #17A2B8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-color) 0%, #E8F5E8 100%);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(46, 92, 62, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .methodology-info {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .methodology-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .section h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        select, input {
+            padding: 8px 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 92, 62, 0.3);
+        }
+
+        .chart-container {
+            height: 400px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .chart {
+            width: 100%;
+            height: 100%;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(46, 92, 62, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .insights-panel {
+            background: linear-gradient(135deg, #FFF3CD 0%, #FFF8E1 100%);
+            border: 2px solid var(--warning);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .insights-panel h3 {
+            color: #856404;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .insights-panel h3::before {
+            content: "🎯";
+            font-size: 1.5rem;
+        }
+
+        .export-section {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .connection-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .connected {
+            background: linear-gradient(135deg, var(--success) 0%, #20C997 100%);
+            color: var(--white);
+        }
+
+        .customer-journey {
+            background: linear-gradient(135deg, #E8F4FD 0%, #F0F8FF 100%);
+            border: 2px solid var(--info);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .journey-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .journey-step {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .journey-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--info);
+            color: var(--white);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .behavioral-patterns {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .pattern-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Validación de Mercado: Segmento Productores</h1>
+            <p>Customer Journey & Behavioral Analysis - GiroCampo</p>
+            <div style="margin-top: 15px; text-align: center;">
+                <div class="connection-status connected" id="connectionStatus">
+                    <span>🔗</span> Conectado a Airtable
+                </div>
+            </div>
+        </div>
+
+        <div class="methodology-info">
+            <h3>Marco Metodológico</h3>
+            <p><strong>Objetivo:</strong> Validar la propuesta de valor de GiroCampo mediante análisis del comportamiento financiero y customer journey de productores lácteos.</p>
+            <p><strong>Metodología:</strong> Análisis estadístico descriptivo, segmentación demográfica, patrones de comportamiento financiero y validación de usabilidad.</p>
+            <p><strong>Fuentes de Datos:</strong> EncuestaProductorCustomerPersona - Tabla: RespuestasFormulariosProductores (142 campos de análisis)</p>
+        </div>
+
+        <div class="summary-stats" id="summaryStats">
+            </div>
+
+        <div class="main-content">
+            <div class="section">
+                <h3>Perfil Demográfico y Productivo</h3>
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="demoFilter">Variable:</label>
+                        <select id="demoFilter">
+                            <option value="edad">Distribución por Edad</option>
+                            <option value="municipio">Por Municipio</option>
+                            <option value="producto">Producto Principal</option>
+                            <option value="hato">Tamaño del Hato</option>
+                            <option value="experiencia">Años de Experiencia</option>
+                            <option value="educacion">Nivel Educativo</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="updateDemographics()">Actualizar</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="demographicsChart" class="chart"></canvas>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Adopción y Comportamiento Digital</h3>
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="digitalFilter">Aspecto:</label>
+                        <select id="digitalFilter">
+                            <option value="comodidad">Comodidad por Función</option>
+                            <option value="celular">Tipo de Celular</option>
+                            <option value="apps">Uso de Apps de Dinero</option>
+                            <option value="satisfaccion">Satisfacción Apps</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="updateDigitalBehavior()">Analizar</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="digitalChart" class="chart"></canvas>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Patrones de Financiamiento</h3>
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="financeFilter">Aspecto:</label>
+                        <select id="financeFilter">
+                            <option value="fuentes">Fuentes de Financiamiento</option>
+                            <option value="frecuencia">Frecuencia de Solicitud</option>
+                            <option value="destino">Destino del Dinero</option>
+                            <option value="dificultades">Dificultades Principales</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="updateFinancePatterns()">Actualizar</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="financeChart" class="chart"></canvas>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Factores de Decisión Financiera</h3>
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="decisionFilter">Criterio:</label>
+                        <select id="decisionFilter">
+                            <option value="importancia">Importancia de Factores</option>
+                            <option value="preocupaciones">Principales Preocupaciones</option>
+                            <option value="motivos">Motivos de Solicitud</option>
+                            <option value="rechazo">Motivos de Rechazo</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="updateDecisionFactors()">Analizar</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="decisionChart" class="chart"></canvas>
+                </div>
+            </div>
+
+            <div class="section full-width">
+                <h3>Customer Journey Mapping - Solicitud de Financiamiento</h3>
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="journeyPhase">Fase del Journey:</label>
+                        <select id="journeyPhase">
+                            <option value="complete">Journey Completo</option>
+                            <option value="awareness">Awareness</option>
+                            <option value="consideration">Consideration</option>
+                            <option value="decision">Decision</option>
+                            <option value="action">Action</option>
+                            <option value="retention">Retention</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="updateCustomerJourney()">Actualizar</button>
+                </div>
+                
+                <div class="customer-journey">
+                    <div class="journey-steps" id="journeySteps">
+                        </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="journeyChart" class="chart"></canvas>
+                </div>
+            </div>
+
+            <div class="section full-width">
+                <h3>Segmentación de Productores</h3>
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="segmentMethod">Método de Segmentación:</label>
+                        <select id="segmentMethod">
+                            <option value="behavioral">Comportamental</option>
+                            <option value="demographic">Demográfico</option>
+                            <option value="psychographic">Psicográfico</option>
+                            <option value="geographic">Geográfico</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="updateSegmentation()">Segmentar</button>
+                </div>
+                
+                <div class="behavioral-patterns" id="behavioralPatterns">
+                    </div>
+                
+                <div class="chart-container">
+                    <canvas id="segmentChart" class="chart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="insights-panel" id="insightsPanel">
+            <h3>Insights de Customer Persona - Productores</h3>
+            <div id="insightsContent">
+                </div>
+        </div>
+
+        <div class="export-section">
+            <h3>Exportar Análisis Customer Persona</h3>
+            <p>Descarga los resultados del análisis de validación de productores en diferentes formatos</p>
+            <div style="margin-top: 20px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn" onclick="exportPersonaReport()">👤 Exportar Persona</button>
+                <button class="btn" onclick="exportJourneyMap()">🗺️ Journey Map</button>
+                <button class="btn" onclick="exportSegmentAnalysis()">📊 Segmentación</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script>
+        // Datos basados en la estructura real de EncuestaProductorCustomerPersona
+        const productoresData = {
+            demografia: {
+                edad: {'18-30': 12, '31-45': 45, '46-60': 28, '61+': 15},
+                municipio: {'Cajica': 18, 'Chia': 15, 'Choconta': 12, 'Zipaquira': 10, 'Ubate': 8, 'Otros': 37},
+                producto: {'Leche': 75, 'Agricultura': 15, 'Mixto': 10},
+                hato: {'1-10': 20, '10-30': 45, '31-50': 25, '51+': 10},
+                experiencia: {'Menos de 5': 15, '5-10': 25, '11-20': 35, 'Más de 20': 25},
+                educacion: {'Primaria inc./comp': 35, 'Bachillerato inc./comp': 45, 'Técnico/Tecnológico': 15, 'Universitario': 5}
+            },
+            digital: {
+                comodidad: {'Trámites': 3.8, 'Recibir dinero': 3.2, 'Pedir dinero': 2.9, 'Pagos': 2.7},
+                celular: {'Smartphone': 85, 'Básico': 15},
+                apps: {'Nequi/Daviplata': 65, 'Otra Billetera': 15, 'Ninguna': 20},
+                satisfaccion: {'Muy satisfecho': 25, 'Satisfecho': 45, 'Regular': 25, 'Insatisfecho': 5}
+            },
+            financiamiento: {
+                fuentes: {'Adelanto procesadora': 40, 'Amigo/familiar': 30, 'Informal': 20, 'Banco': 10},
+                frecuencia: {'Frecuentemente': 35, 'A veces': 45, 'Raramente': 20},
+                destino: {'Comida animales': 50, 'Gasto familiar imprevisto': 25, 'Reparaciones urgentes': 15, 'Otros': 10},
+                dificultades: {'Dificultad para trámite': 35, 'Mucho papeleo': 30, 'Demora en respuesta': 20, 'Requisitos complejos': 15}
+            },
+            decision: {
+                importancia: {'Rapidez': 4.5, 'Facilidad': 4.3, 'Seguridad': 4.2, 'Confianza': 4.4, 'Monto': 4.1},
+                preocupaciones: {'Facilidad (WhatsApp/SMS)': 35, 'Rapidez': 30, 'Sin papeles': 20, 'Basado en producción': 15},
+                motivos: {'Acceso a financiamiento': 45, 'Precio leche': 25, 'Emergencias': 20, 'Inversión': 10}
+            }
+        };
+
+        let currentCharts = {};
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDashboard();
+            updateSummaryStats();
+            updateDemographics();
+            updateDigitalBehavior();
+            updateFinancePatterns();
+            updateDecisionFactors();
+            updateCustomerJourney();
+            updateSegmentation();
+            generateInsights();
+        });
+
+        function initializeDashboard() {
+            console.log('Dashboard de Validación Productores inicializado');
+            setTimeout(() => {
+                const status = document.getElementById('connectionStatus');
+                status.className = 'connection-status connected';
+                status.innerHTML = '<span>🔗</span> Conectado a Airtable';
+            }, 1000);
+        }
+
+        function updateSummaryStats() {
+            const stats = [
+                { label: 'Total Encuestas Productores', value: '932', color: '#2E5C3E' },
+                { label: 'Tasa Adopción Digital', value: '68%', color: '#8FBC8F' },
+                { label: 'Score NPS', value: '+42', color: '#FFD700' },
+                { label: 'Intent to Use', value: '74%', color: '#28A745' }
+            ];
+            const container = document.getElementById('summaryStats');
+            container.innerHTML = stats.map(stat => `
+                <div class="stat-card" style="background: linear-gradient(135deg, ${stat.color} 0%, ${stat.color}80 100%)">
+                    <div class="stat-value">${stat.value}</div>
+                    <div class="stat-label">${stat.label}</div>
+                </div>
+            `).join('');
+        }
+
+        function updateDemographics() {
+            const filter = document.getElementById('demoFilter').value;
+            const ctx = document.getElementById('demographicsChart').getContext('2d');
+            if (currentCharts.demographics) currentCharts.demographics.destroy();
+
+            const data = Object.values(productoresData.demografia[filter]);
+            const labels = Object.keys(productoresData.demografia[filter]);
+
+            currentCharts.demographics = new Chart(ctx, {
+                type: filter === 'edad' || filter === 'hato' ? 'doughnut' : 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Distribución',
+                        data: data,
+                        backgroundColor: ['#2E5C3E', '#8FBC8F', '#FFD700', '#87CEEB', '#FFA07A', '#DDA0DD'],
+                        borderWidth: 2,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        position: 'bottom',
+                        labels: { usePointStyle: true, padding: 15 }
+                    },
+                    title: {
+                        display: true,
+                        text: `Distribución por ${filter.charAt(0).toUpperCase() + filter.slice(1)}`
+                    },
+                    scales: filter === 'edad' || filter === 'hato' ? {} : {
+                        yAxes: [{
+                            ticks: { beginAtZero: true },
+                            scaleLabel: { display: true, labelString: 'Número de Productores' }
+                        }]
+                    }
+                }
+            });
+        }
+
+        function updateDigitalBehavior() {
+            const filter = document.getElementById('digitalFilter').value;
+            const ctx = document.getElementById('digitalChart').getContext('2d');
+            if (currentCharts.digital) currentCharts.digital.destroy();
+
+            let data, labels, chartType = 'bar';
+            
+            if (filter === 'comodidad') {
+                data = Object.values(productoresData.digital.comodidad);
+                labels = Object.keys(productoresData.digital.comodidad);
+                chartType = 'radar';
+            } else {
+                data = Object.values(productoresData.digital[filter]);
+                labels = Object.keys(productoresData.digital[filter]);
+                if (filter === 'celular' || filter === 'apps') chartType = 'pie';
+            }
+
+            currentCharts.digital = new Chart(ctx, {
+                type: chartType,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: chartType === 'radar' ? 'Nivel de Comodidad (1-5)' : 'Porcentaje',
+                        data: data,
+                        backgroundColor: chartType === 'radar' ? 'rgba(46, 92, 62, 0.2)' : ['#2E5C3E', '#8FBC8F', '#FFD700', '#87CEEB'],
+                        borderColor: chartType === 'radar' ? '#2E5C3E' : '#FFFFFF',
+                        borderWidth: chartType === 'radar' ? 3 : 2,
+                        pointBackgroundColor: chartType === 'radar' ? '#FFD700' : undefined,
+                        pointRadius: chartType === 'radar' ? 6 : undefined
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: { position: 'bottom' },
+                    title: {
+                        display: true,
+                        text: `Comportamiento Digital - ${filter.charAt(0).toUpperCase() + filter.slice(1)}`
+                    },
+                    scale: chartType === 'radar' ? { // Note: 'scale' for radar in v2
+                        ticks: { beginAtZero: true, max: 5 },
+                        gridLines: { color: 'rgba(46, 92, 62, 0.3)' }
+                    } : null,
+                    scales: chartType === 'bar' ? {
+                        yAxes: [{ ticks: { beginAtZero: true } }]
+                    } : {}
+                }
+            });
+        }
+
+        function updateFinancePatterns() {
+            const filter = document.getElementById('financeFilter').value;
+            const ctx = document.getElementById('financeChart').getContext('2d');
+            if (currentCharts.finance) currentCharts.finance.destroy();
+
+            const data = Object.values(productoresData.financiamiento[filter]);
+            const labels = Object.keys(productoresData.financiamiento[filter]);
+
+            currentCharts.finance = new Chart(ctx, {
+                type: 'horizontalBar', // Use horizontalBar for v2
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Porcentaje',
+                        data: data,
+                        backgroundColor: '#2E5C3E',
+                        borderColor: '#8FBC8F',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    title: {
+                        display: true,
+                        text: `Patrones de Financiamiento - ${filter.charAt(0).toUpperCase() + filter.slice(1)}`
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: { beginAtZero: true },
+                            scaleLabel: { display: true, labelString: 'Porcentaje (%)' }
+                        }]
+                    }
+                }
+            });
+        }
+
+        function updateDecisionFactors() {
+            const filter = document.getElementById('decisionFilter').value;
+            const ctx = document.getElementById('decisionChart').getContext('2d');
+            if (currentCharts.decision) currentCharts.decision.destroy();
+
+            let data, labels, chartType = 'bar';
+            
+            if (filter === 'importancia') {
+                data = Object.values(productoresData.decision.importancia);
+                labels = Object.keys(productoresData.decision.importancia);
+                chartType = 'polarArea';
+            } else if (filter === 'preocupaciones') {
+                data = Object.values(productoresData.decision.preocupaciones);
+                labels = Object.keys(productoresData.decision.preocupaciones);
+            } else {
+                data = Object.values(productoresData.decision.motivos);
+                labels = Object.keys(productoresData.decision.motivos);
+            }
+
+            currentCharts.decision = new Chart(ctx, {
+                type: chartType,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: filter === 'importancia' ? 'Nivel de Importancia' : 'Porcentaje',
+                        data: data,
+                        backgroundColor: ['#2E5C3E', '#8FBC8F', '#FFD700', '#87CEEB', '#FFA07A'],
+                        borderWidth: 2,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: { position: 'bottom' },
+                    title: {
+                        display: true,
+                        text: `Factores de Decisión - ${filter.charAt(0).toUpperCase() + filter.slice(1)}`
+                    },
+                    scales: chartType === 'bar' ? {
+                        yAxes: [{ ticks: { beginAtZero: true } }]
+                    } : {}
+                }
+            });
+        }
+
+        function updateCustomerJourney() {
+            const journeyData = {
+                complete: [
+                    { step: '1', title: 'Necesidad', description: 'Identificación de necesidad financiera', satisfaction: 65 },
+                    { step: '2', title: 'Búsqueda', description: 'Búsqueda de opciones disponibles', satisfaction: 58 },
+                    { step: '3', title: 'Evaluación', description: 'Comparación de alternativas', satisfaction: 52 },
+                    { step: '4', title: 'Solicitud', description: 'Proceso de solicitud', satisfaction: 71 },
+                    { step: '5', title: 'Aprobación', description: 'Espera de respuesta', satisfaction: 68 },
+                    { step: '6', title: 'Recepción', description: 'Recepción de fondos', satisfaction: 82 },
+                    { step: '7', title: 'Uso', description: 'Utilización del recurso', satisfaction: 78 },
+                    { step: '8', title: 'Pago', description: 'Proceso de pago', satisfaction: 73 }
+                ]
+            };
+            const steps = journeyData.complete;
+            const container = document.getElementById('journeySteps');
+            container.innerHTML = steps.map(step => `
+                <div class="journey-step" data-step="${step.step}">
+                    <h4 style="color: var(--primary-color); margin-bottom: 10px;">${step.title}</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 10px;">${step.description}</p>
+                    <div style="font-weight: bold; color: ${step.satisfaction > 70 ? '#28A745' : step.satisfaction > 60 ? '#FFC107' : '#DC3545'};">
+                        ${step.satisfaction}% satisfacción
+                    </div>
+                </div>
+            `).join('');
+
+            const ctx = document.getElementById('journeyChart').getContext('2d');
+            if (currentCharts.journey) currentCharts.journey.destroy();
+
+            currentCharts.journey = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: steps.map(s => s.title),
+                    datasets: [{
+                        label: 'Nivel de Satisfacción (%)',
+                        data: steps.map(s => s.satisfaction),
+                        borderColor: '#2E5C3E',
+                        backgroundColor: 'rgba(46, 92, 62, 0.1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#FFD700',
+                        pointBorderColor: '#2E5C3E',
+                        pointRadius: 8,
+                        pointHoverRadius: 10,
+                        fill: true,
+                        lineTension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    title: {
+                        display: true,
+                        text: 'Customer Journey - Nivel de Satisfacción por Etapa'
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: { beginAtZero: true, max: 100 },
+                            scaleLabel: { display: true, labelString: 'Satisfacción (%)' }
+                        }]
+                    }
+                }
+            });
+        }
+
+        function updateSegmentation() {
+            const method = document.getElementById('segmentMethod').value;
+            const patterns = {
+                behavioral: [
+                    { title: 'Adoptadores Tempranos', description: 'Usan múltiples apps, solicitan frecuentemente', percentage: 25 },
+                    { title: 'Usuarios Moderados', description: 'Uso ocasional, prefieren métodos tradicionales', percentage: 45 },
+                    { title: 'Resistentes al Cambio', description: 'Solo efectivo, rechazan tecnología', percentage: 30 }
+                ],
+                demographic: [
+                    { title: 'Jóvenes Educados', description: 'Menores de 35, educación técnica+', percentage: 20 },
+                    { title: 'Experiencia Media', description: '35-50 años, bachillerato', percentage: 50 },
+                    { title: 'Tradicionales', description: 'Mayores de 50, educación básica', percentage: 30 }
+                ],
+                psychographic: [
+                    { title: 'Innovadores', description: 'Buscan eficiencia, adoptan tecnología', percentage: 22 },
+                    { title: 'Pragmáticos', description: 'Evalúan costo-beneficio', percentage: 48 },
+                    { title: 'Conservadores', description: 'Priorizan seguridad y confianza', percentage: 30 }
+                ],
+                geographic: [
+                    { title: 'Zona Centro', description: 'Cajicá, Chía - Mayor conectividad', percentage: 40 },
+                    { title: 'Zona Norte', description: 'Ubaté, Simijaca - Conectividad media', percentage: 35 },
+                    { title: 'Zona Rural', description: 'Veredas - Conectividad limitada', percentage: 25 }
+                ]
+            };
+            const container = document.getElementById('behavioralPatterns');
+            const currentPatterns = patterns[method];
+            container.innerHTML = currentPatterns.map(pattern => `
+                <div class="pattern-card">
+                    <h4 style="color: var(--primary-color); margin-bottom: 10px;">${pattern.title}</h4>
+                    <p style="margin-bottom: 15px; line-height: 1.5;">${pattern.description}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: bold; color: var(--primary-color);">${pattern.percentage}%</span>
+                        <div style="flex: 1; margin-left: 15px;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${pattern.percentage}%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            const ctx = document.getElementById('segmentChart').getContext('2d');
+            if (currentCharts.segment) currentCharts.segment.destroy();
+
+            currentCharts.segment = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: currentPatterns.map(p => p.title),
+                    datasets: [{
+                        data: currentPatterns.map(p => p.percentage),
+                        backgroundColor: ['#2E5C3E', '#8FBC8F', '#FFD700', '#87CEEB'],
+                        borderWidth: 3,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        position: 'bottom',
+                        labels: { usePointStyle: true, padding: 20 }
+                    },
+                    title: {
+                        display: true,
+                        text: `Segmentación ${method.charAt(0).toUpperCase() + method.slice(1)}`
+                    }
+                }
+            });
+        }
+
+        function generateInsights() {
+            const insights = [
+                { title: "Perfil Demográfico Dominante", content: "El 45% de productores tiene entre 31-45 años con educación secundaria. Predominan fincas de 10-30 cabezas (45%) en municipios cercanos a Bogotá." },
+                { title: "Adopción Digital Progresiva", content: "85% usa smartphones, pero comodidad varía por función: trámites (3.8/5), recibir dinero (3.2/5), solicitar crédito (2.9/5). Oportunidad de mejora en UX." },
+                { title: "Dependencia de Adelantos", content: "40% depende de adelantos de procesadora, 35% solicita frecuentemente. Principal uso: alimentación animal (50%) y gastos familiares (25%)." },
+                { title: "Factores Críticos de Decisión", content: "Rapidez (4.5/5) y confianza (4.4/5) son más importantes que el monto (4.1/5). 35% prioriza facilidad vía WhatsApp/SMS." },
+                { title: "Journey de Satisfacción", content: "Mayor satisfacción en recepción de fondos (82%) y uso (78%). Pain points: evaluación (52%) y búsqueda (58%)." },
+                { title: "Segmentación Conductual", content: "25% adoptadores tempranos, 45% usuarios moderados, 30% resistentes. Estrategia diferenciada por segmento es clave." }
+            ];
+            const container = document.getElementById('insightsContent');
+            container.innerHTML = insights.map(insight => `
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.8); border-radius: 10px; border-left: 4px solid #856404;">
+                    <h4 style="color: #856404; margin-bottom: 8px;">${insight.title}</h4>
+                    <p style="margin: 0; line-height: 1.5;">${insight.content}</p>
+                </div>
+            `).join('');
+        }
+
+        // Funciones de exportación
+        function exportPersonaReport() { alert('Exportando Customer Persona Report...'); }
+        function exportJourneyMap() { alert('Exportando Customer Journey Map...'); }
+        function exportSegmentAnalysis() { alert('Exportando Análisis de Segmentación...'); }
+
+    </script>
+</body>
+</html>

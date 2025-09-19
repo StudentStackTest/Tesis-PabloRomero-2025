@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F6.2 - Estructura de Inversiones y CAPEX (Chart.js v2.9.4)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .investment-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .overview-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+            text-align: center;
+        }
+
+        .overview-amount {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .overview-label {
+            font-size: 1.2em;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .overview-description {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+
+        .chart-section {
+            margin-bottom: 40px;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        .chart-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .breakdown-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .breakdown-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .breakdown-title {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .breakdown-item-name {
+            font-weight: 500;
+            color: #2c3e50;
+            flex: 1;
+        }
+
+        .breakdown-item-amount {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #667eea;
+        }
+
+        .breakdown-item-percentage {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-left: 10px;
+        }
+
+        .capex-detail {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .capex-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .capex-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .capex-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #dee2e6;
+        }
+
+        .capex-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .capex-item-category {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        .capex-item-amount {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .capex-item-description {
+            color: #495057;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .capex-item-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+
+        .detail-label {
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .timeline-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .timeline-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            margin-bottom: 30px;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+            padding-right: 40px;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            text-align: left;
+            padding-left: 40px;
+        }
+
+        .timeline-content {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .timeline-description {
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+
+        .timeline-amount {
+            font-weight: bold;
+            color: #27ae60;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #667eea;
+            border: 4px solid white;
+            border-radius: 50%;
+            top: 20px;
+        }
+
+        .timeline-item:nth-child(odd)::before {
+            right: -8px;
+        }
+
+        .timeline-item:nth-child(even)::before {
+            left: -8px;
+        }
+
+        .justification-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .justification-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .justification-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .justification-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .justification-category {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .justification-text {
+            color: #495057;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .investment-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .breakdown-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                text-align: left !important;
+                padding-left: 60px !important;
+                padding-right: 0 !important;
+            }
+            
+            .timeline-item::before {
+                left: 12px !important;
+                right: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>💰 Estructura de Inversiones y CAPEX</h1>
+            <p class="subtitle">Breakdown Detallado de Capital de Inversión - Tierra Fintech Solutions</p>
+        </div>
+
+        <div class="investment-overview">
+            <div class="overview-card">
+                <div class="overview-amount">$1.0M</div>
+                <div class="overview-label">Inversión Total</div>
+                <div class="overview-description">Capital requerido para lanzamiento y operación durante los primeros 18 meses</div>
+            </div>
+            
+            <div class="overview-card">
+                <div class="overview-amount">$80K</div>
+                <div class="overview-label">CAPEX Total</div>
+                <div class="overview-description">8% del total - Activos fijos e inversiones en infraestructura tecnológica</div>
+            </div>
+            
+            <div class="overview-card">
+                <div class="overview-amount">$920K</div>
+                <div class="overview-label">OPEX Estratégico</div>
+                <div class="overview-description">92% del total - Inversión en talento humano, I+D y expansión comercial</div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <div class="chart-container">
+                <h3 class="chart-title">Distribución del Uso de Fondos ($1,000,000 USD)</h3>
+                <canvas id="useFundsChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="breakdown-section">
+            <div class="breakdown-card">
+                <h3 class="breakdown-title">💡 Investigación y Desarrollo (I+D)</h3>
+                <div class="breakdown-item">
+                    <span class="breakdown-item-name">Equipo de Desarrollo y Tecnología</span>
+                    <div>
+                        <span class="breakdown-item-amount">$450,000</span>
+                        <span class="breakdown-item-percentage">45%</span>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; color: #495057; line-height: 1.5;">
+                    <strong>Justificación:</strong> Financiar el costo total del equipo de producto y tecnología por 18 meses para migrar del MVP, escalar la infraestructura y desarrollar nuevas funcionalidades críticas para el ecosistema FinTech.
+                </div>
+            </div>
+
+            <div class="breakdown-card">
+                <h3 class="breakdown-title">📈 Ventas y Marketing (S&M)</h3>
+                <div class="breakdown-item">
+                    <span class="breakdown-item-name">Adquisición de Clientes y Pauta Digital</span>
+                    <div>
+                        <span class="breakdown-item-amount">$250,000</span>
+                        <span class="breakdown-item-percentage">25%</span>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; color: #495057; line-height: 1.5;">
+                    <strong>Justificación:</strong> Financiar el equipo de marketing y presupuesto de pauta digital para ejecutar la estrategia de adquisición de clientes y alcanzar la masa crítica de usuarios en el sector lácteo.
+                </div>
+            </div>
+
+            <div class="breakdown-card">
+                <h3 class="breakdown-title">🏢 Generales y Administrativos (G&A)</h3>
+                <div class="breakdown-item">
+                    <span class="breakdown-item-name">Equipo Ejecutivo y Operaciones</span>
+                    <div>
+                        <span class="breakdown-item-amount">$220,000</span>
+                        <span class="breakdown-item-percentage">22%</span>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; color: #495057; line-height: 1.5;">
+                    <strong>Justificación:</strong> Sostener los salarios del equipo ejecutivo, de operaciones y legal, así como los gastos generales (oficina, servicios, contabilidad) durante los 18 meses iniciales.
+                </div>
+            </div>
+
+            <div class="breakdown-card">
+                <h3 class="breakdown-title">🔧 Inversión en Activos (CAPEX)</h3>
+                <div class="breakdown-item">
+                    <span class="breakdown-item-name">Activos Fijos y Tecnología</span>
+                    <div>
+                        <span class="breakdown-item-amount">$80,000</span>
+                        <span class="breakdown-item-percentage">8%</span>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; color: #495057; line-height: 1.5;">
+                    <strong>Justificación:</strong> Adquisición de activos fijos clave como laptops para todo el equipo, mobiliario de oficina y la capitalización del desarrollo inicial de la plataforma.
+                </div>
+            </div>
+        </div>
+
+        <div class="capex-detail">
+            <h3 class="capex-title">🔧 Detalle de Inversiones CAPEX ($80,000 USD)</h3>
+            <div class="capex-grid">
+                <div class="capex-item">
+                    <div class="capex-item-header">
+                        <span class="capex-item-category">💻 Hardware</span>
+                        <span class="capex-item-amount">$21,000</span>
+                    </div>
+                    <div class="capex-item-description">
+                        Laptops para el equipo completo (14 unidades) - Equipos de desarrollo y operaciones
+                    </div>
+                    <div class="capex-item-details">
+                        <span class="detail-label">Vida Útil:</span>
+                        <span class="detail-value">3 años</span>
+                        <span class="detail-label">Depreciación Mensual:</span>
+                        <span class="detail-value">$583</span>
+                    </div>
+                </div>
+
+                <div class="capex-item">
+                    <div class="capex-item-header">
+                        <span class="capex-item-category">⚡ Activos Intangibles</span>
+                        <span class="capex-item-amount">$53,333</span>
+                    </div>
+                    <div class="capex-item-description">
+                        Desarrollo de la nueva plataforma (50% de salarios I+D por 6 meses capitalizados)
+                    </div>
+                    <div class="capex-item-details">
+                        <span class="detail-label">Vida Útil:</span>
+                        <span class="detail-value">3 años</span>
+                        <span class="detail-label">Depreciación Mensual:</span>
+                        <span class="detail-value">$1,481</span>
+                    </div>
+                </div>
+
+                <div class="capex-item">
+                    <div class="capex-item-header">
+                        <span class="capex-item-category">🪑 Mobiliario de Oficina</span>
+                        <span class="capex-item-amount">$5,000</span>
+                    </div>
+                    <div class="capex-item-description">
+                        Adecuación inicial del espacio de trabajo - Mobiliario y equipamiento de oficina
+                    </div>
+                    <div class="capex-item-details">
+                        <span class="detail-label">Vida Útil:</span>
+                        <span class="detail-value">5 años</span>
+                        <span class="detail-label">Depreciación Mensual:</span>
+                        <span class="detail-value">$83</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <div class="chart-container">
+                <h3 class="chart-title">Estructura CAPEX vs OPEX</h3>
+                <canvas id="capexOpexChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="timeline-section">
+            <h3 class="timeline-title">📅 Timeline de Desembolsos de Capital</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Mes 0 - Cierre de Ronda</div>
+                        <div class="timeline-description">
+                            Desembolso inicial para CAPEX completo y primer trimestre operativo
+                        </div>
+                        <div class="timeline-amount">$330,000</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Mes 3 - Primer Hito</div>
+                        <div class="timeline-description">
+                            Segundo desembolso tras validación de métricas de producto y traction inicial
+                        </div>
+                        <div class="timeline-amount">$250,000</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Mes 8 - Escalamiento</div>
+                        <div class="timeline-description">
+                            Tercer desembolso condicionado a métricas de crecimiento y unit economics
+                        </div>
+                        <div class="timeline-amount">$250,000</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Mes 12 - Expansión</div>
+                        <div class="timeline-description">
+                            Desembolso final para consolidación y preparación para Serie A
+                        </div>
+                        <div class="timeline-amount">$170,000</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <div class="chart-container">
+                <h3 class="chart-title">Inversión Adicional en Infraestructura Cloud y Ciberseguridad</h3>
+                <canvas id="infrastructureChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="justification-section">
+            <h3 class="justification-title">🎯 Justificaciones Estratégicas de la Estructura de Capital</h3>
+            <div class="justification-grid">
+                <div class="justification-item">
+                    <div class="justification-category">💡 Prioridad en I+D (45%)</div>
+                    <div class="justification-text">
+                        La asignación del 45% a I+D refleja la naturaleza technology-first de Tierra Fintech Solutions. El desarrollo de capacidades tecnológicas diferenciadas es crítico para crear barreras de entrada sostenibles y mantener la ventaja competitiva en el mercado FinTech agropecuario.
+                    </div>
+                </div>
+
+                <div class="justification-item">
+                    <div class="justification-category">📈 Inversión en Go-to-Market (25%)</div>
+                    <div class="justification-text">
+                        El 25% destinado a ventas y marketing es esencial para superar la exclusión financiera rural (68%) y educar al mercado sobre las ventajas del factoring inverso. La inversión en CAC de $100 USD por productor está validada con benchmarks internacionales.
+                    </div>
+                </div>
+                
+                <div class="justification-item">
+                    <div class="justification-category">🏢 Eficiencia Operativa (22%)</div>
+                    <div class="justification-text">
+                        El 22% en G&A mantiene una estructura lean mientras asegura compliance regulatorio y operaciones eficientes. Esta proporción está alineada con benchmarks de FinTech en etapa temprana y permite escalabilidad sin comprometer la calidad operativa.
+                    </div>
+                </div>
+
+                <div class="justification-item">
+                    <div class="justification-category">🔧 CAPEX Optimizado (8%)</div>
+                    <div class="justification-text">
+                        El 8% en CAPEX refleja un modelo asset-light propio de plataformas digitales. La capitalización del desarrollo de software ($53K) seguirá NIIF y permitirá amortización fiscal favorable, mientras que la inversión en hardware ($21K) asegura productividad del equipo.
+                    </div>
+                </div>
+
+                <div class="justification-item">
+                    <div class="justification-category">⚡ Escalabilidad Cloud-First</div>
+                    <div class="justification-text">
+                        La inversión adicional en infraestructura cloud ($500K) y ciberseguridad ($250K) posiciona la plataforma para escalamiento exponencial. Esta arquitectura permitirá manejar el crecimiento proyectado del 30% mensual sin re-arquitectura costosa.
+                    </div>
+                </div>
+
+                <div class="justification-item">
+                    <div class="justification-category">📊 ROI y Eficiencia de Capital</div>
+                    <div class="justification-text">
+                        La estructura propuesta optimiza el ROI del 26.73% al minimizar capital inmovilizado en activos fijos y maximizar la inversión en generadores de valor. El ratio LTV/CAC de 4.86 valida la eficiencia del modelo de adquisición financiado.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuración de Chart.js
+        Chart.defaults.global.defaultFontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        Chart.defaults.global.defaultFontSize = 12;
+
+        // Gráfico de Uso de Fondos
+        var useFundsCtx = document.getElementById('useFundsChart').getContext('2d');
+        new Chart(useFundsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['I+D (45%)', 'Marketing & Ventas (25%)', 'G&A (22%)', 'CAPEX (8%)'],
+                datasets: [{
+                    data: [450000, 250000, 220000, 80000],
+                    backgroundColor: [
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(46, 204, 113, 0.8)',
+                        'rgba(52, 152, 219, 0.8)',
+                        'rgba(155, 89, 182, 0.8)'
+                    ],
+                    borderColor: [
+                        '#667eea',
+                        '#2ecc71',
+                        '#3498db',
+                        '#9b59b6'
+                    ],
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true
+                    }
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var label = data.labels[tooltipItem.index] || '';
+                            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            var total = data.datasets[tooltipItem.datasetIndex].data.reduce((a, b) => a + b, 0);
+                            var percentage = ((value / total) * 100).toFixed(1);
+                            return label + ': $' + value.toLocaleString() + ' (' + percentage + '%)';
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico CAPEX vs OPEX
+        var capexOpexCtx = document.getElementById('capexOpexChart').getContext('2d');
+        new Chart(capexOpexCtx, {
+            type: 'bar',
+            data: {
+                labels: ['CAPEX', 'OPEX'],
+                datasets: [{
+                    label: 'Monto (USD)',
+                    data: [80000, 920000],
+                    backgroundColor: [
+                        'rgba(155, 89, 182, 0.8)',
+                        'rgba(102, 126, 234, 0.8)'
+                    ],
+                    borderColor: [
+                        '#9b59b6',
+                        '#667eea'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function(value) {
+                                return '$' + (value / 1000) + 'K';
+                            }
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            var total = 1000000;
+                            var percentage = ((value / total) * 100).toFixed(1);
+                            return data.datasets[tooltipItem.datasetIndex].label + ': $' + value.toLocaleString() + ' (' + percentage + '%)';
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Infraestructura Adicional
+        var infrastructureCtx = document.getElementById('infrastructureChart').getContext('2d');
+        new Chart(infrastructureCtx, {
+            type: 'horizontalBar', // Tipo de gráfico para v2
+            data: {
+                labels: ['Infraestructura Cloud', 'Ciberseguridad', 'Herramientas de Desarrollo'],
+                datasets: [{
+                    label: 'Inversión (USD)',
+                    data: [500000, 250000, 375000],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.8)',
+                        'rgba(231, 76, 60, 0.8)',
+                        'rgba(46, 204, 113, 0.8)'
+                    ],
+                    borderColor: [
+                        '#3498db',
+                        '#e74c3c',
+                        '#2ecc71'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function(value) {
+                                return '$' + (value / 1000) + 'K';
+                            }
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            return data.datasets[tooltipItem.datasetIndex].label + ': $' + value.toLocaleString();
+                        }
+                    }
+                }
+            }
+        });
+
+        // Funcionalidad interactiva (sin cambios)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animación de entrada para las cards
+            const cards = document.querySelectorAll('.overview-card, .breakdown-card, .capex-item');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
+                    card.style.transition = 'all 0.6s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 100);
+            });
+
+            // Hover effects para breakdown items
+            const breakdownItems = document.querySelectorAll('.breakdown-item');
+            breakdownItems.forEach(item => {
+                item.addEventListener('mouseover', function() {
+                    this.style.transform = 'translateX(5px)';
+                    this.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.2)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+                
+                item.addEventListener('mouseout', function() {
+                    this.style.transform = 'translateX(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Timeline animation
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const observerOptions = {
+                threshold: 0.5,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            timelineItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(50px)';
+                item.style.transition = 'all 0.6s ease';
+                observer.observe(item);
+            });
+        });
+
+        // Funciones de cálculo y validación (sin cambios)
+        function calculateTotalDepreciation() {
+            const hardware = 583.33;
+            const intangibles = 1481.47;
+            const furniture = 83.33;
+            return hardware + intangibles + furniture;
+        }
+
+        function validateCapexRatio() {
+            const totalInvestment = 1000000;
+            const totalCapex = 80000;
+            const ratio = (totalCapex / totalInvestment) * 100;
+            
+            console.log('📊 Validación Estructura CAPEX:');
+            console.log('- Total CAPEX: $' + totalCapex.toLocaleString());
+            console.log('- % del total: ' + ratio.toFixed(1) + '%');
+            console.log('- Depreciación mensual total: $' + calculateTotalDepreciation().toFixed(2));
+            
+            if (ratio <= 10) {
+                console.log('✅ Estructura CAPEX optimizada para FinTech (< 10%)');
+            } else {
+                console.log('⚠️ CAPEX ratio alto para modelo digital');
+            }
+            
+            return ratio;
+        }
+
+        // Ejecutar validaciones
+        console.log('💰 F6.2 - Estructura de Inversiones y CAPEX');
+        validateCapexRatio();
+        console.log('🚀 Modelo asset-light validado para escalabilidad');
+    </script>
+</body>
+</html>

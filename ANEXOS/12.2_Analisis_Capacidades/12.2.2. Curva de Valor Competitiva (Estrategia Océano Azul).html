@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curva de Valor Competitiva (Solución Definitiva) | Tierra FinTech Solutions</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; line-height: 1.6; color: #2c3e50; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; overflow-x: hidden; }
+        .header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 2rem 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-bottom: 3px solid #3498db; }
+        .header-content { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 2rem; }
+        .logo { background: linear-gradient(135deg, #3498db, #2ecc71); padding: 1rem; border-radius: 15px; color: white; font-weight: bold; font-size: 1.2rem; text-align: center; min-width: 120px; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3); }
+        .header-info { flex: 1; }
+        .header-info h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; color: #2c3e50; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+        .subtitle { font-size: 1.2rem; color: #7f8c8d; font-weight: 300; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem; }
+        .analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+        .card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 2.5rem; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 1px solid rgba(255, 255, 255, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden; margin-bottom: 2rem; }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #3498db, #2ecc71, #e74c3c, #f39c12); border-radius: 20px 20px 0 0; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .card h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 1.5rem; color: #2c3e50; display: flex; align-items: center; gap: 1rem; }
+        .icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; }
+        .chart-container { position: relative; height: 600px; margin: 2rem 0; background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .oceano-azul-section { background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1)); padding: 3rem; border-radius: 25px; margin: 3rem 0; border: 2px solid rgba(52, 152, 219, 0.3); }
+        .oceano-azul-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-top: 2rem; }
+        .oceano-card { background: rgba(255, 255, 255, 0.8); padding: 2rem; border-radius: 15px; border-left: 5px solid; }
+        .crear { border-color: #2ecc71; } .eliminar { border-color: #e74c3c; } .incrementar { border-color: #f39c12; } .reducir { border-color: #9b59b6; }
+        .oceano-card h4 { font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; color: #2c3e50; }
+        .strategy-list { list-style: none; padding: 0; }
+        .strategy-list li { padding: 0.8rem 0; border-bottom: 1px solid rgba(0,0,0,0.1); }
+        .strategy-list li:last-child { border-bottom: none; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .metric-card { background: rgba(255, 255, 255, 0.9); padding: 1.5rem; border-radius: 15px; text-align: center; }
+        .metric-value { font-size: 2.2rem; font-weight: 700; color: #2c3e50; display: block; margin-bottom: 0.5rem; }
+        .metric-label { color: #7f8c8d; font-weight: 500; font-size: 0.9rem; }
+        .competitive-advantage { background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(52, 152, 219, 0.1)); padding: 2rem; border-radius: 15px; margin: 2rem 0; }
+        .advantage-text { font-size: 1.2rem; font-weight: 600; color: #2c3e50; text-align: center; margin-bottom: 1rem; }
+        .methodology-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(52, 152, 219, 0.1); color: #3498db; padding: 0.5rem 1rem; border-radius: 25px; font-weight: 600; margin-bottom: 1rem; }
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .analysis-grid, .oceano-azul-grid { grid-template-columns: 1fr; }
+            .header-info h1 { font-size: 2rem; }
+            .chart-container { height: 400px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">📊<br>Tierra<br>FinTech</div>
+            <div class="header-info">
+                <h1>Curva de Valor Competitiva</h1>
+                <p class="subtitle">Análisis Estratégico Océano Azul | Framework Kim & Mauborgne</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="methodology-badge">🧭 Metodología Kim & Mauborgne (2005) - Estrategia Océano Azul</div>
+            <h3><div class="icon" style="background: #3498db;">📈</div>Marco Conceptual Estratégico</h3>
+            <p><strong>Objetivo:</strong> Identificar espacios de mercado inexplorado donde la competencia es irrelevante, creando nuevas demandas y oportunidades de crecimiento sostenible.</p>
+            <div class="metrics-grid" id="metrics"></div>
+        </div>
+
+        <div class="card">
+            <h3><div class="icon" style="background: #2ecc71;">🏆</div>Curva de Valor Competitiva - Sector FinTech Agropecuario</h3>
+            <div class="chart-container"><canvas id="valorChart"></canvas></div>
+            <div class="competitive-advantage"><p class="advantage-text"><strong>Ventaja Competitiva Identificada:</strong> Tierra FinTech presenta superioridad en <strong>100% de los atributos críticos</strong>, con diferenciación disruptiva en scoring alternativo y eliminación radical de trámites burocráticos.</p></div>
+        </div>
+
+        <div class="oceano-azul-section">
+            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 2rem; font-size: 2.5rem;">🌊 Estrategias Océano Azul - Matriz ERIC</h2>
+            <div class="oceano-azul-grid" id="eric-matrix"></div>
+        </div>
+
+        <div class="analysis-grid">
+            <div class="card">
+                <h3><div class="icon" style="background: #e74c3c;">🎯</div>Atributos de Mayor Diferenciación</h3>
+                <div id="topAttributes"></div>
+            </div>
+            <div class="card">
+                <h3><div class="icon" style="background: #f39c12;">💡</div>Innovaciones Disruptivas</h3>
+                <div id="innovations"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- SCRIPT RECONSTRUIDO CON EL ENFOQUE FUNCIONAL (Chart.js v2) ---
+
+        // 1. Datos del gráfico (extraídos de tu CSV)
+        const atributos = [
+            ['Scoring Alternativo', 'Especializado'], 'Eliminación Trámites', ['Velocidad', 'Aprobación'], 
+            ['Impacto Social', 'y Ambiental'], ['Innovación', 'Tecnológica'], ['Experiencia de', 'Usuario (UX)'], 
+            'Competitividad Precio', ['Especialización', 'Sectorial'], ['Flexibilidad de', 'Productos'], 
+            ['Transparencia', 'de Procesos']
+        ];
+        const tierraFintech = [10, 9, 9, 9, 10, 9, 8.5, 10, 9, 9.5];
+        const bancosTradicionales = [2, 2, 3, 4, 3, 4, 5, 2, 3, 4];
+        const cooperativas = [3, 4, 5, 6, 4, 5, 6, 3, 4, 5];
+        const fintechsGenerales = [5, 6, 7, 3, 6, 7, 7, 4, 6, 6];
+        const gremios = [2, 3, 4, 7, 3, 4, 4, 5, 4, 3];
+
+        // 2. Obtener el canvas y crear el gráfico con la sintaxis de la v2
+        const ctx = document.getElementById('valorChart').getContext('2d');
+        
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: atributos,
+                datasets: [
+                    {
+                        label: '🏆 Tierra FinTech',
+                        data: tierraFintech,
+                        borderColor: '#27ae60',
+                        backgroundColor: 'rgba(39, 174, 96, 0.25)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#27ae60',
+                        pointBorderColor: '#fff',
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    },
+                    {
+                        label: '🏦 Bancos Tradicionales',
+                        data: bancosTradicionales,
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.15)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#e74c3c',
+                        pointRadius: 4
+                    },
+                    {
+                        label: '🤝 Cooperativas',
+                        data: cooperativas,
+                        borderColor: '#f39c12',
+                        backgroundColor: 'rgba(243, 156, 18, 0.15)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#f39c12',
+                        pointRadius: 4
+                    },
+                    {
+                        label: '💻 FinTechs Generales',
+                        data: fintechsGenerales,
+                        borderColor: '#9b59b6',
+                        backgroundColor: 'rgba(155, 89, 182, 0.15)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#9b59b6',
+                        pointRadius: 4
+                    },
+                    {
+                        label: '🌾 Gremios',
+                        data: gremios,
+                        borderColor: '#95a5a6',
+                        backgroundColor: 'rgba(149, 165, 166, 0.15)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#95a5a6',
+                        pointRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 1500
+                },
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 25,
+                        fontColor: '#2c3e50',
+                        fontSize: 14
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Análisis Comparativo de Posicionamiento Competitivo',
+                    fontSize: 18,
+                    fontColor: '#2c3e50',
+                    padding: 20
+                },
+                // La configuración de "scales" en v2 es diferente a v3
+                scale: {
+                    ticks: {
+                        beginAtZero: true,
+                        min: 0,
+                        max: 10,
+                        stepSize: 1,
+                        fontSize: 12,
+                        fontColor: '#2c3e50',
+                        backdropColor: 'rgba(255, 255, 255, 0.75)',
+                        backdropPadding: 4
+                    },
+                    pointLabels: {
+                        fontSize: 13,
+                        fontColor: '#333'
+                    },
+                    gridLines: {
+                        color: 'rgba(0, 0, 0, 0.1)'
+                    },
+                    angleLines: {
+                        color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                }
+            }
+        });
+
+        // 3. Rellenar el resto del contenido de la página
+        function renderMetrics() {
+            const container = document.getElementById('metrics');
+            if (!container) return;
+            const metrics = [{ value: '10', label: 'Atributos Evaluados' },{ value: '5', label: 'Competidores Analizados' },{ value: '4', label: 'Acciones ERIC' },{ value: '67%', label: 'Ventaja Competitiva' }];
+            container.innerHTML = metrics.map(m => `<div class="metric-card"><span class="metric-value">${m.value}</span><span class="metric-label">${m.label}</span></div>`).join('');
+        }
+        function renderEricMatrix() {
+            const container = document.getElementById('eric-matrix');
+            if (!container) return;
+            const actions = {
+                crear: { title: '✨ CREAR', desc: 'Scoring Alternativo Sectorial', items: ['Patentar metodología láctea única', 'Expandir variables predictivas', 'Desarrollar ML avanzado para agro', 'APIs para licenciamiento'] },
+                eliminar: { title: '🗑️ ELIMINAR', desc: 'Trámites Excesivos', items: ['Firma electrónica vs física', 'Validación biométrica automática', 'Integración bases de datos públicas', 'Onboarding conversacional'] },
+                incrementar: { title: '📈 INCREMENTAR', desc: 'Velocidad + Competitividad', items: ['Decisiones crediticias instantáneas', 'Pricing dinámico optimizado', 'Productos por ciclos productivos', 'Procesamiento 24h vs 72h'] },
+                reducir: { title: '📉 REDUCIR', desc: 'Costos + Complejidad', items: ['Tasa efectiva: 1.8% vs 2.1%', '3 documentos vs 8 del sector', 'Eliminación validaciones manuales', 'Reducción costos operativos'] }
+            };
+            container.innerHTML = Object.keys(actions).map(key => {
+                const action = actions[key];
+                return `<div class="oceano-card ${key}"><h4>${action.title}</h4><p><strong>${action.desc}</strong></p><ul class="strategy-list">${action.items.map(item => `<li>${item}</li>`).join('')}</ul></div>`;
+            }).join('');
+        }
+        function renderTopAttributes() {
+            const container = document.getElementById('topAttributes');
+            if (!container) return;
+            const attributes = [{ name: "Scoring Alternativo Especializado", tierra: 10, comp: 3.0, diff: 7.0 },{ name: "Eliminación de Trámites", tierra: 9, comp: 3.2, diff: 5.8 },{ name: "Especialización Sectorial", tierra: 10, comp: 3.5, diff: 6.5 }];
+            container.innerHTML = attributes.map(attr => `<div style="padding: 1rem; border-radius: 10px; background: #f8f9fa; margin-bottom: 1rem;"><strong>${attr.name}</strong><div style="display: flex; justify-content: space-around; margin-top: 0.5rem;"><span>Tierra: <strong>${attr.tierra}</strong></span><span>Sector: <strong>${attr.comp}</strong></span><span>Ventaja: <strong style="color: #27ae60;">+${attr.diff}</strong></span></div></div>`).join('');
+        }
+        function renderInnovations() {
+            const container = document.getElementById('innovations');
+            if (!container) return;
+            const innovations = [{ title: "Scoring Crediticio Alternativo", desc: "Primer modelo basado en datos productivos y territoriales." },{ title: "Onboarding Conversacional", desc: "Proceso 100% digital con validación biométrica y firma electrónica." },{ title: "Triple Impacto Sectorial", desc: "Métricas ESG certificadas con alineación a múltiples ODS." }];
+            container.innerHTML = innovations.map(inn => `<div style="padding: 1rem; border-radius: 10px; background: #f8f9fa; margin-bottom: 1rem;"><strong>${inn.title}</strong><p style="font-size: 0.9rem; color: #7f8c8d; margin-top: 0.5rem;">${inn.desc}</p></div>`).join('');
+        }
+
+        renderMetrics();
+        renderEricMatrix();
+        renderTopAttributes();
+        renderInnovations();
+    </script>
+</body>
+</html>

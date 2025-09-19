@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1.3 - Análisis del Entorno PESTEL | Tierra Fintech Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2d5a27 0%, #5f7c4e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.05) 10px,
+                rgba(255,255,255,0.05) 20px
+            );
+            animation: slide 20s linear infinite;
+        }
+        
+        @keyframes slide {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+        
+        .header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .metadata {
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+        
+        .content {
+            padding: 50px;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            color: #2d5a27;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: #5f7c4e;
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+        
+        .pestel-overview {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            margin-bottom: 60px;
+            align-items: center;
+        }
+        
+        .pestel-description {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 6px solid #2d5a27;
+        }
+        
+        .pestel-description h3 {
+            color: #2d5a27;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .pestel-description p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #495057;
+        }
+        
+        .pestel-hexagon {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+        }
+        
+        .hexagon-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #2d5a27 0%, #5f7c4e 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .pestel-factor {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .pestel-factor:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .political {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .economic {
+            top: 25%;
+            right: 0;
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+        
+        .social {
+            bottom: 25%;
+            right: 0;
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+        
+        .technological {
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+        
+        .environmental {
+            bottom: 25%;
+            left: 0;
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+        
+        .legal {
+            top: 25%;
+            left: 0;
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+        }
+        
+        .pestel-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .factor-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .factor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .factor-card.political-card::before {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+        
+        .factor-card.economic-card::before {
+            background: linear-gradient(90deg, #f39c12, #e67e22);
+        }
+        
+        .factor-card.social-card::before {
+            background: linear-gradient(90deg, #9b59b6, #8e44ad);
+        }
+        
+        .factor-card.technological-card::before {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+        
+        .factor-card.environmental-card::before {
+            background: linear-gradient(90deg, #27ae60, #229954);
+        }
+        
+        .factor-card.legal-card::before {
+            background: linear-gradient(90deg, #34495e, #2c3e50);
+        }
+        
+        .factor-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .factor-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .factor-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+        }
+        
+        .factor-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #2d5a27;
+        }
+        
+        .factor-items {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .factor-item {
+            background: #f8f9fa;
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .factor-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .political-card .factor-item {
+            border-left-color: #e74c3c;
+        }
+        
+        .economic-card .factor-item {
+            border-left-color: #f39c12;
+        }
+        
+        .social-card .factor-item {
+            border-left-color: #9b59b6;
+        }
+        
+        .technological-card .factor-item {
+            border-left-color: #3498db;
+        }
+        
+        .environmental-card .factor-item {
+            border-left-color: #27ae60;
+        }
+        
+        .legal-card .factor-item {
+            border-left-color: #34495e;
+        }
+        
+        .factor-trend {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .factor-description {
+            font-size: 0.95rem;
+            color: #6c757d;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        
+        .factor-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .meta-tag {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .impact-positive {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .impact-negative {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .horizon-short {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .horizon-medium {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .horizon-long {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        
+        .priority-high {
+            background: #f5c6cb;
+            color: #721c24;
+        }
+        
+        .priority-medium {
+            background: #fdeaa7;
+            color: #856404;
+        }
+        
+        .strategy-response {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+        
+        .strategy-title {
+            font-weight: 600;
+            color: #2d5a27;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .strategy-initiatives {
+            font-size: 0.85rem;
+            color: #495057;
+            line-height: 1.5;
+        }
+        
+        .impact-summary {
+            margin-top: 60px;
+            background: #f1f8ff;
+            padding: 40px;
+            border-radius: 15px;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .summary-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .summary-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .summary-label {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+        
+        .opportunities {
+            color: #28a745;
+        }
+        
+        .threats {
+            color: #dc3545;
+        }
+        
+        .footer {
+            background: #2d5a27;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        
+        @media (max-width: 1200px) {
+            .pestel-overview {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .pestel-hexagon {
+                order: -1;
+            }
+            
+            .pestel-details {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .pestel-hexagon {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .pestel-factor {
+                width: 80px;
+                height: 80px;
+                font-size: 0.8rem;
+            }
+            
+            .hexagon-center {
+                width: 100px;
+                height: 100px;
+                font-size: 1rem;
+            }
+            
+            .factor-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>Análisis del Entorno PESTEL</h1>
+                <div class="subtitle">Evaluación Hexagonal de Factores Externos Estratégicos</div>
+                <div class="metadata">Fase F1.3 | Fuente: AnalisisPESTEL | Metodología PESTEL Avanzada</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="section-title">Marco Conceptual PESTEL</div>
+            
+            <div class="pestel-overview">
+                <div class="pestel-description">
+                    <h3>Análisis del Entorno Externo</h3>
+                    <p>El análisis PESTEL evalúa sistemáticamente los factores del macroentorno que impactan a Tierra Fintech Solutions. Esta metodología examina las dimensiones Política, Económica, Social, Tecnológica, Ecológica y Legal del contexto colombiano y su influencia en el modelo de negocio de factoring agropecuario.</p>
+                    <p>Los 12 factores identificados han sido clasificados por tipo de impacto, horizonte temporal y nivel de prioridad estratégica, permitiendo una respuesta estructurada y proactiva del ecosistema FinTech.</p>
+                </div>
+                
+                <div class="pestel-hexagon">
+                    <div class="hexagon-center">TIERRA<br>FINTECH<br>PESTEL</div>
+                    <div class="pestel-factor political" data-factor="political">🏛️<br>POLÍTICO</div>
+                    <div class="pestel-factor economic" data-factor="economic">📊<br>ECONÓMICO</div>
+                    <div class="pestel-factor social" data-factor="social">👥<br>SOCIAL</div>
+                    <div class="pestel-factor technological" data-factor="technological">💻<br>TECNOLÓGICO</div>
+                    <div class="pestel-factor environmental" data-factor="environmental">🌱<br>ECOLÓGICO</div>
+                    <div class="pestel-factor legal" data-factor="legal">⚖️<br>LEGAL</div>
+                </div>
+            </div>
+            
+            <div class="pestel-details">
+                <div class="factor-card political-card">
+                    <div class="factor-header">
+                        <div class="factor-icon">🏛️</div>
+                        <div class="factor-title">Factores Políticos</div>
+                    </div>
+                    <ul class="factor-items">
+                        <li class="factor-item">
+                            <div class="factor-trend">Fuerte Apoyo Gubernamental a FinTech Rural</div>
+                            <div class="factor-description">
+                                Plan Nacional de Desarrollo 2022-2026 (Artículo 121) prioriza economía popular y finanzas inclusivas en zonas rurales.
+                            </div>
+                            <div class="factor-meta">
+                                <span class="meta-tag impact-negative">🔴 Amenaza</span>
+                                <span class="meta-tag horizon-short">Corto Plazo</span>
+                                <span class="meta-tag priority-high">Prioridad Alta</span>
+                            </div>
+                            <div class="strategy-response">
+                                <div class="strategy-title">Estrategia: Cumplimiento Proactivo</div>
+                                <div class="strategy-initiatives">Asesoría legal especializada FinTech, monitoreo cambios regulatorios, auditorías periódicas</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="impact-summary">
+                <div class="section-title">Resumen del Impacto PESTEL</div>
+                
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <div class="summary-number opportunities">7</div>
+                        <div class="summary-label">Oportunidades Identificadas</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-number threats">5</div>
+                        <div class="summary-label">Amenazas Monitoreadas</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-number">8</div>
+                        <div class="summary-label">Factores de Alta Prioridad</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-number">6</div>
+                        <div class="summary-label">Estrategias de Respuesta</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 40px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.08);">
+                    <h3 style="color: #2d5a27; margin-bottom: 20px; text-align: center;">Matriz de Impacto vs Horizonte Temporal</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center;">
+                        <div style="background: #fff3cd; padding: 20px; border-radius: 10px;">
+                            <h4 style="color: #856404; margin-bottom: 10px;">Corto Plazo (0-1 año)</h4>
+                            <div style="color: #28a745; font-weight: bold; font-size: 1.2rem;">4 Oportunidades</div>
+                            <div style="color: #dc3545; font-weight: bold; font-size: 1.2rem;">3 Amenazas</div>
+                        </div>
+                        
+                        <div style="background: #d1ecf1; padding: 20px; border-radius: 10px;">
+                            <h4 style="color: #0c5460; margin-bottom: 10px;">Mediano Plazo (1-3 años)</h4>
+                            <div style="color: #28a745; font-weight: bold; font-size: 1.2rem;">3 Oportunidades</div>
+                            <div style="color: #dc3545; font-weight: bold; font-size: 1.2rem;">1 Amenaza</div>
+                        </div>
+                        
+                        <div style="background: #e2e3e5; padding: 20px; border-radius: 10px;">
+                            <h4 style="color: #383d41; margin-bottom: 10px;">Largo Plazo (3+ años)</h4>
+                            <div style="color: #28a745; font-weight: bold; font-size: 1.2rem;">0 Oportunidades</div>
+                            <div style="color: #dc3545; font-weight: bold; font-size: 1.2rem;">1 Amenaza</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px; background: #f8f9fa; padding: 25px; border-radius: 10px; border-left: 5px solid #2d5a27;">
+                    <h4 style="color: #2d5a27; margin-bottom: 15px;">Conclusiones Estratégicas del Análisis PESTEL</h4>
+                    <ul style="color: #495057; line-height: 1.8;">
+                        <li><strong>Entorno Favorable:</strong> 58% de factores representan oportunidades, principalmente en corto y mediano plazo.</li>
+                        <li><strong>Prioridad Regulatoria:</strong> 67% de factores de alta prioridad requieren gestión proactiva del compliance.</li>
+                        <li><strong>Ventana de Oportunidad:</strong> Convergencia de apoyo gubernamental + adopción tecnológica rural + mercado desatendido.</li>
+                        <li><strong>Riesgos Gestionables:</strong> Amenazas concentradas en regulación y volatilidad económica, mitigables con estrategia adecuada.</li>
+                        <li><strong>Sostenibilidad a Largo Plazo:</strong> Integración de factores ambientales ESG será crítica para escalamiento futuro.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <strong>Tesis MBA - Universidad EAN</strong> | Pablo Andrey Romero Guzmán | 
+            Fuente: AnalisisPESTEL & Departamento Nacional de Planeación | 
+            Metodología: Análisis PESTEL Hexagonal con Matriz de Impacto Temporal
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animación del hexágono PESTEL
+            const pestelFactors = document.querySelectorAll('.pestel-factor');
+            const factorCards = document.querySelectorAll('.factor-card');
+            const summaryCards = document.querySelectorAll('.summary-card');
+            
+            // Animación de entrada para elementos
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0) scale(1)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Inicializar animaciones
+            const animateElements = [...factorCards, ...summaryCards];
+            animateElements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px) scale(0.95)';
+                element.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                observer.observe(element);
+            });
+            
+            // Animación especial para factores del hexágono
+            pestelFactors.forEach((factor, index) => {
+                factor.style.opacity = '0';
+                factor.style.transform = 'scale(0)';
+                factor.style.transition = `all 0.5s ease ${index * 0.2 + 0.5}s`;
+                
+                setTimeout(() => {
+                    factor.style.opacity = '1';
+                    factor.style.transform = 'scale(1)';
+                }, (index * 200) + 500);
+            });
+            
+            // Interactividad del hexágono
+            pestelFactors.forEach(factor => {
+                factor.addEventListener('click', function() {
+                    const factorType = this.dataset.factor;
+                    const targetCard = document.querySelector(`.${factorType}-card`);
+                    
+                    if (targetCard) {
+                        // Scroll suave hacia la tarjeta
+                        targetCard.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'center' 
+                        });
+                        
+                        // Efecto de destacado temporal
+                        targetCard.style.transform = 'scale(1.05)';
+                        targetCard.style.boxShadow = '0 20px 50px rgba(45, 90, 39, 0.3)';
+                        
+                        setTimeout(() => {
+                            targetCard.style.transform = 'translateY(-8px) scale(1)';
+                            targetCard.style.boxShadow = '0 15px 40px rgba(0,0,0,0.15)';
+                        }, 1000);
+                    }
+                });
+                
+                // Efecto hover mejorado
+                factor.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.15) rotate(5deg)';
+                    this.style.boxShadow = '0 15px 35px rgba(0,0,0,0.4)';
+                });
+                
+                factor.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1) rotate(0deg)';
+                    this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+                });
+            });
+            
+            // Animación de los elementos de factor
+            const factorItems = document.querySelectorAll('.factor-item');
+            factorItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(8px) scale(1.02)';
+                    this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateX(0) scale(1)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+            
+            // Contador animado para el resumen
+            const animateCounters = () => {
+                const counters = document.querySelectorAll('.summary-number');
+                counters.forEach(counter => {
+                    const target = parseInt(counter.textContent);
+                    counter.textContent = '0';
+                    
+                    const increment = target / 25;
+                    const timer = setInterval(() => {
+                        const current = parseInt(counter.textContent);
+                        if (current < target) {
+                            counter.textContent = Math.min(current + Math.ceil(increment), target);
+                        } else {
+                            clearInterval(timer);
+                        }
+                    }, 60);
+                });
+            };
+            
+            // Activar contadores cuando el resumen sea visible
+            const summaryObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounters();
+                        summaryObserver.unobserve(entry.target);
+                    }
+                });
+            });
+            
+            const summarySection = document.querySelector('.impact-summary');
+            if (summarySection) {
+                summaryObserver.observe(summarySection);
+            }
+            
+            // Efecto de rotación continua para el centro del hexágono
+            const hexagonCenter = document.querySelector('.hexagon-center');
+            if (hexagonCenter) {
+                let rotation = 0;
+                setInterval(() => {
+                    rotation += 0.5;
+                    hexagonCenter.style.background = `linear-gradient(${rotation}deg, #2d5a27 0%, #5f7c4e 100%)`;
+                }, 100);
+            }
+        });
+    </script>
+</body>
+</html>positive">🟢 Oportunidad</span>
+                                <span class="meta-tag horizon-medium">Mediano Plazo</span>
+                                <span class="meta-tag priority-high">Prioridad Alta</span>
+                            </div>
+                            <div class="strategy-response">
+                                <div class="strategy-title">Estrategia: Aprovechamiento y Alineación</div>
+                                <div class="strategy-initiatives">Mapear programas Finagro, evaluar Sandbox regulatorio, establecer relaciones institucionales</div>
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-trend">Estabilidad Democrática con Políticas Agropecuarias</div>
+                            <div class="factor-description">
+                                Continuidad institucional que favorece el desarrollo de políticas de apoyo al sector agropecuario.
+                            </div>
+                            <div class="factor-meta">
+                                <span class="meta-tag impact-negative">🔴 Amenaza</span>
+                                <span class="meta-tag horizon-medium">Mediano Plazo</span>
+                                <span class="meta-tag priority-high">Prioridad Alta</span>
+                            </div>
+                            <div class="strategy-response">
+                                <div class="strategy-title">Estrategia: Aprovechamiento y Alineación</div>
+                                <div class="strategy-initiatives">Participación en mesas sectoriales y alianzas público-privadas</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="factor-card economic-card">
+                    <div class="factor-header">
+                        <div class="factor-icon">📊</div>
+                        <div class="factor-title">Factores Económicos</div>
+                    </div>
+                    <ul class="factor-items">
+                        <li class="factor-item">
+                            <div class="factor-trend">Amplio Mercado Agropecuario Desatendido</div>
+                            <div class="factor-description">
+                                Vasto mercado agrícola no servido por banca tradicional representa gran oportunidad de crecimiento.
+                            </div>
+                            <div class="factor-meta">
+                                <span class="meta-tag impact-positive">🟢 Oportunidad</span>
+                                <span class="meta-tag horizon-short">Corto Plazo</span>
+                                <span class="meta-tag priority-high">Prioridad Alta</span>
+                            </div>
+                            <div class="strategy-response">
+                                <div class="strategy-title">Estrategia: Captura de Mercado</div>
+                                <div class="strategy-initiatives">Campañas dirigidas a pequeños productores, expansión geográfica, programa de referidos</div>
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-trend">PIB Colombia 0.71% - Recuperación Post-Pandemia</div>
+                            <div class="factor-description">
+                                Crecimiento económico moderado en fase de estabilización post-COVID-19.
+                            </div>
+                            <div class="factor-meta">
+                                <span class="meta-tag impact-negative">🔴 Amenaza</span>
+                                <span class="meta-tag horizon-short">Corto Plazo</span>
+                                <span class="meta-tag priority-high">Prioridad Alta</span>
+                            </div>
+                            <div class="strategy-response">
+                                <div class="strategy-title">Estrategia: Mitigación de Riesgo</div>
+                                <div class="strategy-initiatives">Modelos financiamiento flexibles adaptados al contexto económico</div>
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-trend">Volatilidad y Riesgo Macroeconómico Sectorial</div>
+                            <div class="factor-description">
+                                Sector agrícola susceptible a volatilidad de precios e inestabilidad macroeconómica aumenta riesgo crediticio.
+                            </div>
+                            <div class="factor-meta">
+                                <span class="meta-tag impact-negative">🔴 Amenaza</span>
+                                <span class="meta-tag horizon-short">Corto Plazo</span>
+                                <span class="meta-tag priority-high">Prioridad Alta</span>
+                            </div>
+                            <div class="strategy-response">
+                                <div class="strategy-title">Estrategia: Mitigación de Riesgo</div>
+                                <div class="strategy-initiatives">Modelos de riesgo dinámicos, diversificación de portafolio, contenido planificación financiera</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="factor-card social-card">
+                    <div class="factor-header">
+                        <div class="factor-icon">👥</div>
+                        <div class="factor-title">Factores Sociales</div>
+                    </div>
+                    <ul class="factor-items">
+                        <li class="factor-item">
+                            <div class="factor-trend">Alta Adopción Tecnología Móvil Rural</div>
+                            <div class="factor-description">
+                                Creciente penetración de smartphones en zonas rurales facilita acceso a plataformas digitales como GiroCampo.
+                            </div>
+                            <div class="factor-meta">
+                                <span class="meta-tag impact-positive">🟢 Oportunidad</span>
+                                <span class="meta-tag horizon-short">Corto Plazo</span>
+                                <span class="meta-tag priority-high">Prioridad Alta</span>
+                            </div>
+                            <div class="strategy-response">
+                                <div class="strategy-title">Estrategia: Optimización de Canal</div>
+                                <div class="strategy-initiatives">App liviana con baja conectividad, pruebas usabilidad continuas, compatibilidad amplia</div>
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-trend">68% Exclusión Financiera Rural</div>
+                            <div class="factor-description">
+                                Demanda insatisfecha de inclusión financiera en sectores agropecuarios representa oportunidad de mercado.
+                            </div>
+                            <div class="factor-meta">
+                                <span class="meta-tag impact-positive">🟢 Oportunidad</span>
+                                <span class="meta-tag horizon-medium">Mediano Plazo</span>
+                                <span class="meta-tag priority-high">Prioridad Alta</span>
+                            </div>
+                            <div class="strategy-response">
+                                <div class="strategy-title">Estrategia: Captura de Mercado</div>
+                                <div class="strategy-initiatives">Productos financieros accesibles con enfoque en educación financiera</div>
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-trend">Baja Educación Financiera y Desconfianza Digital</div>
+                            <div class="factor-description">
+                                Barrera significativa para adopción en sector rural por desconocimiento y resistencia a servicios digitales.
+                            </div>
+                            <div class="factor-meta">
+                                <span class="meta-tag impact-negative">🔴 Amenaza</span>
+                                <span class="meta-tag horizon-medium">Mediano Plazo</span>
+                                <span class="meta-tag priority-high">Prioridad Alta</span>
+                            </div>
+                            <div class="strategy-response">
+                                <div class="strategy-title">Estrategia: Educación y Confianza</div>
+                                <div class="strategy-initiatives">Tutoriales video, comunicación transparente de seguridad, testimonios usuarios</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="factor-card technological-card">
+                    <div class="factor-header">
+                        <div class="factor-icon">💻</div>
+                        <div class="factor-title">Factores Tecnológicos</div>
+                    </div>
+                    <ul class="factor-items">
+                        <li class="factor-item">
+                            <div class="factor-trend">Crecimiento Ecosistema FinTech Colombia</div>
+                            <div class="factor-description">
+                                Alta adopción tecnología móvil + crecimiento sector FinTech facilita desarrollo de soluciones innovadoras.
+                            </div>
+                            <div class="factor-meta">
+                                <span class="meta-tag impact-positive">🟢 Oportunidad</span>
+                                <span class="meta-tag horizon-short">Corto Plazo</span>
+                                <span class="meta-tag priority-high">Prioridad Alta</span>
+                            </div>
+                            <div class="strategy-response">
+                                <div class="strategy-title">Estrategia: Innovación y Eficiencia</div>
+                                <div class="strategy-initiatives">Scoring alternativo con datos agropecuarios, plataforma escalable desde MVP Airtable</div>
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-trend">Acceso a Tecnologías Big Data e IA</div>
+                            <div class="factor-description">
+                                Ecosistema FinTech permite acceso a tecnologías avanzadas para mejorar eficiencia y evaluación de riesgos.
+                            </div>
+                            <div class="factor-meta">
+                                <span class="meta-tag impact-positive">🟢 Oportunidad</span>
+                                <span class="meta-tag horizon-medium">Mediano Plazo</span>
+                                <span class="meta-tag priority-medium">Prioridad Media</span>
+                            </div>
+                            <div class="strategy-response">
+                                <div class="strategy-title">Estrategia: Innovación y Eficiencia</div>
+                                <div class="strategy-initiatives">Equipo ciencia de datos, IA personalización usuario, arquitectura microservicios</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="factor-card environmental-card">
+                    <div class="factor-header">
+                        <div class="factor-icon">🌱</div>
+                        <div class="factor-title">Factores Ecológicos</div>
+                    </div>
+                    <ul class="factor-items">
+                        <li class="factor-item">
+                            <div class="factor-trend">Alta Vulnerabilidad a Riesgos Climáticos</div>
+                            <div class="factor-description">
+                                Sector agropecuario expuesto a sequías e inundaciones puede afectar capacidad de pago de productores.
+                            </div>
+                            <div class="factor-meta">
+                                <span class="meta-tag impact-negative">🔴 Amenaza</span>
+                                <span class="meta-tag horizon-long">Largo Plazo</span>
+                                <span class="meta-tag priority-medium">Prioridad Media</span>
+                            </div>
+                            <div class="strategy-response">
+                                <div class="strategy-title">Estrategia: Sostenibilidad y Mitigación</div>
+                                <div class="strategy-initiatives">Variables riesgo ambiental en scoring, componente triple impacto ESG, alianzas aseguradoras agrícolas</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="factor-card legal-card">
+                    <div class="factor-header">
+                        <div class="factor-icon">⚖️</div>
+                        <div class="factor-title">Factores Legales</div>
+                    </div>
+                    <ul class="factor-items">
+                        <li class="factor-item">
+                            <div class="factor-trend">Regulación Financiera Estricta (SFC)</div>
+                            <div class="factor-description">
+                                Sector financiero sujeto a regulación compleja y cambiante implica altos costos de cumplimiento.
+                            </div>
+                            <div class="factor-meta">
+                                <span class="meta-tag impact-

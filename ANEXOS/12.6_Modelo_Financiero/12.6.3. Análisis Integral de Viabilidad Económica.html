@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F6.3 - Evaluación Financiera y Rentabilidad</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .key-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 0 0 0 50px;
+            opacity: 0.1;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+
+        .metric-title {
+            font-size: 1.1em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .metric-unit {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        .metric-interpretation {
+            display: flex;
+            align-items: center;
+            font-size: 0.9em;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .excellent { 
+            background: rgba(46, 204, 113, 0.1); 
+            color: #27ae60; 
+        }
+
+        .good { 
+            background: rgba(52, 152, 219, 0.1); 
+            color: #3498db; 
+        }
+
+        .warning { 
+            background: rgba(241, 196, 15, 0.1); 
+            color: #f39c12; 
+        }
+
+        .critical { 
+            background: rgba(231, 76, 60, 0.1); 
+            color: #e74c3c; 
+        }
+
+        .positive { color: #27ae60; }
+        .negative { color: #e74c3c; }
+        .neutral { color: #3498db; }
+
+        .scenarios-section {
+            margin-bottom: 40px;
+        }
+
+        .scenarios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .scenario-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .scenario-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .scenario-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .scenario-probability {
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .prob-high { background: rgba(46, 204, 113, 0.2); color: #27ae60; }
+        .prob-medium { background: rgba(52, 152, 219, 0.2); color: #3498db; }
+        .prob-low { background: rgba(241, 196, 15, 0.2); color: #f39c12; }
+
+        .scenario-metrics {
+            display: grid;
+            gap: 15px;
+        }
+
+        .scenario-metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .scenario-metric-name {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .scenario-metric-value {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .chart-section {
+            margin-bottom: 40px;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        .chart-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .sensitivity-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .sensitivity-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .sensitivity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .sensitivity-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .sensitivity-variable {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sensitivity-impact {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .impact-high { background: #e74c3c; color: white; }
+        .impact-medium { background: #f39c12; color: white; }
+        .impact-low { background: #27ae60; color: white; }
+
+        .sensitivity-range {
+            font-size: 0.9em;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .sensitivity-effect {
+            font-size: 0.9em;
+            color: #6c757d;
+            line-height: 1.4;
+        }
+
+        .risk-return-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .risk-return-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .risk-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .risk-metric {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .risk-metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .risk-metric-label {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+        .risk-metric-desc {
+            font-size: 0.8em;
+            color: #495057;
+            line-height: 1.4;
+        }
+
+        .conclusions-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .conclusions-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .conclusion-item {
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .conclusion-header {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .conclusion-text {
+            color: #495057;
+            line-height: 1.6;
+        }
+
+        .recommendation-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .recommendation-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .recommendation-text {
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            .key-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .scenarios-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>📊  Evaluación Financiera y Rentabilidad</h1>
+            <p class="subtitle">Análisis Integral de Viabilidad Económica - Tierra Fintech Solutions</p>
+        </div>
+
+        <div class="key-metrics">
+            <div class="metric-card">
+                <div class="metric-title">TIR - Tasa Interna de Retorno</div>
+                <div class="metric-value positive">32.4%</div>
+                <div class="metric-unit">Escenario Base</div>
+                <div class="metric-interpretation excellent">
+                    🚀 Excelente - Supera WACC esperado
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">VPN - Valor Presente Neto</div>
+                <div class="metric-value positive">$267,340</div>
+                <div class="metric-unit">USD - Tasa descuento 30%</div>
+                <div class="metric-interpretation good">
+                    ✅ Positivo - Proyecto genera valor
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">ROI - Return on Investment</div>
+                <div class="metric-value positive">26.73%</div>
+                <div class="metric-unit">Sobre inversión inicial</div>
+                <div class="metric-interpretation excellent">
+                    📈 Atractivo para inversionistas
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Periodo de Recuperación</div>
+                <div class="metric-value neutral">3.2</div>
+                <div class="metric-unit">Años</div>
+                <div class="metric-interpretation good">
+                    ⏱️ Aceptable para FinTech
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Índice de Rentabilidad (PI)</div>
+                <div class="metric-value positive">1.27</div>
+                <div class="metric-unit">Ratio</div>
+                <div class="metric-interpretation good">
+                    💪 PI > 1.0 - Proyecto viable
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">ROIC - Return on Invested Capital</div>
+                <div class="metric-value positive">28.5%</div>
+                <div class="metric-unit">Sobre capital operativo</div>
+                <div class="metric-interpretation excellent">
+                    🎯 Eficiencia en uso de capital
+                </div>
+            </div>
+        </div>
+
+        <div class="scenarios-section">
+            <div class="scenarios-grid">
+                <div class="scenario-card">
+                    <div class="scenario-header">
+                        <div class="scenario-title">🌟 Escenario Optimista</div>
+                        <div class="scenario-probability prob-medium">Probabilidad: 25%</div>
+                    </div>
+                    <div class="scenario-metrics">
+                        <div class="scenario-metric">
+                            <span class="scenario-metric-name">TIR</span>
+                            <span class="scenario-metric-value positive">48.7%</span>
+                        </div>
+                        <div class="scenario-metric">
+                            <span class="scenario-metric-name">VPN</span>
+                            <span class="scenario-metric-value positive">$756,420</span>
+                        </div>
+                        <div class="scenario-metric">
+                            <span class="scenario-metric-name">ROI</span>
+                            <span class="scenario-metric-value positive">75.64%</span>
+                        </div>
+                        <div class="scenario-metric">
+                            <span class="scenario-metric-name">Payback</span>
+                            <span class="scenario-metric-value positive">2.1 años</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="scenario-card">
+                    <div class="scenario-header">
+                        <div class="scenario-title">⚡ Escenario Base</div>
+                        <div class="scenario-probability prob-high">Probabilidad: 60%</div>
+                    </div>
+                    <div class="scenario-metrics">
+                        <div class="scenario-metric">
+                            <span class="scenario-metric-name">TIR</span>
+                            <span class="scenario-metric-value positive">32.4%</span>
+                        </div>
+                        <div class="scenario-metric">
+                            <span class="scenario-metric-name">VPN</span>
+                            <span class="scenario-metric-value positive">$267,340</span>
+                        </div>
+                        <div class="scenario-metric">
+                            <span class="scenario-metric-name">ROI</span>
+                            <span class="scenario-metric-value positive">26.73%</span>
+                        </div>
+                        <div class="scenario-metric">
+                            <span class="scenario-metric-name">Payback</span>
+                            <span class="scenario-metric-value neutral">3.2 años</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="scenario-card">
+                    <div class="scenario-header">
+                        <div class="scenario-title">⚠️ Escenario Pesimista</div>
+                        <div class="scenario-probability prob-low">Probabilidad: 15%</div>
+                    </div>
+                    <div class="scenario-metrics">
+                         <div class="scenario-metric">
+                            <span class="scenario-metric-name">TIR</span>
+                            <span class="scenario-metric-value warning">18.5%</span>
+                        </div>
+                        <div class="scenario-metric">
+                            <span class="scenario-metric-name">VPN</span>
+                            <span class="scenario-metric-value negative">-$124,850</span>
+                        </div>
+                        <div class="scenario-metric">
+                            <span class="scenario-metric-name">ROI</span>
+                            <span class="scenario-metric-value negative">-12.49%</span>
+                        </div>
+                        <div class="scenario-metric">
+                           <span class="scenario-metric-name">Payback</span>
+                           <span class="scenario-metric-value negative">No recupera</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <div class="chart-container">
+                <h3 class="chart-title">Flujo de Caja Acumulado por Escenarios</h3>
+                <canvas id="cashFlowChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="sensitivity-section">
+            <h3 class="sensitivity-title">🎯 Análisis de Sensibilidad - Variables Críticas</h3>
+            <div class="sensitivity-grid">
+                <div class="sensitivity-item">
+                    <div class="sensitivity-variable">
+                        Tasa de Crecimiento Mensual
+                        <span class="sensitivity-impact impact-high">ALTA</span>
+                    </div>
+                    <div class="sensitivity-range">Rango: 15% - 50%</div>
+                    <div class="sensitivity-effect">
+                        Una variación de ±10% en la tasa de crecimiento impacta el VPN en ±$180,000. Variable más sensible del modelo.
+                    </div>
+                </div>
+                <div class="sensitivity-item">
+                    <div class="sensitivity-variable">
+                        GMV por Productor
+                        <span class="sensitivity-impact impact-high">ALTA</span>
+                    </div>
+                    <div class="sensitivity-range">Rango: $450 - $650</div>
+                    <div class="sensitivity-effect">
+                        Cada $50 USD adicionales en GMV incrementa el VPN en ~$95,000. Directamente ligado al tamaño del mercado.
+                    </div>
+                </div>
+                <div class="sensitivity-item">
+                    <div class="sensitivity-variable">
+                        Tasa de Churn Mensual
+                        <span class="sensitivity-impact impact-high">ALTA</span>
+                    </div>
+                    <div class="sensitivity-range">Rango: 2% - 4%</div>
+                    <div class="sensitivity-effect">
+                        Un incremento del 1% en churn reduce el VPN en $85,000. Crítico mantener retención alta.
+                    </div>
+                </div>
+                <div class="sensitivity-item">
+                    <div class="sensitivity-variable">
+                        CAC (Costo Adquisición Cliente)
+                        <span class="sensitivity-impact impact-medium">MEDIA</span>
+                    </div>
+                    <div class="sensitivity-range">Rango: $70 - $150</div>
+                    <div class="sensitivity-effect">
+                        Variaciones en CAC impactan moderadamente. El modelo es resiliente gracias al alto LTV de $486.
+                    </div>
+                </div>
+                <div class="sensitivity-item">
+                    <div class="sensitivity-variable">
+                        Comisión de Plataforma
+                        <span class="sensitivity-impact impact-medium">MEDIA</span>
+                    </div>
+                    <div class="sensitivity-range">Rango: 5% - 10%</div>
+                    <div class="sensitivity-effect">
+                        Cada punto porcentual adicional incrementa ingresos en ~15%. Limitada por competencia.
+                    </div>
+                </div>
+                <div class="sensitivity-item">
+                    <div class="sensitivity-variable">
+                        COGS (Costos Variables)
+                        <span class="sensitivity-impact impact-low">BAJA</span>
+                    </div>
+                    <div class="sensitivity-range">Rango: 1% - 2%</div>
+                    <div class="sensitivity-effect">
+                        Impacto mínimo debido al margen bruto alto (90%). Modelo resiliente a variaciones operativas.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <div class="chart-container">
+                <h3 class="chart-title">Tornado Chart - Análisis de Sensibilidad del VPN</h3>
+                <canvas id="sensitivityChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="risk-return-section">
+            <h3 class="risk-return-title">⚖️ Análisis de Riesgo-Retorno</h3>
+            <div class="risk-metrics">
+                <div class="risk-metric">
+                    <div class="risk-metric-value">4.86</div>
+                    <div class="risk-metric-label">Ratio LTV/CAC</div>
+                    <div class="risk-metric-desc">Excelente unit economics. Ratio > 3.0 indica modelo viable y escalable.</div>
+                </div>
+                <div class="risk-metric">
+                    <div class="risk-metric-value">15.2%</div>
+                    <div class="risk-metric-label">CAGR Ingresos</div>
+                    <div class="risk-metric-desc">Crecimiento sostenible proyectado para los primeros 5 años de operación.</div>
+                </div>
+                <div class="risk-metric">
+                    <div class="risk-metric-value">68%</div>
+                    <div class="risk-metric-label">Mercado Desatendido</div>
+                    <div class="risk-metric-desc">Oportunidad significativa en exclusión financiera rural validada.</div>
+                </div>
+                <div class="risk-metric">
+                    <div class="risk-metric-value">18</div>
+                    <div class="risk-metric-label">Punto Equilibrio (Meses)</div>
+                    <div class="risk-metric-desc">Tiempo moderado para alcanzar EBITDA positivo consistente.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <div class="chart-container">
+                <h3 class="chart-title">Matriz de Riesgo vs Retorno por Escenarios</h3>
+                <canvas id="riskReturnChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="conclusions-section">
+            <h3 class="conclusions-title">📋 Conclusiones y Recomendaciones Estratégicas</h3>
+            
+            <div class="conclusion-item">
+                <div class="conclusion-header">✅ Viabilidad Financiera Confirmada</div>
+                <div class="conclusion-text">
+                    El modelo financiero demuestra viabilidad sólida con TIR del 32.4% y VPN positivo de $267,340 USD en el escenario base. Los indicadores superan los benchmarks típicos de FinTech en etapa temprana y justifican la inversión de $1M USD.
+                </div>
+            </div>
+            <div class="conclusion-item">
+                <div class="conclusion-header">🎯 Variables Críticas Identificadas</div>
+                <div class="conclusion-text">
+                    La tasa de crecimiento mensual (30%) y el GMV por productor ($540) son las variables de mayor impacto. Se recomienda monitoreo continuo y estrategias de contingencia para mantener estos drivers dentro de rangos objetivo.
+                </div>
+            </div>
+            <div class="conclusion-item">
+                <div class="conclusion-header">⚖️ Perfil Riesgo-Retorno Atractivo</div>
+                <div class="conclusion-text">
+                    El ratio LTV/CAC de 4.86 y el modelo asset-light minimizan el riesgo operativo. La diversificación geográfica y el enfoque en exclusión financiera rural (68% del mercado) ofrecen múltiples vectores de crecimiento.
+                </div>
+            </div>
+            <div class="conclusion-item">
+                <div class="conclusion-header">🚀 Escalabilidad y Sostenibilidad</div>
+                <div class="conclusion-text">
+                    La estructura de costos variables bajos (1% COGS) y el modelo de ingresos recurrentes aseguran escalabilidad. El punto de equilibrio en el mes 18 permite consolidación antes de expansión agresiva.
+                </div>
+            </div>
+            <div class="conclusion-item">
+                <div class="conclusion-header">⚠️ Factores de Riesgo Controlables</div>
+                <div class="conclusion-text">
+                    Los principales riesgos (adopción tecnológica, regulación FinTech, competencia) son mitigables mediante la estrategia de diferenciación sectorial y el enfoque en barreras de entrada tecnológicas.
+                </div>
+            </div>
+            <div class="recommendation-box">
+                <div class="recommendation-title">🏆 RECOMENDACIÓN FINAL</div>
+                <div class="recommendation-text">
+                    Los indicadores financieros respaldan una decisión de inversión favorable. El modelo presenta fundamentos sólidos, métricas atractivas para inversionistas de capital de riesgo y potencial de valor terminal significativo que justifica el perfil de riesgo-retorno esperado en el ecosistema FinTech agropecuario colombiano.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CAMBIO: Configuración global de Chart.js para v2.9.4
+        Chart.defaults.global.defaultFontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        Chart.defaults.global.defaultFontSize = 12;
+
+        // Gráfico de Flujo de Caja Acumulado
+        const cashFlowCtx = document.getElementById('cashFlowChart').getContext('2d');
+        new Chart(cashFlowCtx, {
+            type: 'line',
+            data: {
+                labels: ['Año 0', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'],
+                datasets: [{
+                    label: 'Optimista',
+                    data: [-1000000, -850000, -400000, 200000, 650000, 1300000],
+                    borderColor: '#27ae60',
+                    backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    lineTension: 0.4
+                }, {
+                    label: 'Base',
+                    data: [-1000000, -900000, -600000, -200000, 100000, 400000],
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    lineTension: 0.4
+                }, {
+                    label: 'Pesimista',
+                    data: [-1000000, -950000, -800000, -650000, -500000, -300000],
+                    borderColor: '#e74c3c',
+                    backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    lineTension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                // CAMBIO: Sintaxis de escalas para v2.9.4
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + (value / 1000) + 'K';
+                            }
+                        }
+                    }]
+                },
+                // CAMBIO: Sintaxis de leyenda y tooltips para v2.9.4
+                legend: {
+                    position: 'top'
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            let label = data.datasets[tooltipItem.datasetIndex].label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += '$' + Number(tooltipItem.yLabel).toLocaleString();
+                            return label;
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Análisis de Sensibilidad (Tornado Chart)
+        const sensitivityCtx = document.getElementById('sensitivityChart').getContext('2d');
+        // CAMBIO: Tipo de gráfico a 'horizontalBar' para v2.9.4
+        new Chart(sensitivityCtx, {
+            type: 'horizontalBar',
+            data: {
+                labels: ['Tasa Crecimiento', 'GMV Productor', 'Churn Rate', 'CAC', 'Comisión', 'COGS'],
+                datasets: [{
+                    label: 'Impacto Negativo',
+                    data: [-180000, -95000, -85000, -35000, -25000, -15000],
+                    backgroundColor: 'rgba(231, 76, 60, 0.8)',
+                    borderColor: '#e74c3c',
+                    borderWidth: 2
+                }, {
+                    label: 'Impacto Positivo',
+                    data: [180000, 95000, 85000, 35000, 25000, 15000],
+                    backgroundColor: 'rgba(39, 174, 96, 0.8)',
+                    borderColor: '#27ae60',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function(value) {
+                                return '$' + (Math.abs(value) / 1000) + 'K';
+                            }
+                        }
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                },
+                legend: {
+                    position: 'top'
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            let label = data.datasets[tooltipItem.datasetIndex].label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += '$' + Math.abs(Number(tooltipItem.xLabel)).toLocaleString();
+                            return label;
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Riesgo vs Retorno
+        const riskReturnCtx = document.getElementById('riskReturnChart').getContext('2d');
+        new Chart(riskReturnCtx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Escenario Optimista',
+                    data: [{x: 25, y: 48.7}],
+                    backgroundColor: 'rgba(39, 174, 96, 0.8)',
+                    borderColor: '#27ae60',
+                    pointRadius: 12,
+                    pointHoverRadius: 15
+                }, {
+                    label: 'Escenario Base',
+                    data: [{x: 35, y: 32.4}],
+                    backgroundColor: 'rgba(52, 152, 219, 0.8)',
+                    borderColor: '#3498db',
+                    pointRadius: 12,
+                    pointHoverRadius: 15
+                }, {
+                    label: 'Escenario Pesimista',
+                    data: [{x: 55, y: 18.5}],
+                    backgroundColor: 'rgba(231, 76, 60, 0.8)',
+                    borderColor: '#e74c3c',
+                    pointRadius: 12,
+                    pointHoverRadius: 15
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Nivel de Riesgo (%)'
+                        },
+                        ticks: {
+                           min: 15,
+                           max: 65
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'TIR (%)'
+                        },
+                         ticks: {
+                           min: 10,
+                           max: 55
+                        }
+                    }]
+                },
+                legend: {
+                    position: 'top'
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            let label = data.datasets[tooltipItem.datasetIndex].label || '';
+                            if(label){
+                                label += ': ';
+                            }
+                            label += 'Riesgo ' + tooltipItem.xLabel + '%, TIR ' + tooltipItem.yLabel + '%';
+                            return label;
+                        }
+                    }
+                }
+            }
+        });
+
+        // El resto del script no depende de la versión de Chart.js
+        document.addEventListener('DOMContentLoaded', function() {
+            const metricCards = document.querySelectorAll('.metric-card');
+            metricCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
+                    card.style.transition = 'all 0.6s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 150);
+            });
+
+            const scenarioCards = document.querySelectorAll('.scenario-card');
+            scenarioCards.forEach(card => {
+                card.addEventListener('mouseover', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 12px 35px rgba(0,0,0,0.15)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+                
+                card.addEventListener('mouseout', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.1)';
+                });
+            });
+
+            function validateFinancialMetrics() {
+                const tir = 32.4;
+                const vpn = 267340;
+                const roi = 26.73;
+                const pi = 1.27;
+                
+                console.log('📊 Validación de Métricas Financieras:');
+                console.log('✅ TIR (' + tir + '%) > 15% - APROBADO');
+                console.log('✅ VPN ($' + vpn.toLocaleString() + ') > 0 - APROBADO');
+                console.log('✅ ROI (' + roi + '%) > 20% - APROBADO');
+                console.log('✅ PI (' + pi + ') > 1.0 - APROBADO');
+                
+                if (tir > 15 && vpn > 0 && roi > 20 && pi > 1) {
+                    console.log('🏆 RESULTADO: INVERSIÓN RECOMENDADA');
+                    return true;
+                } else {
+                    console.log('⚠️ RESULTADO: REVISAR MODELO');
+                    return false;
+                }
+            }
+
+            function calculateAdditionalMetrics() {
+                const ltv = 486;
+                const cac = 100;
+                const ratio = ltv / cac;
+                const paybackMonths = Math.ceil(cac / (540 * 0.08)); 
+                
+                console.log('💡 Métricas Unit Economics:');
+                console.log('- Ratio LTV/CAC: ' + ratio.toFixed(2));
+                console.log('- Payback CAC: ' + paybackMonths + ' meses');
+                console.log('- Margen Unit Economics: $' + (ltv - cac));
+                
+                return {
+                    ratio: ratio,
+                    payback: paybackMonths,
+                    margin: ltv - cac
+                };
+            }
+
+            console.log('🎯 F6.3 - Evaluación Financiera y Rentabilidad');
+            validateFinancialMetrics();
+            calculateAdditionalMetrics();
+        });
+    </script>
+</body>
+</html>

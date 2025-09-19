@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1.2 - Análisis Estratégico DOFA | Tierra Fintech Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2d5a27 0%, #5f7c4e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+        
+        .header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .metadata {
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+        
+        .content {
+            padding: 50px;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            color: #2d5a27;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: #5f7c4e;
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+        
+        .dofa-matrix {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 50px;
+            min-height: 800px;
+        }
+        
+        .dofa-quadrant {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dofa-quadrant::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .strengths {
+            border-left: 6px solid #28a745;
+        }
+        
+        .strengths::before {
+            background: linear-gradient(90deg, #28a745, #20c997);
+        }
+        
+        .weaknesses {
+            border-left: 6px solid #dc3545;
+        }
+        
+        .weaknesses::before {
+            background: linear-gradient(90deg, #dc3545, #fd7e14);
+        }
+        
+        .opportunities {
+            border-left: 6px solid #007bff;
+        }
+        
+        .opportunities::before {
+            background: linear-gradient(90deg, #007bff, #6610f2);
+        }
+        
+        .threats {
+            border-left: 6px solid #ffc107;
+        }
+        
+        .threats::before {
+            background: linear-gradient(90deg, #ffc107, #fd7e14);
+        }
+        
+        .quadrant-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .quadrant-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+        }
+        
+        .quadrant-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .factor-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .factor-item {
+            background: white;
+            margin-bottom: 15px;
+            padding: 18px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .factor-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+        }
+        
+        .strengths .factor-item {
+            border-left-color: #28a745;
+        }
+        
+        .weaknesses .factor-item {
+            border-left-color: #dc3545;
+        }
+        
+        .opportunities .factor-item {
+            border-left-color: #007bff;
+        }
+        
+        .threats .factor-item {
+            border-left-color: #ffc107;
+        }
+        
+        .factor-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #495057;
+        }
+        
+        .strategies-section {
+            margin-top: 60px;
+        }
+        
+        .strategies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .strategy-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+        }
+        
+        .strategy-card.fo::before {
+            background: linear-gradient(90deg, #28a745, #007bff);
+        }
+        
+        .strategy-card.fa::before {
+            background: linear-gradient(90deg, #28a745, #ffc107);
+        }
+        
+        .strategy-card.do::before {
+            background: linear-gradient(90deg, #dc3545, #007bff);
+        }
+        
+        .strategy-card.da::before {
+            background: linear-gradient(90deg, #dc3545, #ffc107);
+        }
+        
+        .strategy-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .strategy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .strategy-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2d5a27;
+            line-height: 1.4;
+            flex: 1;
+        }
+        
+        .strategy-type {
+            background: #2d5a27;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-left: 15px;
+            min-width: fit-content;
+        }
+        
+        .strategy-description {
+            font-size: 1rem;
+            color: #495057;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        .strategy-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .meta-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .priority-high {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .priority-medium {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .priority-low {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .area-badge {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+        
+        .impact-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 60px 0;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #2d5a27 0%, #5f7c4e 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .metric-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .metric-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .pestel-integration {
+            background: #f1f8ff;
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 50px;
+        }
+        
+        .pestel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .pestel-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #2d5a27;
+        }
+        
+        .pestel-factor {
+            font-weight: 600;
+            color: #2d5a27;
+            margin-bottom: 10px;
+        }
+        
+        .pestel-impact {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .impact-positive {
+            color: #28a745;
+        }
+        
+        .impact-negative {
+            color: #dc3545;
+        }
+        
+        .footer {
+            background: #2d5a27;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        
+        @media (max-width: 1200px) {
+            .dofa-matrix {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(4, auto);
+            }
+            
+            .strategies-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .impact-metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .dofa-quadrant {
+                padding: 20px;
+            }
+            
+            .strategy-card {
+                padding: 20px;
+            }
+            
+            .impact-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Análisis Estratégico DOFA</h1>
+            <div class="subtitle">Matriz de Fortalezas, Oportunidades, Debilidades y Amenazas</div>
+            <div class="metadata">Fase F1.2 | Fuente: MatrizDOFACruzada & AnalisisPESTEL | Metodología DOFA Avanzada</div>
+        </div>
+        
+        <div class="content">
+            <div class="section-title">Matriz DOFA Estratégica</div>
+            
+            <div class="dofa-matrix">
+                <div class="dofa-quadrant strengths">
+                    <div class="quadrant-header">
+                        <div class="quadrant-icon">💪</div>
+                        <div class="quadrant-title">FORTALEZAS</div>
+                    </div>
+                    <ul class="factor-list">
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Ecosistema Digital Integrado:</strong> Plataforma que conecta toda la cadena de valor láctea en un solo lugar.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Especialización Sectorial:</strong> Primera FinTech láctea colombiana con expertise específico.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Scoring Crediticio Innovador:</strong> Evaluación basada en datos productivos y territoriales únicos.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Reducción de Tiempos:</strong> Acelera liquidez de productores de 90 días a solo 7 días.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Equipo Experimentado:</strong> Más de 15 años de experiencia combinada en el sector.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Modelo de Triple Impacto:</strong> Genera valor social, ambiental y económico simultáneamente.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="dofa-quadrant weaknesses">
+                    <div class="quadrant-header">
+                        <div class="quadrant-icon">⚠️</div>
+                        <div class="quadrant-title">DEBILIDADES</div>
+                    </div>
+                    <ul class="factor-list">
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Dependencia Tecnológica Inicial:</strong> MVP construido sobre Airtable/Softr requiere migración.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Falta de Reconocimiento de Marca:</strong> Startup nueva sin posicionamiento establecido.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Recursos Financieros Limitados:</strong> Capital inicial restringido para escalamiento.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Equipo Pequeño:</strong> Necesidad de contratar 14 roles clave para operación completa.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Dependencia de Adopción:</strong> Éxito condicionado a cambio de comportamiento rural.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="dofa-quadrant opportunities">
+                    <div class="quadrant-header">
+                        <div class="quadrant-icon">🎯</div>
+                        <div class="quadrant-title">OPORTUNIDADES</div>
+                    </div>
+                    <ul class="factor-list">
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Mercado Desatendido:</strong> 68% de exclusión financiera rural y mercado lácteo del 45%.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Apoyo Gubernamental:</strong> Plan Nacional de Desarrollo prioriza finanzas inclusivas rurales.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Adopción Tecnológica Rural:</strong> Alta penetración de tecnología móvil en zonas rurales.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Ecosistema FinTech en Crecimiento:</strong> Acceso a tecnologías avanzadas de Big Data e IA.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Alianzas Estratégicas:</strong> Gobierno fomenta colaboración banca-FinTech.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Demanda de Inversión ESG:</strong> Creciente interés en inversiones de triple impacto.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="dofa-quadrant threats">
+                    <div class="quadrant-header">
+                        <div class="quadrant-icon">⚡</div>
+                        <div class="quadrant-title">AMENAZAS</div>
+                    </div>
+                    <ul class="factor-list">
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Competencia Intensa:</strong> Bancos tradicionales, FinTechs y BigTechs con grandes recursos.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Regulación Estricta:</strong> Sector financiero altamente regulado por la SFC.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Riesgos Climáticos:</strong> Vulnerabilidad del sector agropecuario a fenómenos climáticos.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Volatilidad Económica:</strong> PIB 0.71% y susceptibilidad a inestabilidad macroeconómica.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Desconfianza Digital:</strong> Baja educación financiera y resistencia a servicios digitales.
+                            </div>
+                        </li>
+                        <li class="factor-item">
+                            <div class="factor-text">
+                                <strong>Alternativas Consolidadas:</strong> Financiamiento informal "gota a gota" y cooperativas.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="impact-metrics">
+                <div class="metric-card">
+                    <div class="metric-number">6</div>
+                    <div class="metric-label">Fortalezas Clave</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-number">6</div>
+                    <div class="metric-label">Oportunidades Identificadas</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-number">5</div>
+                    <div class="metric-label">Debilidades a Mitigar</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-number">6</div>
+                    <div class="metric-label">Amenazas Monitoreadas</div>
+                </div>
+            </div>
+            
+            <div class="strategies-section">
+                <div class="section-title">Estrategias DOFA Cruzadas</div>
+                
+                <div class="strategies-grid">
+                    <div class="strategy-card fo">
+                        <div class="strategy-header">
+                            <div class="strategy-title">Estrategia de Especialización Sectorial</div>
+                            <div class="strategy-type">FO</div>
+                        </div>
+                        <div class="strategy-description">
+                            Aprovechar la especialización como primera FinTech láctea para capturar el mercado desatendido del 45% del sector.
+                        </div>
+                        <div class="strategy-meta">
+                            <span class="meta-badge priority-high">Prioridad Alta</span>
+                            <span class="meta-badge area-badge">Estrategia</span>
+                            <span class="meta-badge area-badge">Producto</span>
+                        </div>
+                        <div class="strategy-description">
+                            <strong>Iniciativas:</strong> Desarrollar productos específicos para cadena láctea, crear alianzas con gremios lácteos, posicionarse como referente tecnológico sectorial.
+                        </div>
+                    </div>
+                    
+                    <div class="strategy-card fo">
+                        <div class="strategy-header">
+                            <div class="strategy-title">Estrategia de Penetración de Mercado</div>
+                            <div class="strategy-type">FO</div>
+                        </div>
+                        <div class="strategy-description">
+                            Utilizar la ventaja competitiva de reducir pagos a 7 días para penetrar el amplio mercado agropecuario desatendido.
+                        </div>
+                        <div class="strategy-meta">
+                            <span class="meta-badge priority-high">Prioridad Alta</span>
+                            <span class="meta-badge area-badge">Marketing</span>
+                            <span class="meta-badge area-badge">Estrategia</span>
+                        </div>
+                        <div class="strategy-description">
+                            <strong>Iniciativas:</strong> Campaña "Recibe tu pago en 7 días", alianzas con cooperativas lecheras, programa de referidos.
+                        </div>
+                    </div>
+                    
+                    <div class="strategy-card fo">
+                        <div class="strategy-header">
+                            <div class="strategy-title">Estrategia de Diferenciación Tecnológica</div>
+                            <div class="strategy-type">FO</div>
+                        </div>
+                        <div class="strategy-description">
+                            Perfeccionar el scoring crediticio innovador aprovechando el crecimiento del ecosistema FinTech y acceso a Big Data.
+                        </div>
+                        <div class="strategy-meta">
+                            <span class="meta-badge priority-high">Prioridad Alta</span>
+                            <span class="meta-badge area-badge">Tecnología</span>
+                            <span class="meta-badge area-badge">Finanzas</span>
+                        </div>
+                        <div class="strategy-description">
+                            <strong>Iniciativas:</strong> Algoritmos con datos climáticos, modelos predictivos agropecuarios, integración de variables ambientales.
+                        </div>
+                    </div>
+                    
+                    <div class="strategy-card do">
+                        <div class="strategy-header">
+                            <div class="strategy-title">Estrategia de Creación de Credibilidad</div>
+                            <div class="strategy-type">DO</div>
+                        </div>
+                        <div class="strategy-description">
+                            Superar la falta de reconocimiento de marca aprovechando el apoyo gubernamental y las alianzas estratégicas.
+                        </div>
+                        <div class="strategy-meta">
+                            <span class="meta-badge priority-high">Prioridad Alta</span>
+                            <span class="meta-badge area-badge">Estrategia</span>
+                            <span class="meta-badge area-badge">Legal</span>
+                        </div>
+                        <div class="strategy-description">
+                            <strong>Iniciativas:</strong> Buscar alianza con banco reconocido, alineación con política pública de inclusión financiera.
+                        </div>
+                    </div>
+                    
+                    <div class="strategy-card fa">
+                        <div class="strategy-header">
+                            <div class="strategy-title">Estrategia de Diferenciación Competitiva</div>
+                            <div class="strategy-type">FA</div>
+                        </div>
+                        <div class="strategy-description">
+                            Utilizar el ecosistema digital integrado para diferenciarse de la fuerte competencia de bancos y FinTechs.
+                        </div>
+                        <div class="strategy-meta">
+                            <span class="meta-badge priority-high">Prioridad Alta</span>
+                            <span class="meta-badge area-badge">Producto</span>
+                            <span class="meta-badge area-badge">Estrategia</span>
+                        </div>
+                        <div class="strategy-description">
+                            <strong>Iniciativas:</strong> Profundizar especialización láctea, comunicar ventaja del ecosistema "todo en uno".
+                        </div>
+                    </div>
+                    
+                    <div class="strategy-card da">
+                        <div class="strategy-header">
+                            <div class="strategy-title">Estrategia de Fortalecimiento Tecnológico</div>
+                            <div class="strategy-type">DA</div>
+                        </div>
+                        <div class="strategy-description">
+                            Mitigar la dependencia tecnológica inicial ante la amenaza de regulación estricta y riesgos de ciberseguridad.
+                        </div>
+                        <div class="strategy-meta">
+                            <span class="meta-badge priority-high">Prioridad Alta</span>
+                            <span class="meta-badge area-badge">Tecnología</span>
+                            <span class="meta-badge area-badge">Legal</span>
+                        </div>
+                        <div class="strategy-description">
+                            <strong>Iniciativas:</strong> Roadmap de migración tecnológica, auditoría de cumplimiento normativo, infraestructura robusta.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pestel-integration">
+                <div class="section-title">Integración con Análisis PESTEL</div>
+                
+                <div class="pestel-grid">
+                    <div class="pestel-card">
+                        <div class="pestel-factor">Político</div>
+                        <div class="pestel-impact impact-positive">🟢 Fuerte apoyo gubernamental validado en Plan Nacional de Desarrollo 2022-2026</div>
+                    </div>
+                    
+                    <div class="pestel-card">
+                        <div class="pestel-factor">Económico</div>
+                        <div class="pestel-impact impact-negative">🔴 PIB Colombia 0.71% (2023), recuperación post-pandemia estabilizada</div>
+                    </div>
+                    
+                    <div class="pestel-card">
+                        <div class="pestel-factor">Social</div>
+                        <div class="pestel-impact impact-positive">🟢 Alta adopción tecnología móvil rural + 68% exclusión financiera</div>
+                    </div>
+                    
+                    <div class="pestel-card">
+                        <div class="pestel-factor">Tecnológico</div>
+                        <div class="pestel-impact impact-positive">🟢 Crecimiento ecosistema FinTech + acceso a Big Data e IA</div>
+                    </div>
+                    
+                    <div class="pestel-card">
+                        <div class="pestel-factor">Ecológico</div>
+                        <div class="pestel-impact impact-negative">🔴 Alta vulnerabilidad sector agropecuario a riesgos climáticos</div>
+                    </div>
+                    
+                    <div class="pestel-card">
+                        <div class="pestel-factor">Legal</div>
+                        <div class="pestel-impact impact-negative">🔴 Sector financiero sujeto a regulación estricta y cambiante (SFC)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <strong>Tesis MBA - Universidad EAN</strong> | Pablo Andrey Romero Guzmán | 
+            Fuente: MatrizDOFACruzada, AnalisisPESTEL & Porter5Fuerzas | 
+            Metodología: Análisis DOFA Cruzado + Integración PESTEL
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animaciones de entrada para los cuadrantes DOFA
+            const quadrants = document.querySelectorAll('.dofa-quadrant');
+            const strategyCards = document.querySelectorAll('.strategy-card');
+            const metricCards = document.querySelectorAll('.metric-card');
+            
+            // Configurar observador de intersección
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Inicializar elementos para animación
+            const animateElements = [...quadrants, ...strategyCards, ...metricCards];
+            animateElements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+                element.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                observer.observe(element);
+            });
+            
+            // Interactividad para factores DOFA
+            const factorItems = document.querySelectorAll('.factor-item');
+            factorItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(10px) scale(1.02)';
+                    this.style.boxShadow = '0 8px 20px rgba(0,0,0,0.15)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateX(5px) scale(1)';
+                    this.style.boxShadow = '0 6px 15px rgba(0,0,0,0.12)';
+                });
+            });
+            
+            // Efecto hover para tarjetas de estrategia
+            strategyCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-12px) scale(1.02)';
+                    this.style.boxShadow = '0 20px 50px rgba(0,0,0,0.2)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(-8px) scale(1)';
+                    this.style.boxShadow = '0 15px 40px rgba(0,0,0,0.15)';
+                });
+            });
+            
+            // Contador animado para métricas
+            const animateCounters = () => {
+                const counters = document.querySelectorAll('.metric-number');
+                counters.forEach(counter => {
+                    const target = parseInt(counter.textContent);
+                    counter.textContent = '0';
+                    
+                    const increment = target / 30;
+                    const timer = setInterval(() => {
+                        const current = parseInt(counter.textContent);
+                        if (current < target) {
+                            counter.textContent = Math.min(current + Math.ceil(increment), target);
+                        } else {
+                            clearInterval(timer);
+                        }
+                    }, 50);
+                });
+            };
+            
+            // Activar contadores cuando las métricas sean visibles
+            const metricsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounters();
+                        metricsObserver.unobserve(entry.target);
+                    }
+                });
+            });
+            
+            const metricsSection = document.querySelector('.impact-metrics');
+            if (metricsSection) {
+                metricsObserver.observe(metricsSection);
+            }
+            
+            // Filtro interactivo para estrategias (opcional)
+            const addStrategyFilters = () => {
+                const strategiesSection = document.querySelector('.strategies-section');
+                if (strategiesSection) {
+                    const filterContainer = document.createElement('div');
+                    filterContainer.className = 'filter-container';
+                    filterContainer.style.cssText = `
+                        display: flex;
+                        justify-content: center;
+                        gap: 15px;
+                        margin: 30px 0;
+                        flex-wrap: wrap;
+                    `;
+                    
+                    const filters = [
+                        { type: 'all', label: 'Todas', color: '#2d5a27' },
+                        { type: 'fo', label: 'FO (Maxi-Maxi)', color: '#28a745' },
+                        { type: 'fa', label: 'FA (Maxi-Mini)', color: '#ffc107' },
+                        { type: 'do', label: 'DO (Mini-Maxi)', color: '#007bff' },
+                        { type: 'da', label: 'DA (Mini-Mini)', color: '#dc3545' }
+                    ];
+                    
+                    filters.forEach(filter => {
+                        const button = document.createElement('button');
+                        button.textContent = filter.label;
+                        button.className = 'filter-btn';
+                        button.style.cssText = `
+                            padding: 10px 20px;
+                            border: 2px solid ${filter.color};
+                            background: ${filter.type === 'all' ? filter.color : 'white'};
+                            color: ${filter.type === 'all' ? 'white' : filter.color};
+                            border-radius: 25px;
+                            cursor: pointer;
+                            font-weight: 500;
+                            transition: all 0.3s ease;
+                        `;
+                        
+                        button.addEventListener('click', () => {
+                            document.querySelectorAll('.filter-btn').forEach(btn => {
+                                btn.style.background = 'white';
+                                btn.style.color = btn.style.borderColor;
+                            });
+                            button.style.background = filter.color;
+                            button.style.color = 'white';
+                            
+                            strategyCards.forEach(card => {
+                                if (filter.type === 'all' || card.classList.contains(filter.type)) {
+                                    card.style.display = 'block';
+                                    card.style.opacity = '1';
+                                } else {
+                                    card.style.display = 'none';
+                                }
+                            });
+                        });
+                        
+                        filterContainer.appendChild(button);
+                    });
+                    
+                    const sectionTitle = strategiesSection.querySelector('.section-title');
+                    sectionTitle.after(filterContainer);
+                }
+            };
+            
+            // Activar filtros
+            addStrategyFilters();
+        });
+    </script>
+</body>
+</html>

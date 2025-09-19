@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura de Ecosistema v4 - Tierra Fintech (Factoring Dual)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6; color: #333; background-color: #f8f9fa; margin: 0; padding: 20px;
+        }
+        .container {
+            background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            padding: 30px; width: 100%; max-width: 1700px; margin: auto;
+        }
+        h2 { text-align: center; color: #0056b3; border-bottom: 2px solid #e9ecef; padding-bottom: 10px; margin-bottom: 15px; }
+        p { text-align: center; color: #6c757d; font-size: 0.95em; margin-bottom: 25px;}
+        #cy {
+            width: 100%;
+            height: 1000px; /* Aumentada la altura para el nuevo flujo */
+            display: block;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.23.0/cytoscape.min.js"></script>
+    <script src="https://unpkg.com/dagre@0.8.5/dist/dagre.min.js"></script>
+    <script src="https://unpkg.com/cytoscape-dagre@2.4.0/cytoscape-dagre.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Arquitectura de Ecosistema y Flujo de Valor Dual de Tierra Fintech</h2>
+        <p>
+            El diagrama ilustra los dos modelos de factoring del MVP. El flujo en <strong>rojo</strong> representa el factoring para <strong>Productores</strong>, y el flujo en <strong>azul</strong> representa el factoring para <strong>Procesadoras</strong>.
+        </p>
+        <div id="cy"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            var cy = cytoscape({
+                container: document.getElementById('cy'),
+                
+                elements: [
+                    // --- Contenedores ---
+                    { data: { id: 'frontend', label: 'Frontend (Plataformas de Usuario)' } },
+                    { data: { id: 'central_platform', label: 'Tierra FinTech (Plataforma Central)' } },
+                    { data: { id: 'data_layer', label: 'Capa de Datos (Airtable)' } },
+                    { data: { id: 'external_actors', label: 'Actores Externos del Ecosistema' } },
+
+                    // --- Nodos del Frontend ---
+                    { data: { id: 'girocampo', label: 'GiroCampo\n(Productores)', parent: 'frontend' }, classes: 'frontend-node producer' },
+                    { data: { id: 'fabricash', label: 'FabriCash\n(Procesadoras)', parent: 'frontend' }, classes: 'frontend-node processor' },
+                    { data: { id: 'interra', label: 'Interra Invierte\n(Inversores)', parent: 'frontend' }, classes: 'frontend-node investor' },
+                    
+                    // --- Nodos de la Plataforma Central ---
+                    { data: { id: 'corp_control', label: 'Centro de Control Corporativo', parent: 'central_platform' }, classes: 'platform-node' },
+                    { data: { id: 'analytics_suite', label: 'Suite Analítica', parent: 'central_platform' }, classes: 'platform-node purple' },
+                    { data: { id: 'factoring_engine', label: 'Motor de Factoring y Transacciones', parent: 'central_platform' }, classes: 'platform-node' },
+
+                    // --- Nodos de la Capa de Datos ---
+                    { data: { id: 'db_main_airtable', label: 'DB: PlataformaTierraFintech', parent: 'data_layer' }, classes: 'db-node' },
+                    { data: { id: 'productores_master', label: 'ProductoresMaster', parent: 'data_layer' }, classes: 'table-node' },
+                    { data: { id: 'procesadoras_master', label: 'ProcesadorasMaster', parent: 'data_layer' }, classes: 'table-node' },
+                    { data: { id: 'facturas_table', label: 'Facturas (Productores y Clientes)', parent: 'data_layer' }, classes: 'table-node' },
+                    
+                    // --- Nodos de Actores Externos ---
+                    { data: { id: 'clientes_b2b', label: 'Clientes B2B\n(Grandes Superficies)', parent: 'external_actors' }, classes: 'external-node' },
+                    { data: { id: 'bancos_pse', label: 'Bancos y PSE', parent: 'external_actors' }, classes: 'external-node' },
+                    { data: { id: 'riesgo', label: 'Centrales de Riesgo', parent: 'external_actors' }, classes: 'external-node' },
+                    
+                    // --- FLECHAS (EDGES) ---
+                    // FLUJO 1: Factoring para PRODUCTORES (ROJO)
+                    { data: { source: 'girocampo', target: 'fabricash', label: '1a. Registra Acopio' }, classes: 'flow-edge-producer' },
+                    { data: { source: 'fabricash', target: 'factoring_engine', label: '2a. Sube Factura de Productor' }, classes: 'flow-edge-producer' },
+                    { data: { source: 'factoring_engine', target: 'interra', label: 'Publica Oportunidad (Productor)' }, classes: 'flow-edge-producer' },
+                    { data: { source: 'interra', target: 'factoring_engine', label: '3a. Inversor Fondea Factura' }, classes: 'flow-edge-producer' },
+                    { data: { source: 'factoring_engine', target: 'bancos_pse', label: '4a. Ordena Adelanto a Productor' }, classes: 'flow-edge-producer' },
+                    
+                    // FLUJO 2: Factoring para PROCESADORAS (AZUL)
+                    { data: { source: 'fabricash', target: 'clientes_b2b', label: '1b. Vende Producto Terminado' }, classes: 'flow-edge-processor' },
+                    { data: { source: 'clientes_b2b', target: 'fabricash', label: '2b. Emite Factura a Cliente' }, classes: 'flow-edge-processor' },
+                    { data: { source: 'fabricash', target: 'factoring_engine', label: '3b. Sube Factura de Cliente' }, classes: 'flow-edge-processor' },
+                    { data: { source: 'factoring_engine', target: 'interra', label: 'Publica Oportunidad (Procesadora)' }, classes: 'flow-edge-processor' },
+                    { data: { source: 'interra', target: 'factoring_engine', label: '4b. Inversor Fondea Factura' }, classes: 'flow-edge-processor' },
+                    { data: { source: 'factoring_engine', target: 'bancos_pse', label: '5b. Ordena Adelanto a Procesadora' }, classes: 'flow-edge-processor' },
+
+                    // Ciclos de Repago (Negro)
+                    { data: { source: 'fabricash', target: 'bancos_pse', label: 'Repago (Productor)' }, classes: 'repayment-edge' },
+                    { data: { source: 'clientes_b2b', target: 'bancos_pse', label: 'Repago (Procesadora)' }, classes: 'repayment-edge' },
+                    { data: { source: 'bancos_pse', target: 'factoring_engine', label: 'Recibe Pagos' }, classes: 'repayment-edge' },
+                    { data: { source: 'factoring_engine', target: 'interra', label: 'Distribuye a Inversores' }, classes: 'repayment-edge' },
+
+                    // Relaciones de Datos (Discontinuas)
+                    { data: { source: 'corp_control', target: 'productores_master' }, classes: 'data-link' },
+                    { data: { source: 'corp_control', target: 'procesadoras_master' }, classes: 'data-link' },
+                    { data: { source: 'factoring_engine', target: 'facturas_table' }, classes: 'data-link' },
+                    { data: { source: 'analytics_suite', target: 'db_main_airtable' }, classes: 'data-link' },
+                    { data: { source: 'analytics_suite', target: 'riesgo' }, classes: 'data-link' }
+                ],
+                
+                style: [
+                    { selector: 'node', style: { 'label': 'data(label)', 'text-wrap': 'wrap', 'text-valign': 'center', 'text-halign': 'center', 'font-size': '12px', 'line-height': 1.2 } },
+                    { selector: 'edge', style: { 'label': 'data(label)', 'width': 1.5, 'target-arrow-shape': 'triangle', 'curve-style': 'bezier', 'font-size': '10px', 'text-rotation': 'autorotate', 'text-background-opacity': 1, 'text-background-color': '#fff', 'edge-distances': 'node-center' } },
+                    { selector: ':parent', style: { 'background-opacity': 0.15, 'border-width': 1.5, 'border-color': '#adb5bd', 'label': 'data(label)', 'text-valign': 'top', 'font-weight': 'bold', 'color': '#343a40', 'font-size': '16px', 'text-margin-y': 10 } },
+                    
+                    { selector: '.frontend-node', style: { 'shape': 'round-rectangle', 'width': 160, 'height': 85 } },
+                    { selector: '.producer', style: { 'background-color': '#28a745', 'color': 'white' } },
+                    { selector: '.processor', style: { 'background-color': '#17a2b8', 'color': 'white' } },
+                    { selector: '.investor', style: { 'background-color': '#ffc107', 'color': 'black' } },
+                    
+                    { selector: '.platform-node', style: { 'shape': 'ellipse', 'width': 180, 'height': 100, 'background-color': '#eaf4ff', 'border-color': '#007bff', 'border-width': 2, 'color': '#333' } },
+                    { selector: '.purple', style: { 'background-color': '#e5e0f0', 'border-color': '#6f42c1' } },
+                    
+                    { selector: '.db-node', style: { 'background-color': '#d6d8db', 'border-color': '#6c757d', 'border-width': 2, 'color': '#333', 'shape': 'barrel', 'width': 180, 'height': 80 } },
+                    { selector: '.table-node', style: { 'background-color': '#f8f9fa', 'border-width': 1, 'border-color': '#6c757d', 'shape': 'rectangle', 'width': 150, 'height': 60 } },
+                    
+                    { selector: '.external-node', style: { 'background-color': '#f1f1f1', 'border-width': 1, 'border-color': '#6c757d', 'shape': 'round-rectangle', 'width': 140, 'height': 70, 'color': '#333' } },
+                    
+                    // Estilos de Flechas
+                    { selector: '.flow-edge-producer', style: { 'line-color': '#dc3545', 'target-arrow-color': '#dc3545', 'width': 3.5, 'text-background-color': '#ffffff', 'text-background-opacity': 0.8 } },
+                    { selector: '.flow-edge-processor', style: { 'line-color': '#007bff', 'target-arrow-color': '#007bff', 'width': 3.5, 'text-background-color': '#ffffff', 'text-background-opacity': 0.8 } },
+                    { selector: '.repayment-edge', style: { 'line-color': '#212529', 'target-arrow-color': '#212529', 'width': 2.5, 'line-style': 'dotted' } },
+                    { selector: '.data-link', style: { 'line-style': 'dashed', 'line-color': '#6c757d', 'target-arrow-color': '#6c757d', 'width': 1.5 } }
+                ],
+                
+                layout: {
+                    name: 'dagre',
+                    padding: 30,
+                    rankDir: 'TB', 
+                    nodeSep: 60,
+                    rankSep: 90,
+                    spacingFactor: 1.1
+                }
+            });
+        });
+    </script>
+</body>
+</html>

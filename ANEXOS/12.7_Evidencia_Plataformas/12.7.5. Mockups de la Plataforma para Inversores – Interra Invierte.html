@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InTerra Invierte - Inversión con Impacto Social</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .portfolio-summary {
+            text-align: right;
+            background: rgba(255,255,255,0.1);
+            padding: 15px 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .portfolio-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .portfolio-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        .investor-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .investor-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        .investor-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 3px;
+        }
+        
+        .investor-type {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        /* Navigation */
+        .nav-tabs {
+            background: #f8f9fa;
+            display: flex;
+            border-bottom: 3px solid #e0e0e0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .nav-tab {
+            flex: 1;
+            padding: 18px 25px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .nav-tab.active {
+            background: white;
+            border-bottom: 4px solid #2E7D32;
+            color: #1B5E20;
+            font-weight: 700;
+        }
+        
+        .nav-tab:hover {
+            background: #e8f5e8;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background: #f5f7fa;
+        }
+        
+        /* Portfolio Overview */
+        .portfolio-overview {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 35px;
+        }
+        
+        .portfolio-stats {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #E8F5E8 0%, #F1F8E9 100%);
+            border-radius: 12px;
+            border: 2px solid #4CAF50;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2E7D32;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .stat-change {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+        
+        .positive {
+            color: #27ae60;
+        }
+        
+        .negative {
+            color: #e74c3c;
+        }
+        
+        /* Impact Summary */
+        .impact-summary {
+            background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .impact-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .impact-metrics {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .impact-metric {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .impact-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .impact-description {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        /* Investment Opportunities */
+        .opportunities-section {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-content {
+            padding: 30px;
+        }
+        
+        /* Opportunity Cards */
+        .opportunities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .opportunity-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .opportunity-card:hover {
+            border-color: #2E7D32;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(46, 125, 50, 0.15);
+        }
+        
+        .opportunity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .opportunity-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2E7D32;
+            margin-bottom: 5px;
+        }
+        
+        .opportunity-subtitle {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .opportunity-amount {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1B5E20;
+            text-align: right;
+        }
+        
+        .opportunity-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .detail-item {
+            text-align: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: #2E7D32;
+        }
+        
+        .detail-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        .investment-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .invest-btn {
+            flex: 1;
+            background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .invest-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+        }
+        
+        .learn-more-btn {
+            background: transparent;
+            border: 2px solid #2E7D32;
+            color: #2E7D32;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .learn-more-btn:hover {
+            background: #2E7D32;
+            color: white;
+        }
+        
+        /* Portfolio Breakdown */
+        .portfolio-breakdown {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+        
+        .breakdown-chart {
+            height: 300px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 1.1rem;
+            border: 2px dashed #dee2e6;
+            margin: 20px 0;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+        
+        .legend-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* Performance Chart */
+        .performance-chart {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+        
+        .chart-placeholder {
+            height: 350px;
+            background: linear-gradient(135deg, #E8F5E8 0%, #F1F8E9 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2E7D32;
+            font-size: 1.1rem;
+            border: 2px dashed #4CAF50;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        /* Quick Investment */
+        .quick-investment {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .quick-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .quick-description {
+            margin-bottom: 25px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        .investment-amount-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .amount-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 25px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .amount-btn.selected,
+        .amount-btn:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.6);
+        }
+        
+        .invest-now-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 25px;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .invest-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,255,255,0.3);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .portfolio-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .opportunities-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-content {
+                padding: 20px 15px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .investment-amount-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* ESG Badge */
+        .esg-badge {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 10px;
+        }
+        
+        /* Risk Indicator */
+        .risk-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        
+        .risk-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4CAF50;
+        }
+        
+        .risk-dot.medium {
+            background: #FF9800;
+        }
+        
+        .risk-dot.high {
+            background: #F44336;
+        }
+        
+        .risk-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <span style="font-size: 2.2rem;">🌱</span>
+                <h1>InTerra Invierte</h1>
+            </div>
+            <div class="header-actions">
+                <div class="portfolio-summary">
+                    <div class="portfolio-value">$127,850</div>
+                    <div class="portfolio-label">Portfolio Total</div>
+                </div>
+                <div class="investor-profile">
+                    <div class="investor-avatar">RC</div>
+                    <div class="investor-info">
+                        <h3>Roman Camilo Zarate</h3>
+                        <div class="investor-type">Inversor Individual</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('dashboard')">
+                📊 Dashboard
+            </button>
+            <button class="nav-tab" onclick="showSection('opportunities')">
+                💎 Oportunidades
+            </button>
+            <button class="nav-tab" onclick="showSection('portfolio')">
+                📈 Mi Portfolio
+            </button>
+            <button class="nav-tab" onclick="showSection('impact')">
+                🌍 Impacto
+            </button>
+            <button class="nav-tab" onclick="showSection('reports')">
+                📋 Reportes
+            </button>
+        </nav>
+
+        <main class="main-content">
+            <div id="dashboard" class="content-section">
+                <div class="portfolio-overview">
+                    <div class="portfolio-stats">
+                        <h2 style="color: #2E7D32; margin-bottom: 20px;">📊 Resumen de Inversiones</h2>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value">$127,850</div>
+                                <div class="stat-label">Capital Invertido</div>
+                                <div class="stat-change positive">↗ +12.3%</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">$14,242</div>
+                                <div class="stat-label">Retornos Generados</div>
+                                <div class="stat-change positive">↗ +8.7%</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">11.1%</div>
+                                <div class="stat-label">ROI Anualizado</div>
+                                <div class="stat-change positive">↗ +1.2%</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">7</div>
+                                <div class="stat-label">Inversiones Activas</div>
+                                <div class="stat-change positive">↗ +2</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-summary">
+                        <div class="impact-title">🌍 Tu Impacto Social</div>
+                        <div class="impact-metrics">
+                            <div class="impact-metric">
+                                <div class="impact-value">47</div>
+                                <div class="impact-description">Productores Apoyados</div>
+                            </div>
+                            <div class="impact-metric">
+                                <div class="impact-value">1,247 Ha</div>
+                                <div class="impact-description">Tierra Productiva</div>
+                            </div>
+                            <div class="impact-metric">
+                                <div class="impact-value">318,500 L</div>
+                                <div class="impact-description">Leche Procesada</div>
+                            </div>
+                            <div class="impact-metric">
+                                <div class="impact-value">142</div>
+                                <div class="impact-description">Empleos Rurales</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="opportunities-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            💎 Oportunidades Destacadas
+                        </h2>
+                        <button class="invest-btn" style="padding: 10px 20px;">Ver Todas</button>
+                    </div>
+                    <div class="section-content">
+                        <div class="opportunities-grid">
+                            <div class="opportunity-card" onclick="viewOpportunity('OP001')">
+                                <div class="opportunity-header">
+                                    <div>
+                                        <div class="opportunity-title">Lácteos Colandes - Lote A</div>
+                                        <div class="opportunity-subtitle">Factoring Adriana Lucía Pardo</div>
+                                        <span class="esg-badge">ESG+</span>
+                                    </div>
+                                    <div class="opportunity-amount">$49.3M</div>
+                                </div>
+                                <div class="risk-indicator">
+                                    <div class="risk-dot"></div>
+                                    <span class="risk-label">Riesgo Bajo</span>
+                                </div>
+                                <div class="opportunity-details">
+                                    <div class="detail-item">
+                                        <div class="detail-value">11.2%</div>
+                                        <div class="detail-label">ROI Proyectado</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">16 días</div>
+                                        <div class="detail-label">Plazo</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">22,419 L</div>
+                                        <div class="detail-label">Volumen</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">95.7%</div>
+                                        <div class="detail-label">Score Calidad</div>
+                                    </div>
+                                </div>
+                                <div class="investment-actions">
+                                    <button class="invest-btn">Invertir</button>
+                                    <button class="learn-more-btn">Detalles</button>
+                                </div>
+                            </div>
+
+                            <div class="opportunity-card" onclick="viewOpportunity('OP002')">
+                                <div class="opportunity-header">
+                                    <div>
+                                        <div class="opportunity-title">Lechería La Gran Vía - Lote B</div>
+                                        <div class="opportunity-subtitle">Factoring Ana Sofía Vargas</div>
+                                        <span class="esg-badge">ESG+</span>
+                                    </div>
+                                    <div class="opportunity-amount">$8.7M</div>
+                                </div>
+                                <div class="risk-indicator">
+                                    <div class="risk-dot"></div>
+                                    <span class="risk-label">Riesgo Bajo</span>
+                                </div>
+                                <div class="opportunity-details">
+                                    <div class="detail-item">
+                                        <div class="detail-value">10.8%</div>
+                                        <div class="detail-label">ROI Proyectado</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">16 días</div>
+                                        <div class="detail-label">Plazo</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">3,767 L</div>
+                                        <div class="detail-label">Volumen</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">92.3%</div>
+                                        <div class="detail-label">Score Calidad</div>
+                                    </div>
+                                </div>
+                                <div class="investment-actions">
+                                    <button class="invest-btn">Invertir</button>
+                                    <button class="learn-more-btn">Detalles</button>
+                                </div>
+                            </div>
+
+                            <div class="opportunity-card" onclick="viewOpportunity('OP003')">
+                                <div class="opportunity-header">
+                                    <div>
+                                        <div class="opportunity-title">Lácteos Colandes - Lote C</div>
+                                        <div class="opportunity-subtitle">Factoring Álvaro José Morales</div>
+                                        <span class="esg-badge">ESG</span>
+                                    </div>
+                                    <div class="opportunity-amount">$6.7M</div>
+                                </div>
+                                <div class="risk-indicator">
+                                    <div class="risk-dot medium"></div>
+                                    <span class="risk-label">Riesgo Medio</span>
+                                </div>
+                                <div class="opportunity-details">
+                                    <div class="detail-item">
+                                        <div class="detail-value">12.5%</div>
+                                        <div class="detail-label">ROI Proyectado</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">16 días</div>
+                                        <div class="detail-label">Plazo</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">3,358 L</div>
+                                        <div class="detail-label">Volumen</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">88.9%</div>
+                                        <div class="detail-label">Score Calidad</div>
+                                    </div>
+                                </div>
+                                <div class="investment-actions">
+                                    <button class="invest-btn">Invertir</button>
+                                    <button class="learn-more-btn">Detalles</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-investment">
+                    <div class="quick-title">⚡ Inversión Rápida</div>
+                    <div class="quick-description">
+                        Invierte automáticamente en las mejores oportunidades según tu perfil de riesgo
+                    </div>
+                    <div class="investment-amount-selector">
+                        <button class="amount-btn" onclick="selectAmount(this, 1000000)">$1M</button>
+                        <button class="amount-btn selected" onclick="selectAmount(this, 5000000)">$5M</button>
+                        <button class="amount-btn" onclick="selectAmount(this, 10000000)">$10M</button>
+                        <button class="amount-btn" onclick="selectAmount(this, 20000000)">$20M</button>
+                    </div>
+                    <button class="invest-now-btn" onclick="quickInvest()">Invertir Ahora</button>
+                </div>
+            </div>
+
+            <div id="opportunities" class="content-section hidden">
+                <div class="opportunities-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            💎 Todas las Oportunidades
+                        </h2>
+                        <div style="display: flex; gap: 15px;">
+                            <select style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                <option>Filtrar por Riesgo</option>
+                                <option>Bajo Riesgo</option>
+                                <option>Medio Riesgo</option>
+                                <option>Alto Riesgo</option>
+                            </select>
+                            <select style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                <option>Filtrar por Monto</option>
+                                <option>$1M - $5M</option>
+                                <option>$5M - $20M</option>
+                                <option>$20M+</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="section-content">
+                        <div style="text-align: center; padding: 60px; color: #666;">
+                            <h3>🔍 Explorador de Oportunidades</h3>
+                            <p>Descubre todas las oportunidades de inversión disponibles</p>
+                            <p style="margin-top: 15px; font-style: italic;">
+                                Filtrado inteligente basado en tu perfil de inversor
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="portfolio" class="content-section hidden">
+                <div class="portfolio-breakdown">
+                    <h2 style="color: #2E7D32; margin-bottom: 20px;">📈 Análisis de Portfolio</h2>
+                    <div class="breakdown-chart">
+                        📊 Distribución de Inversiones por Sector y Riesgo
+                    </div>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #4CAF50;"></div>
+                            <span class="legend-label">Factoring Lácteo (73%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #2196F3;"></div>
+                            <span class="legend-label">Financiamiento Agrícola (18%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #FF9800;"></div>
+                            <span class="legend-label">Otros Sectores (9%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="performance-chart">
+                    <h2 style="color: #2E7D32; margin-bottom: 20px;">📈 Rendimiento Histórico</h2>
+                    <div class="chart-placeholder">
+                        <div>📈 Gráfico de Rendimiento vs Benchmarks</div>
+                        <div style="font-size: 0.9rem; opacity: 0.7;">Comparación con CDT, TES y mercado accionario</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="impact" class="content-section hidden">
+                <div class="portfolio-breakdown">
+                    <h2 style="color: #2E7D32; margin-bottom: 20px;">🌍 Impacto Social y Ambiental</h2>
+                    <div style="text-align: center; padding: 60px; color: #666;">
+                        <h3>🎯 Dashboard de Impacto</h3>
+                        <p>Métricas detalladas de tu contribución al desarrollo rural</p>
+                        <p style="margin-top: 15px; font-style: italic;">
+                            Alineado con Objetivos de Desarrollo Sostenible (ODS)
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reports" class="content-section hidden">
+                <div class="portfolio-breakdown">
+                    <h2 style="color: #2E7D32; margin-bottom: 20px;">📋 Centro de Reportes</h2>
+                    <div style="text-align: center; padding: 60px; color: #666;">
+                        <h3>📊 Reportes Personalizados</h3>
+                        <p>Análisis detallados de rendimiento y proyecciones</p>
+                        <p style="margin-top: 15px; font-style: italic;">
+                            Reportes fiscales y estados de cuenta disponibles
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let selectedAmount = 5000000;
+
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.add('hidden'));
+            
+            // Show selected section
+            document.getElementById(sectionName).classList.remove('hidden');
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+        function selectAmount(button, amount) {
+            // Remove selected class from all buttons
+            document.querySelectorAll('.amount-btn').forEach(btn => 
+                btn.classList.remove('selected'));
+            
+            // Add selected class to clicked button
+            button.classList.add('selected');
+            selectedAmount = amount;
+        }
+
+        function quickInvest() {
+            const formattedAmount = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(selectedAmount);
+            alert(`🌱 InTerra Invierte\n\n¿Confirmas la inversión automática de ${formattedAmount}?\n\n✅ Se diversificará en las mejores oportunidades\n✅ Según tu perfil de riesgo: Medio\n✅ ROI proyectado: 10.8% - 12.3%\n✅ Impacto social garantizado`);
+        }
+
+        function viewOpportunity(opportunityId) {
+            const opportunities = {
+                'OP001': {
+                    title: 'Lácteos Colandes - Lote A',
+                    producer: 'Adriana Lucía Pardo',
+                    amount: '$49.3M',
+                    details: 'Productora con 15 años de experiencia\n• Calidad de leche: Alta (95.7%)\n• Historial de pago: 100%\n• Certificación orgánica\n• 47 hectáreas productivas'
+                },
+                'OP002': {
+                    title: 'Lechería La Gran Vía - Lote B', 
+                    producer: 'Ana Sofía Vargas',
+                    amount: '$8.7M',
+                    details: 'Productora joven con alta tecnificación\n• Calidad de leche: Alta (92.3%)\n• Sistema de ordeño automatizado\n• Programa de mejoramiento genético\n• 23 hectáreas productivas'
+                },
+                'OP003': {
+                    title: 'Lácteos Colandes - Lote C',
+                    producer: 'Álvaro José Morales', 
+                    amount: '$6.7M',
+                    details: 'Productor en expansión\n• Calidad de leche: Media-Alta (88.9%)\n• Plan de inversión en infraestructura\n• Potencial de crecimiento del 25%\n• 31 hectáreas productivas'
+                }
+            };
+
+            const opp = opportunities[opportunityId];
+            if (opp) {
+                alert(`💎 ${opp.title}\n\n👤 Productor: ${opp.producer}\n💰 Monto: ${opp.amount}\n\n${opp.details}\n\n¿Deseas proceder con la inversión?`);
+            }
+        }
+
+        // Simulate real-time updates
+        setInterval(() => {
+            const values = document.querySelectorAll('.stat-value, .portfolio-value');
+            if (Math.random() > 0.98) { // 2% chance every interval
+                values.forEach(value => {
+                    if (value.textContent.includes('$')) {
+                        const current = parseFloat(value.textContent.replace(/[$,]/g, ''));
+                        const change = (Math.random() - 0.5) * (current * 0.001);
+                        const newValue = Math.round(current + change);
+                        
+                        if (newValue > 0) {
+                            value.textContent = `$${newValue.toLocaleString('en-US')}`;
+                        }
+                    }
+                    
+                    if (value.textContent.includes('%')) {
+                        const current = parseFloat(value.textContent.replace('%', ''));
+                        const change = (Math.random() - 0.5) * 0.1;
+                        const newValue = (current + change).toFixed(1);
+                        value.textContent = `${newValue}%`;
+                    }
+                });
+            }
+        }, 8000);
+
+        // Simulate notification
+        setTimeout(() => {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #4CAF50, #2E7D32);
+                color: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
+                z-index: 1000;
+                max-width: 300px;
+                font-size: 0.9rem;
+                opacity: 0;
+                transform: translateX(350px);
+                transition: all 0.5s ease;
+            `;
+            notification.innerHTML = `
+                <strong>🎯 Nueva Oportunidad</strong><br>
+                Factoring de alto rendimiento disponible<br>
+                ROI proyectado: 13.2%
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(350px)';
+                setTimeout(() => notification.remove(), 500);
+            }, 6000);
+        }, 4000);
+    </script>
+</body>
+</html>
