@@ -3,271 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyección de Ingresos 5 Años - Tierra Fintech Solutions</title>
+    <title>Proyección de Ingresos 5 Años - Tierra Fintech (Modelo B2B Marketplace)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .header h1 {
-            color: #1e3c72;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .header p {
-            color: #666;
-            font-size: 1.1em;
-            margin-bottom: 20px;
-        }
-
-        .metadata {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        .metadata-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            font-size: 0.9em;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card h2 {
-            color: #1e3c72;
-            font-size: 1.8em;
-            margin-bottom: 20px;
-            border-bottom: 3px solid #2a5298;
-            padding-bottom: 10px;
-        }
-
-        .scenario-controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .scenario-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            background: #e0e0e0;
-            color: #666;
-        }
-
-        .scenario-btn.active {
-            background: linear-gradient(135deg, #2a5298, #1e3c72);
-            color: white;
-            box-shadow: 0 4px 15px rgba(42, 82, 152, 0.3);
-        }
-
-        .scenario-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .table-container {
-            overflow-x: auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95em;
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: right;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        th:first-child, td:first-child {
-            text-align: left;
-            font-weight: 600;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        tr:hover {
-            background-color: #e3f2fd;
-            transition: background-color 0.3s ease;
-        }
-
-        .metric-row {
-            border-left: 4px solid #2a5298;
-        }
-
-        .total-row {
-            background: linear-gradient(135deg, #f0f8ff, #e3f2fd);
-            font-weight: 700;
-            border-top: 2px solid #2a5298;
-        }
-
-        .chart-container {
-            position: relative;
-            height: 400px;
-            margin-top: 20px;
-        }
-
-        .kpis-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .kpi-card {
-            background: linear-gradient(135deg, #f8f9fa, #ffffff);
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 4px solid #2a5298;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .kpi-value {
-            font-size: 2em;
-            font-weight: 700;
-            color: #1e3c72;
-            margin-bottom: 5px;
-        }
-
-        .kpi-label {
-            color: #666;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .methodology {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 30px;
-        }
-
-        .methodology h3 {
-            color: #1e3c72;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-        }
-
-        .methodology ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .methodology li {
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-            position: relative;
-            padding-left: 20px;
-        }
-
-        .methodology li:before {
-            content: "→";
-            color: #2a5298;
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-        
-        .data-source {
-            font-size: 0.8em;
-            color: #666;
-            margin-top: 15px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 5px;
-            border-left: 3px solid #2a5298;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 { font-size: 2em; }
-            .scenario-controls { flex-direction: column; }
-            .kpis-grid { grid-template-columns: 1fr; }
-            table { font-size: 0.85em; }
-            th, td { padding: 8px 10px; }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); min-height: 100vh; color: #333; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); }
+        .header h1 { color: #1e3c72; font-size: 2.5em; margin-bottom: 10px; font-weight: 700; }
+        .header p { color: #666; font-size: 1.1em; margin-bottom: 20px; }
+        .metadata { background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin-top: 20px; }
+        .metadata-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; font-size: 0.9em; }
+        .card { background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 25px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; margin-bottom: 30px; }
+        .card:hover { transform: translateY(-5px); }
+        .card h2 { color: #1e3c72; font-size: 1.8em; margin-bottom: 20px; border-bottom: 3px solid #2a5298; padding-bottom: 10px; }
+        .scenario-controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .scenario-btn { padding: 10px 20px; border: none; border-radius: 25px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; background: #e0e0e0; color: #666; }
+        .scenario-btn.active { background: linear-gradient(135deg, #2a5298, #1e3c72); color: white; box-shadow: 0 4px 15px rgba(42, 82, 152, 0.3); }
+        .scenario-btn:hover { transform: translateY(-2px); }
+        .table-container { overflow-x: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.95em; }
+        th, td { padding: 12px 15px; text-align: right; border-bottom: 1px solid #ddd; }
+        th { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; font-weight: 600; position: sticky; top: 0; z-index: 10; }
+        th:first-child, td:first-child { text-align: left; font-weight: 600; }
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        tr:hover { background-color: #e3f2fd; transition: background-color 0.3s ease; }
+        .metric-row { border-left: 4px solid #2a5298; }
+        .total-row { background: linear-gradient(135deg, #f0f8ff, #e3f2fd); font-weight: 700; border-top: 2px solid #2a5298; }
+        .chart-container { position: relative; height: 400px; margin-top: 20px; }
+        .kpis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .kpi-card { background: linear-gradient(135deg, #f8f9fa, #ffffff); padding: 20px; border-radius: 10px; border-left: 4px solid #2a5298; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+        .kpi-value { font-size: 2em; font-weight: 700; color: #1e3c72; margin-bottom: 5px; }
+        .kpi-label { color: #666; font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.5px; }
+        .methodology { background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 25px; margin-top: 30px; }
+        .methodology h3 { color: #1e3c72; margin-bottom: 15px; font-size: 1.5em; }
+        .methodology ul { list-style-type: none; padding-left: 0; }
+        .methodology li { padding: 8px 0; border-bottom: 1px solid #eee; position: relative; padding-left: 20px; }
+        .methodology li:before { content: "→"; color: #2a5298; font-weight: bold; position: absolute; left: 0; }
+        .data-source { font-size: 0.8em; color: #666; margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; border-left: 3px solid #2a5298; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>📊 Proyección de Ingresos (5 años)</h1>
-            <p><strong>Tierra Fintech Solutions</strong> - Análisis Financiero Proyectado 2025-2029</p>
-            
+            <p><strong>Tierra Fintech Solutions</strong> - Modelo Financiero B2B Marketplace 2026-2030</p>
             <div class="metadata">
                 <div class="metadata-grid">
-                    <div><strong>Código Sesión:</strong> F6.1-S13</div>
-                    <div><strong>Modelo Financiero:</strong> Factoring Inverso + Servicios</div>
+                    <div><strong>Código Sesión:</strong> F7.0-S14-FINAL</div>
+                    <div><strong>Modelo Financiero:</strong> B2B Marketplace de Factoring</div>
                     <div><strong>Horizonte:</strong> 60 meses (5 años)</div>
                     <div><strong>Moneda Base:</strong> USD</div>
                     <div><strong>Última Actualización:</strong> Septiembre 2025</div>
-                    <div><strong>Estado:</strong> Validado con Airtable</div>
+                    <div><strong>Estado:</strong> Validado con Modelo Final</div>
                 </div>
             </div>
         </div>
@@ -288,11 +76,11 @@
                     <thead>
                         <tr>
                             <th>Concepto / Año</th>
-                            <th>2025 (Q4)</th>
-                            <th>2026</th>
-                            <th>2027</th>
-                            <th>2028</th>
-                            <th>2029</th>
+                            <th>2026 (Año 1)</th>
+                            <th>2027 (Año 2)</th>
+                            <th>2028 (Año 3)</th>
+                            <th>2029 (Año 4)</th>
+                            <th>2030 (Año 5)</th>
                             <th>Crecimiento CAGR</th>
                         </tr>
                     </thead>
@@ -316,55 +104,52 @@
         </div>
 
         <div class="methodology">
-            <h3>🔬 Metodología y Supuestos del Modelo</h3>
+            <h3>🔬 Metodología y Supuestos del Modelo (B2B Marketplace)</h3>
             <ul>
-                <li><strong>Fuentes de Ingresos:</strong> Comisiones por factoring inverso (8% sobre rendimientos), servicios de valor agregado, tasas por gestión de plataforma</li>
-                <li><strong>Crecimiento de Productores:</strong> Base 30%, Optimista 50%, Pesimista 15% mensual en año 1, estabilizándose gradualmente</li>
-                <li><strong>GMV por Productor:</strong> Base $540 USD/mes, crecimiento del 12% anual por inflación y productividad</li>
-                <li><strong>Estacionalidad:</strong> Incorporada según ciclos lácteos colombianos (picos en meses 3, 6, 9, 12)</li>
-                <li><strong>Churn Rate:</strong> Base 3% mensual, mejorado por fidelización y propuesta de valor</li>
-                <li><strong>Unit Economics:</strong> LTV $486, CAC $100, ratio LTV/CAC 4.86x (saludable)</li>
-                <li><strong>Macroeconomía:</strong> PIB Colombia +2.6%, inflación 4.3%, sector lácteo CAGR 3.2%</li>
-                <li><strong>Penetración de Mercado:</strong> TAM $1.05B USD, objetivo 6.6% penetración para 2029</li>
+                <li><strong>Fuentes de Ingresos:</strong> El modelo de negocio se basa en una comisión del 20% sobre la rentabilidad del inversor (1.3% mensual), una configuración de marketplace que elimina la necesidad de capital propio para el fondeo, haciendo el modelo ágil y resiliente (Osterwalder & Pigneur, 2010; Romero Guzmán, 2025, Anexo F).</li>
+                <li><strong>Crecimiento de Clientes (B2B):</strong> La estrategia de adquisición se centra en las empresas procesadoras, siguiendo un plan por fases validado: 2 procesadoras en Año 1, 7 en Año 3, y una meta consolidada de 15 en Año 5 (Apps.co & MinTIC, n.d.; Romero Guzmán, 2025).</li>
+                <li><strong>GMV por Procesadora:</strong> El modelo asume un Gross Merchandise Volume (GMV) promedio de $1.5M USD/mes por cada procesadora, basado en el análisis de la cadena productiva láctea (Romero Guzmán, 2025, Anexo F).</li>
+                <li><strong>Modelo de Inversión:</strong> La liquidez es provista por inversores externos a través de la plataforma Interra Invierte, generando retornos atractivos con impacto social y respondiendo a la creciente demanda de inversiones de impacto (Chaparro-Africano y Ospina-Escobar, 2021).</li>
+                <li><strong>Unit Economics (Procesadora):</strong> El modelo demuestra una alta sostenibilidad por cliente con un Lifetime Value (LTV) de $486k y un Costo de Adquisición de Cliente (CAC) de $10k, resultando en un ratio LTV/CAC excepcional de 48.6x (ver Anexo F, Tabla F8).</li>
+                <li><strong>Contratación por Fases:</strong> El equipo crece de 7 a 14 personas de manera escalonada para alinear la estructura de costos con la generación de ingresos y la eficiencia del capital (ver Anexo E).</li>
+                <li><strong>Macroeconomía:</strong> Supuestos de crecimiento del PIB sectorial del 3.2% y tipo de cambio de 4,000 COP/USD, en un contexto donde el costo del crédito formal se ha encarecido, creando una oportunidad para mecanismos alternativos (Romero Guzmán, 2025).</li>
+                <li><strong>Estrategia de Mercado:</strong> El enfoque es un modelo B2B puro, donde la adquisición de empresas procesadoras es la puerta de entrada a su red de productores. Esta estrategia de nicho permite una penetración de mercado efectiva frente a actores financieros tradicionales (Zentner, 2018).</li>
             </ul>
-            
             <div class="data-source">
-                <strong>📋 Fuentes de Datos:</strong> Airtable (EstadoResultados, DriversSupuestos, CalculosFinancieros), 
-                DANE, Asoleche 2024, Banca de Oportunidades, análisis sectorial validado
+                <strong>📋 Fuente Principal:</strong> Los datos y supuestos de este modelo se basan en la investigación y validación documentada en el trabajo de grado "Validación del Modelo de Negocio para la Creación de Tierra Fintech" (Romero Guzmán, 2025), incluyendo el Modelo Financiero (Anexo F), el Plan Estratégico (Anexo A) y la Validación de Mercado (Anexo D).
             </div>
         </div>
     </div>
 
     <script>
-        // Financial data structure with three scenarios
         const financialData = {
             base: {
-                2025: { ingresosFactoring: 2750, serviciosValorAgregado: 850, otrosIngresos: 450, totalIngresos: 4050 },
-                2026: { ingresosFactoring: 12840, serviciosValorAgregado: 3650, otrosIngresos: 1920, totalIngresos: 18410 },
-                2027: { ingresosFactoring: 85430, serviciosValorAgregado: 18750, otrosIngresos: 9820, totalIngresos: 114000 },
-                2028: { ingresosFactoring: 186500, serviciosValorAgregado: 42300, otrosIngresos: 23150, totalIngresos: 251950 },
-                2029: { ingresosFactoring: 285600, serviciosValorAgregado: 68900, otrosIngresos: 38500, totalIngresos: 393000 }
+                2026: { comisionesFactoring: 266760, serviciosAdicionales: 14040, totalIngresos: 280800 },
+                2027: { comisionesFactoring: 533520, serviciosAdicionales: 28080, totalIngresos: 561600 },
+                2028: { comisionesFactoring: 933660, serviciosAdicionales: 49140, totalIngresos: 982800 },
+                2029: { comisionesFactoring: 1333800, serviciosAdicionales: 70200, totalIngresos: 1404000 },
+                2030: { comisionesFactoring: 2000700, serviciosAdicionales: 105300, totalIngresos: 2106000 }
             },
             optimista: {
-                2025: { ingresosFactoring: 3850, serviciosValorAgregado: 1180, otrosIngresos: 620, totalIngresos: 5650 },
-                2026: { ingresosFactoring: 18960, serviciosValorAgregado: 5120, otrosIngresos: 2680, totalIngresos: 26760 },
-                2027: { ingresosFactoring: 125800, serviciosValorAgregado: 26400, otrosIngresos: 13800, totalIngresos: 166000 },
-                2028: { ingresosFactoring: 285400, serviciosValorAgregado: 64200, otrosIngresos: 35400, totalIngresos: 385000 },
-                2029: { ingresosFactoring: 485600, serviciosValorAgregado: 118500, otrosIngresos: 65900, totalIngresos: 670000 }
+                2026: { comisionesFactoring: 378000, serviciosAdicionales: 20000, totalIngresos: 398000 },
+                2027: { comisionesFactoring: 882000, serviciosAdicionales: 46000, totalIngresos: 928000 },
+                2028: { comisionesFactoring: 1653750, serviciosAdicionales: 86250, totalIngresos: 1740000 },
+                2029: { comisionesFactoring: 2520000, serviciosAdicionales: 130000, totalIngresos: 2650000 },
+                2030: { comisionesFactoring: 3937500, serviciosAdicionales: 202500, totalIngresos: 4140000 }
             },
             pesimista: {
-                2025: { ingresosFactoring: 1850, serviciosValorAgregado: 520, otrosIngresos: 280, totalIngresos: 2650 },
-                2026: { ingresosFactoring: 7650, serviciosValorAgregado: 2180, otrosIngresos: 1140, totalIngresos: 10970 },
-                2027: { ingresosFactoring: 48200, serviciosValorAgregado: 10800, otrosIngresos: 5650, totalIngresos: 64650 },
-                2028: { ingresosFactoring: 89500, serviciosValorAgregado: 22100, otrosIngresos: 12400, totalIngresos: 124000 },
-                2029: { ingresosFactoring: 135800, serviciosValorAgregado: 32600, otrosIngresos: 18600, totalIngresos: 187000 }
+                2026: { comisionesFactoring: 147000, serviciosAdicionales: 8000, totalIngresos: 155000 },
+                2027: { comisionesFactoring: 294000, serviciosAdicionales: 16000, totalIngresos: 310000 },
+                2028: { comisionesFactoring: 514500, serviciosAdicionales: 28500, totalIngresos: 543000 },
+                2029: { comisionesFactoring: 735000, serviciosAdicionales: 41000, totalIngresos: 776000 },
+                2030: { comisionesFactoring: 992250, serviciosAdicionales: 54750, totalIngresos: 1047000 }
             }
         };
 
         const kpisData = {
-            base: { vpn: 267340, tir: 32.4, roiAnio5: 26.73, puntoEquilibrio: 18, cagr: 285.2 },
-            optimista: { vpn: 756420, tir: 48.7, roiAnio5: 75.64, puntoEquilibrio: 14, cagr: 342.8 },
-            pesimista: { vpn: -124850, tir: 18.5, roiAnio5: -12.49, puntoEquilibrio: 26, cagr: 168.4 }
+            base: { vpn: 145038, tir: 24.3, roiAnio5: 1.77, puntoEquilibrio: 24 }, // Punto de equilibrio actualizado a 24 meses (Año 2)
+            optimista: { vpn: 850000, tir: 45.0, roiAnio5: 4.5, puntoEquilibrio: 18 },
+            pesimista: { vpn: -250000, tir: 12.5, roiAnio5: 0.5, puntoEquilibrio: 38 }
         };
 
         let currentScenario = 'base';
@@ -388,44 +173,24 @@
         function updateTable() {
             const tbody = document.getElementById('projectionTableBody');
             const data = financialData[currentScenario];
-            const calculateCAGR = (start, end, years) => (Math.pow(end / start, 1 / years) - 1) * 100;
+            const years = Object.keys(data);
+            const calculateCAGR = (start, end, numYears) => (Math.pow(end / start, 1 / numYears) - 1) * 100;
 
             tbody.innerHTML = `
                 <tr class="metric-row">
-                    <td>💳 Ingresos por Factoring</td>
-                    <td>${data[2025].ingresosFactoring.toLocaleString()}</td>
-                    <td>${data[2026].ingresosFactoring.toLocaleString()}</td>
-                    <td>${data[2027].ingresosFactoring.toLocaleString()}</td>
-                    <td>${data[2028].ingresosFactoring.toLocaleString()}</td>
-                    <td>${data[2029].ingresosFactoring.toLocaleString()}</td>
-                    <td>${calculateCAGR(data[2025].ingresosFactoring, data[2029].ingresosFactoring, 4).toFixed(1)}%</td>
+                    <td>💳 Comisiones por Factoring Marketplace</td>
+                    ${years.map(year => `<td>$${data[year].comisionesFactoring.toLocaleString()}</td>`).join('')}
+                    <td>${calculateCAGR(data[years[0]].comisionesFactoring, data[years[years.length - 1]].comisionesFactoring, years.length - 1).toFixed(1)}%</td>
                 </tr>
                 <tr class="metric-row">
-                    <td>🔧 Servicios de Valor Agregado</td>
-                    <td>${data[2025].serviciosValorAgregado.toLocaleString()}</td>
-                    <td>${data[2026].serviciosValorAgregado.toLocaleString()}</td>
-                    <td>${data[2027].serviciosValorAgregado.toLocaleString()}</td>
-                    <td>${data[2028].serviciosValorAgregado.toLocaleString()}</td>
-                    <td>${data[2029].serviciosValorAgregado.toLocaleString()}</td>
-                    <td>${calculateCAGR(data[2025].serviciosValorAgregado, data[2029].serviciosValorAgregado, 4).toFixed(1)}%</td>
-                </tr>
-                <tr class="metric-row">
-                    <td>📊 Otros Ingresos (Comisiones)</td>
-                    <td>${data[2025].otrosIngresos.toLocaleString()}</td>
-                    <td>${data[2026].otrosIngresos.toLocaleString()}</td>
-                    <td>${data[2027].otrosIngresos.toLocaleString()}</td>
-                    <td>${data[2028].otrosIngresos.toLocaleString()}</td>
-                    <td>${data[2029].otrosIngresos.toLocaleString()}</td>
-                    <td>${calculateCAGR(data[2025].otrosIngresos, data[2029].otrosIngresos, 4).toFixed(1)}%</td>
+                    <td>🔧 Servicios Adicionales (Datos, etc.)</td>
+                    ${years.map(year => `<td>$${data[year].serviciosAdicionales.toLocaleString()}</td>`).join('')}
+                    <td>${calculateCAGR(data[years[0]].serviciosAdicionales, data[years[years.length - 1]].serviciosAdicionales, years.length - 1).toFixed(1)}%</td>
                 </tr>
                 <tr class="total-row">
                     <td><strong>💰 TOTAL INGRESOS</strong></td>
-                    <td><strong>$${data[2025].totalIngresos.toLocaleString()}</strong></td>
-                    <td><strong>$${data[2026].totalIngresos.toLocaleString()}</strong></td>
-                    <td><strong>$${data[2027].totalIngresos.toLocaleString()}</strong></td>
-                    <td><strong>$${data[2028].totalIngresos.toLocaleString()}</strong></td>
-                    <td><strong>$${data[2029].totalIngresos.toLocaleString()}</strong></td>
-                    <td><strong>${calculateCAGR(data[2025].totalIngresos, data[2029].totalIngresos, 4).toFixed(1)}%</strong></td>
+                    ${years.map(year => `<td><strong>$${data[year].totalIngresos.toLocaleString()}</strong></td>`).join('')}
+                    <td><strong>${calculateCAGR(data[years[0]].totalIngresos, data[years[years.length - 1]].totalIngresos, years.length - 1).toFixed(1)}%</strong></td>
                 </tr>
             `;
         }
@@ -468,24 +233,17 @@
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Ingresos por Factoring',
-                            data: labels.map(year => data[year].ingresosFactoring),
-                            backgroundColor: 'rgba(30, 60, 114, 0.8)', // #1e3c72
+                            label: 'Comisiones por Factoring Marketplace',
+                            data: labels.map(year => data[year].comisionesFactoring),
+                            backgroundColor: 'rgba(30, 60, 114, 0.8)',
                             borderColor: 'rgba(30, 60, 114, 1)',
                             borderWidth: 1
                         },
                         {
-                            label: 'Servicios de Valor Agregado',
-                            data: labels.map(year => data[year].serviciosValorAgregado),
-                            backgroundColor: 'rgba(42, 82, 152, 0.8)', // #2a5298
+                            label: 'Servicios Adicionales',
+                            data: labels.map(year => data[year].serviciosAdicionales),
+                            backgroundColor: 'rgba(42, 82, 152, 0.6)',
                             borderColor: 'rgba(42, 82, 152, 1)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: 'Otros Ingresos',
-                            data: labels.map(year => data[year].otrosIngresos),
-                            backgroundColor: 'rgba(173, 216, 230, 0.8)', // lightblue
-                            borderColor: 'rgba(173, 216, 230, 1)',
                             borderWidth: 1
                         }
                     ]
@@ -493,48 +251,29 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    title: {
-                        display: true,
-                        text: `Proyección de Ingresos - Escenario ${currentScenario.charAt(0).toUpperCase() + currentScenario.slice(1)}`,
-                        fontSize: 16
-                    },
-                    legend: {
-                        position: 'bottom'
-                    },
+                    title: { display: true, text: `Proyección de Ingresos - Escenario ${currentScenario.charAt(0).toUpperCase() + currentScenario.slice(1)}`, fontSize: 16 },
+                    legend: { position: 'bottom' },
                     tooltips: {
                         mode: 'index',
                         intersect: false,
                         callbacks: {
                             label: function(tooltipItem, data) {
                                 let label = data.datasets[tooltipItem.datasetIndex].label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
+                                if (label) { label += ': '; }
                                 label += '$' + tooltipItem.yLabel.toLocaleString();
                                 return label;
                             }
                         }
                     },
                     scales: {
-                        xAxes: [{
-                            stacked: true,
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Año'
-                            }
-                        }],
+                        xAxes: [{ stacked: true, scaleLabel: { display: true, labelString: 'Año' } }],
                         yAxes: [{
                             stacked: true,
                             ticks: {
                                 beginAtZero: true,
-                                callback: function(value) {
-                                    return '$' + (value / 1000) + 'K';
-                                }
+                                callback: function(value) { return '$' + (value / 1000) + 'K'; }
                             },
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Ingresos (USD)'
-                            }
+                            scaleLabel: { display: true, labelString: 'Ingresos (USD)' }
                         }]
                     }
                 }

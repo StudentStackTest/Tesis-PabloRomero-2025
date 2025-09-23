@@ -8,468 +8,79 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #2c3e50;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 2rem 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-bottom: 3px solid #3498db;
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-        
-        .logo {
-            background: linear-gradient(135deg, #3498db, #2ecc71);
-            padding: 1rem;
-            border-radius: 15px;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-            text-align: center;
-            min-width: 120px;
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-        }
-        
-        .header-info {
-            flex: 1;
-        }
-        
-        .header-info h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: #2c3e50;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            color: #7f8c8d;
-            font-weight: 300;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-        
-        .card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #3498db, #2ecc71, #e74c3c, #f39c12);
-            border-radius: 20px 20px 0 0;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
-        }
-        
-        .card h3 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: #2c3e50;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        .methodology-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(155, 89, 182, 0.1);
-            color: #9b59b6;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        
-        .vrio-framework {
-            background: linear-gradient(135deg, rgba(155, 89, 182, 0.1), rgba(52, 152, 219, 0.1));
-            padding: 3rem;
-            border-radius: 25px;
-            margin: 3rem 0;
-            border: 2px solid rgba(155, 89, 182, 0.3);
-        }
-        
-        .vrio-matrix {
-            overflow-x: auto;
-            margin: 2rem 0;
-        }
-        
-        .vrio-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
-        .vrio-table thead {
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
-            color: white;
-        }
-        
-        .vrio-table th {
-            padding: 1.5rem 1rem;
-            font-weight: 700;
-            font-size: 1rem;
-            text-align: center;
-            border-right: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        .vrio-table th:last-child {
-            border-right: none;
-        }
-        
-        .vrio-table td {
-            padding: 1.2rem 1rem;
-            text-align: center;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            border-right: 1px solid rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .vrio-table td:last-child {
-            border-right: none;
-        }
-        
-        .vrio-table tbody tr:hover {
-            background: rgba(52, 152, 219, 0.05);
-            transform: scale(1.01);
-        }
-        
-        .resource-name {
-            text-align: left !important;
-            font-weight: 600;
-            color: #2c3e50;
-            max-width: 250px;
-        }
-        
-        .vrio-score {
-            font-weight: 700;
-            font-size: 1.2rem;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            color: white;
-        }
-        
-        .score-4 {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
-            animation: pulse-success 2s ease-in-out infinite;
-        }
-        
-        .score-3-5 {
-            background: linear-gradient(135deg, #f39c12, #e67e22);
-        }
-        
-        .score-3 {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-        }
-        
-        .score-2 {
-            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
-        }
-        
-        @keyframes pulse-success {
-            0%, 100% { 
-                transform: scale(1);
-                box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
-            }
-            50% { 
-                transform: scale(1.05);
-                box-shadow: 0 0 20px rgba(46, 204, 113, 0.8);
-            }
-        }
-        
-        .check-mark {
-            color: #27ae60;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        .partial-mark {
-            color: #f39c12;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        .x-mark {
-            color: #e74c3c;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        .implication-badge {
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-align: center;
-            white-space: nowrap;
-        }
-        
-        .ventaja-sostenible {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
-            color: white;
-            animation: glow-green 3s ease-in-out infinite;
-        }
-        
-        .ventaja-temporal {
-            background: linear-gradient(135deg, #f39c12, #e67e22);
-            color: white;
-        }
-        
-        .paridad-competitiva {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-        }
-        
-        .desventaja {
-            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
-            color: white;
-        }
-        
-        @keyframes glow-green {
-            0%, 100% { 
-                box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);
-            }
-            50% { 
-                box-shadow: 0 0 25px rgba(46, 204, 113, 0.9);
-            }
-        }
-        
-        .analysis-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            margin: 3rem 0;
-        }
-        
-        .chart-container {
-            position: relative;
-            height: 400px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
-        .insights-section {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 3rem;
-            border-radius: 25px;
-            margin: 3rem 0;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-        
-        .insights-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        
-        .insight-card {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            padding: 2rem;
-            border-radius: 15px;
-            border-left: 5px solid #9b59b6;
-            transition: all 0.3s ease;
-        }
-        
-        .insight-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-        }
-        
-        .insight-card h4 {
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .strategic-actions {
-            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(39, 174, 96, 0.1));
-            padding: 3rem;
-            border-radius: 25px;
-            margin: 3rem 0;
-            border: 2px solid rgba(46, 204, 113, 0.3);
-        }
-        
-        .actions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        
-        .action-card {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 2rem;
-            border-radius: 15px;
-            border-left: 5px solid #27ae60;
-            transition: all 0.3s ease;
-        }
-        
-        .action-card:hover {
-            transform: translateX(10px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
-        .action-card h4 {
-            color: #27ae60;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-        
-        .priority-high {
-            border-left-color: #e74c3c;
-        }
-        
-        .priority-high h4 {
-            color: #e74c3c;
-        }
-        
-        .priority-medium {
-            border-left-color: #f39c12;
-        }
-        
-        .priority-medium h4 {
-            color: #f39c12;
-        }
-        
-        .metrics-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-        
-        .metric-card {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 1.5rem;
-            border-radius: 15px;
-            text-align: center;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-        
-        .metric-card:hover {
-            border-color: #3498db;
-            transform: scale(1.05);
-        }
-        
-        .metric-value {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #2c3e50;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-        
-        .metric-label {
-            color: #7f8c8d;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-        
-        .barney-reference {
-            background: rgba(155, 89, 182, 0.05);
-            border: 1px solid rgba(155, 89, 182, 0.2);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 2rem 0;
-            font-style: italic;
-            color: #6c5ce7;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; line-height: 1.6; color: #2c3e50; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; overflow-x: hidden; }
+        .header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 2rem 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-bottom: 3px solid #3498db; }
+        .header-content { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 2rem; }
+        .logo { background: linear-gradient(135deg, #3498db, #2ecc71); padding: 1rem; border-radius: 15px; color: white; font-weight: bold; font-size: 1.2rem; text-align: center; min-width: 120px; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3); }
+        .header-info { flex: 1; }
+        .header-info h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; color: #2c3e50; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+        .subtitle { font-size: 1.2rem; color: #7f8c8d; font-weight: 300; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem; }
+        .card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 2.5rem; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 1px solid rgba(255, 255, 255, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden; margin-bottom: 2rem; }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #3498db, #2ecc71, #e74c3c, #f39c12); border-radius: 20px 20px 0 0; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .card h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 1.5rem; color: #2c3e50; display: flex; align-items: center; gap: 1rem; }
+        .icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; }
+        .methodology-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(155, 89, 182, 0.1); color: #9b59b6; padding: 0.5rem 1rem; border-radius: 25px; font-weight: 600; margin-bottom: 1rem; }
+        .vrio-framework { background: linear-gradient(135deg, rgba(155, 89, 182, 0.1), rgba(52, 152, 219, 0.1)); padding: 3rem; border-radius: 25px; margin: 3rem 0; border: 2px solid rgba(155, 89, 182, 0.3); }
+        .vrio-matrix { overflow-x: auto; margin: 2rem 0; }
+        .vrio-table { width: 100%; border-collapse: collapse; background: rgba(255, 255, 255, 0.9); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .vrio-table thead { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; }
+        .vrio-table th { padding: 1.5rem 1rem; font-weight: 700; font-size: 1rem; text-align: center; border-right: 1px solid rgba(255,255,255,0.2); }
+        .vrio-table th:last-child { border-right: none; }
+        .vrio-table td { padding: 1.2rem 1rem; text-align: center; border-bottom: 1px solid rgba(0,0,0,0.1); border-right: 1px solid rgba(0,0,0,0.1); transition: all 0.3s ease; }
+        .vrio-table td:last-child { border-right: none; }
+        .vrio-table tbody tr:hover { background: rgba(52, 152, 219, 0.05); transform: scale(1.01); }
+        .resource-name { text-align: left !important; font-weight: 600; color: #2c3e50; max-width: 250px; }
+        .vrio-score { font-weight: 700; font-size: 1.2rem; padding: 0.5rem 1rem; border-radius: 25px; color: white; }
+        .score-4 { background: linear-gradient(135deg, #27ae60, #2ecc71); animation: pulse-success 2s ease-in-out infinite; }
+        .score-3-5 { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .score-3 { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .score-2 { background: linear-gradient(135deg, #95a5a6, #7f8c8d); }
+        @keyframes pulse-success { 0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(46, 204, 113, 0.5); } 50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(46, 204, 113, 0.8); } }
+        .check-mark { color: #27ae60; font-weight: bold; font-size: 1.2rem; }
+        .partial-mark { color: #f39c12; font-weight: bold; font-size: 1.2rem; }
+        .x-mark { color: #e74c3c; font-weight: bold; font-size: 1.2rem; }
+        .implication-badge { padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-align: center; white-space: nowrap; }
+        .ventaja-sostenible { background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; animation: glow-green 3s ease-in-out infinite; }
+        .ventaja-temporal { background: linear-gradient(135deg, #f39c12, #e67e22); color: white; }
+        .paridad-competitiva { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
+        .desventaja { background: linear-gradient(135deg, #95a5a6, #7f8c8d); color: white; }
+        @keyframes glow-green { 0%, 100% { box-shadow: 0 0 15px rgba(46, 204, 113, 0.6); } 50% { box-shadow: 0 0 25px rgba(46, 204, 113, 0.9); } }
+        .analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin: 3rem 0; }
+        .chart-container { position: relative; height: 400px; background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .insights-section { background: rgba(255, 255, 255, 0.95); padding: 3rem; border-radius: 25px; margin: 3rem 0; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .insights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .insight-card { background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 2rem; border-radius: 15px; border-left: 5px solid #9b59b6; transition: all 0.3s ease; }
+        .insight-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .insight-card h4 { color: #2c3e50; margin-bottom: 1rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+        .strategic-actions { background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(39, 174, 96, 0.1)); padding: 3rem; border-radius: 25px; margin: 3rem 0; border: 2px solid rgba(46, 204, 113, 0.3); }
+        .actions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .action-card { background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 15px; border-left: 5px solid #27ae60; transition: all 0.3s ease; }
+        .action-card:hover { transform: translateX(10px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .action-card h4 { color: #27ae60; margin-bottom: 1rem; font-weight: 700; }
+        .priority-high { border-left-color: #e74c3c; }
+        .priority-high h4 { color: #e74c3c; }
+        .priority-medium { border-left-color: #f39c12; }
+        .priority-medium h4 { color: #f39c12; }
+        .metrics-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .metric-card { background: rgba(255, 255, 255, 0.9); padding: 1.5rem; border-radius: 15px; text-align: center; border: 2px solid transparent; transition: all 0.3s ease; }
+        .metric-card:hover { border-color: #3498db; transform: scale(1.05); }
+        .metric-value { font-size: 2.2rem; font-weight: 700; color: #2c3e50; display: block; margin-bottom: 0.5rem; }
+        .metric-label { color: #7f8c8d; font-weight: 500; font-size: 0.9rem; }
+        .barney-reference { background: rgba(155, 89, 182, 0.05); border: 1px solid rgba(155, 89, 182, 0.2); padding: 1.5rem; border-radius: 10px; margin: 2rem 0; font-style: italic; color: #6c5ce7; }
+        .references-footer { background: rgba(255, 255, 255, 0.85); padding: 2rem; border-radius: 15px; margin-top: 3rem; }
+        .references-footer h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+        .references-footer ol { padding-left: 1.5rem; font-size: 0.9rem; color: #34495e; }
+        .references-footer li { margin-bottom: 0.5rem; }
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .analysis-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .header-info h1 {
-                font-size: 2rem;
-            }
-            
-            .vrio-table {
-                font-size: 0.85rem;
-            }
-            
-            .vrio-table th,
-            .vrio-table td {
-                padding: 0.8rem 0.5rem;
-            }
-            
-            .actions-grid {
-                grid-template-columns: 1fr;
-            }
+            .header-content { flex-direction: column; text-align: center; }
+            .analysis-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .header-info h1 { font-size: 2rem; }
+            .vrio-table { font-size: 0.85rem; }
+            .vrio-table th, .vrio-table td { padding: 0.8rem 0.5rem; }
+            .actions-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -495,13 +106,13 @@
                 <div class="icon" style="background: #9b59b6;">🔍</div>
                 Marco Conceptual VRIO
             </h3>
-            <p><strong>Objetivo:</strong> Evaluar sistemáticamente los recursos y capacidades organizacionales para identificar fuentes de ventaja competitiva sostenible mediante el análisis de cuatro criterios fundamentales.</p>
+            <p><strong>Objetivo:</strong> Evaluar sistemáticamente los recursos y capacidades organizacionales para identificar fuentes de ventaja competitiva sostenible. La tecnología financiera (FinTech) se apoya en innovaciones para aumentar la eficiencia, lo cual impacta positivamente el desarrollo y la gestión de recursos (Tewari, 2024)².</p>
             <div class="barney-reference">
-                <strong>Fundamento Teórico:</strong> "Los recursos que son valiosos, raros, imperfectamente imitables y organizacionalmente aprovechados constituyen fuentes de ventaja competitiva sostenible" - Jay Barney, Journal of Management (1991)
+                <strong>Fundamento Teórico:</strong> "Los recursos que son valiosos, raros, imperfectamente imitables y organizacionalmente aprovechados constituyen fuentes de ventaja competitiva sostenible" - Jay Barney, Journal of Management (1991)¹.
             </div>
             <div class="metrics-summary">
                 <div class="metric-card">
-                    <span class="metric-value">12</span>
+                    <span class="metric-value">6</span>
                     <span class="metric-label">Recursos Evaluados</span>
                 </div>
                 <div class="metric-card">
@@ -509,12 +120,12 @@
                     <span class="metric-label">Criterios VRIO</span>
                 </div>
                 <div class="metric-card">
-                    <span class="metric-value">3.6</span>
+                    <span class="metric-value">3.1</span>
                     <span class="metric-label">Score Promedio</span>
                 </div>
                 <div class="metric-card">
-                    <span class="metric-value">33%</span>
-                    <span class="metric-label">Ventaja Sostenible</span>
+                    <span class="metric-value">50%</span>
+                    <span class="metric-label">Ventaja Competitiva</span>
                 </div>
             </div>
         </div>
@@ -541,7 +152,7 @@
                         </tr>
                     </thead>
                     <tbody id="vrioTableBody">
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -577,7 +188,7 @@
                 </div>
                 <div class="insight-card">
                     <h4>🔧 Oportunidades de Optimización</h4>
-                    <p>Varios recursos valiosos y raros requieren mejor <strong>organización interna</strong> para maximizar su potencial competitivo, especialmente el conocimiento sectorial y las alianzas estratégicas.</p>
+                    <p>Varios recursos valiosos y raros requieren mejor <strong>organización interna</strong> para maximizar su potencial competitivo. Las alianzas estratégicas son clave en escenarios de competencia con nuevos actores FinTech (Zentner, 2018)³.</p>
                 </div>
                 <div class="insight-card">
                     <h4>🛡️ Barreras de Entrada Sólidas</h4>
@@ -599,43 +210,23 @@
             </p>
             
             <div class="actions-grid" id="strategicActions">
-                </div>
-        </div>
-
-        <div class="card">
-            <h3>
-                <div class="icon" style="background: #3498db;">🔗</div>
-                Trazabilidad y Validación de Datos
-            </h3>
-            <div class="metrics-summary">
-                <div class="metric-card">
-                    <span class="metric-value">100%</span>
-                    <span class="metric-label">Datos de MatrizVRIO</span>
-                </div>
-                <div class="metric-card">
-                    <span class="metric-value">12</span>
-                    <span class="metric-label">Recursos Analizados</span>
-                </div>
-                <div class="metric-card">
-                    <span class="metric-value">4</span>
-                    <span class="metric-label">Categorías de Recursos</span>
-                </div>
-                <div class="metric-card">
-                    <span class="metric-value">MBA</span>
-                    <span class="metric-label">Rigor Académico</span>
-                </div>
             </div>
-            <p style="text-align: center; color: #7f8c8d; margin-top: 1rem;">
-                <strong>Base de Datos:</strong> FinanzasEstrategiaCorporativaTierraFintech → MatrizVRIO<br>
-                <strong>Metodología:</strong> Framework Jay Barney con scoring cuantitativo validado
-            </p>
+        </div>
+        
+        <div class="references-footer">
+            <h3>Referencias Bibliográficas</h3>
+            <ol>
+                <li>Barney, J. (1991). Firm resources and sustained competitive advantage. <em>Journal of Management, 17</em>(1), 99–120.</li>
+                <li>Tewari, S. (2024). Impact of FinTech on natural resource management: How financial impacts shape the association?. <em>Resources Policy, 90</em>, 104752. https://doi.org/10.1016/j.resourpol.2024.104752.</li>
+                <li>Zentner, A. (2018). <em>Tesis Estrategia digital de la industria financiera, escenarios de competencia de bancos tradicionales con nuevos actores fintech</em> [Tesis de maestría, Universidad de Buenos Aires].</li>
+                <li>Barrios, D., Restrepo-Escobar, F. J., & Cerón-Muñoz, M. F. (2016). Background on technology management as a competitive strategy in the Colombian dairy sector. <em>Revista de la Facultad de Ciencias Agrarias, 49</em>(1), 163-176.</li>
+            </ol>
         </div>
     </div>
 
     <script>
         // NO es necesario configurar Chart.js en v2 con Chart.register
         
-        // Datos de la matriz VRIO basados en Airtable
         const vrioData = [
             {
                 recurso: "Algoritmo Scoring Crediticio Sectorial",
@@ -672,7 +263,7 @@
                 organizado: "◐",
                 puntuacion: 3.0,
                 implicacion: "Ventaja Competitiva Temporal",
-                justificacion: "Expertise sectorial permite entender dinámicas únicas, ciclos productivos y riesgos específicos del sector lácteo.",
+                justificacion: "Expertise sectorial permite entender dinámicas únicas, ciclos productivos y riesgos específicos del sector lácteo, caracterizado por una estructura de mercado imperfecta y baja visión empresarial (Barrios et al., 2016)⁴.",
                 acciones: ["Documentar y sistematizar conocimiento", "Desarrollar metodologías estandarizadas", "Crear centro de excelencia sectorial", "Implementar programas de capacitación"],
                 prioridad: "Media"
             },
@@ -685,7 +276,7 @@
                 organizado: "✓",
                 puntuacion: 2.5,
                 implicacion: "Paridad Competitiva",
-                justificacion: "Ecosistema de 3 plataformas (GiroCampo, FabriCash, Interra) genera eficiencias operativas y datos valiosos.",
+                justificacion: "Ecosistema de 3 plataformas (GiroCampo, FabriCash, Interra Invierte) genera eficiencias operativas y datos valiosos.",
                 acciones: ["Integrar más profundamente las plataformas", "Desarrollar APIs públicas", "Mejorar experiencia de usuario", "Expandir funcionalidades"],
                 prioridad: "Media"
             },
@@ -717,10 +308,9 @@
             }
         ];
         
-        // Renderizar tabla VRIO
         function renderVRIOTable() {
             const tableBody = document.getElementById('vrioTableBody');
-            
+            if (!tableBody) return;
             tableBody.innerHTML = vrioData.map(resource => {
                 let scoreClass = '';
                 if (resource.puntuacion >= 4.0) scoreClass = 'score-4';
@@ -751,32 +341,30 @@
             }).join('');
         }
         
-        // Crear gráfico de distribución VRIO
         function createVRIOChart() {
-            const ctx = document.getElementById('vrioChart').getContext('2d');
+            const ctx = document.getElementById('vrioChart');
+            if (!ctx) return;
+            const context = ctx.getContext('2d');
             
-            // Contar recursos por puntuación
+            const sustainableCount = vrioData.filter(r => r.puntuacion >= 4.0).length;
+            const temporalCount = vrioData.filter(r => r.puntuacion >= 3.0 && r.puntuacion < 4.0).length;
+            const parityCount = vrioData.filter(r => r.puntuacion >= 2.5 && r.puntuacion < 3.0).length;
+            const disadvantageCount = vrioData.filter(r => r.puntuacion < 2.5).length;
+
             const scoreDistribution = {
-                '4.0 - Sostenible': vrioData.filter(r => r.puntuacion >= 4.0).length,
-                '3.5 - Temporal+': vrioData.filter(r => r.puntuacion >= 3.5 && r.puntuacion < 4.0).length,
-                '3.0 - Temporal': vrioData.filter(r => r.puntuacion >= 3.0 && r.puntuacion < 3.5).length,
-                '2.5 - Paridad': vrioData.filter(r => r.puntuacion >= 2.5 && r.puntuacion < 3.0).length,
-                '<2.5 - Desventaja': vrioData.filter(r => r.puntuacion < 2.5).length
+                'Sostenible (≥4.0)': sustainableCount,
+                'Temporal (3.0-3.9)': temporalCount,
+                'Paridad (2.5-2.9)': parityCount,
+                'Desventaja (<2.5)': disadvantageCount
             };
             
-            new Chart(ctx, {
+            new Chart(context, {
                 type: 'doughnut',
                 data: {
                     labels: Object.keys(scoreDistribution),
                     datasets: [{
                         data: Object.values(scoreDistribution),
-                        backgroundColor: [
-                            '#27ae60',
-                            '#f39c12',
-                            '#3498db',
-                            '#95a5a6',
-                            '#e74c3c'
-                        ],
+                        backgroundColor: ['#27ae60', '#f39c12', '#3498db', '#95a5a6', '#e74c3c'],
                         borderWidth: 3,
                         borderColor: '#ffffff'
                     }]
@@ -784,15 +372,9 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    // SINTAXIS AJUSTADA PARA v2.9.4
                     legend: {
                         position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            usePointStyle: true,
-                            fontSize: 12,
-                            fontStyle: 'bold'
-                        }
+                        labels: { padding: 20, usePointStyle: true, fontSize: 12, fontStyle: 'bold' }
                     },
                     title: {
                         display: true,
@@ -800,147 +382,78 @@
                         fontSize: 16,
                         fontStyle: 'bold'
                     },
-                    animation: {
-                        duration: 2000,
-                        easing: 'easeInOutQuart'
-                    }
+                    animation: { duration: 2000, easing: 'easeInOutQuart' }
                 }
             });
         }
         
-        // Renderizar ventajas competitivas
         function renderCompetitiveAdvantages() {
+            const container = document.getElementById('competitiveAdvantages');
+            if (!container) return;
             const sustainableAdvantages = vrioData.filter(r => r.puntuacion >= 4.0);
             const temporalAdvantages = vrioData.filter(r => r.puntuacion >= 3.0 && r.puntuacion < 4.0);
             
-            const container = document.getElementById('competitiveAdvantages');
-            
             let html = '<h4 style="color: #27ae60; margin-bottom: 1rem;">🏆 Ventajas Sostenibles</h4>';
-            
             sustainableAdvantages.forEach(resource => {
                 html += `
                     <div style="background: rgba(39, 174, 96, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #27ae60;">
                         <strong style="color: #27ae60;">${resource.recurso}</strong>
                         <p style="font-size: 0.9rem; color: #2c3e50; margin: 0.5rem 0;">${resource.justificacion}</p>
-                        <span style="background: #27ae60; color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem;">
-                            VRIO: ${resource.puntuacion}/4.0
-                        </span>
-                    </div>
-                `;
+                        <span style="background: #27ae60; color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem;">VRIO: ${resource.puntuacion}/4.0</span>
+                    </div>`;
             });
             
             html += '<h4 style="color: #f39c12; margin: 2rem 0 1rem 0;">⚡ Ventajas Temporales</h4>';
-            
             temporalAdvantages.forEach(resource => {
                 html += `
                     <div style="background: rgba(243, 156, 18, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #f39c12;">
                         <strong style="color: #f39c12;">${resource.recurso}</strong>
                         <p style="font-size: 0.9rem; color: #2c3e50; margin: 0.5rem 0;">${resource.justificacion}</p>
-                        <span style="background: #f39c12; color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem;">
-                            VRIO: ${resource.puntuacion}/4.0
-                        </span>
-                    </div>
-                `;
+                        <span style="background: #f39c12; color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem;">VRIO: ${resource.puntuacion}/4.0</span>
+                    </div>`;
             });
-            
             container.innerHTML = html;
         }
         
-        // Renderizar acciones estratégicas
         function renderStrategicActions() {
             const actionsContainer = document.getElementById('strategicActions');
-            
-            // Agrupar por prioridad
+            if (!actionsContainer) return;
             const highPriorityResources = vrioData.filter(r => r.prioridad === 'Alta');
             const mediumPriorityResources = vrioData.filter(r => r.prioridad === 'Media');
             
             let html = '';
-            
-            // Acciones de alta prioridad
             highPriorityResources.forEach(resource => {
                 html += `
                     <div class="action-card priority-high">
                         <h4>🔥 ${resource.recurso}</h4>
                         <p style="color: #7f8c8d; margin-bottom: 1rem;"><strong>VRIO:</strong> ${resource.puntuacion}/4.0 - <em>${resource.implicacion}</em></p>
-                        <ul style="margin: 0; padding-left: 1.2rem;">
-                            ${resource.acciones.map(action => `<li style="margin-bottom: 0.5rem; color: #2c3e50;">${action}</li>`).join('')}
-                        </ul>
-                        <div style="margin-top: 1rem; padding: 0.5rem; background: rgba(231, 76, 60, 0.1); border-radius: 8px; text-align: center;">
-                            <strong style="color: #e74c3c;">PRIORIDAD ALTA</strong>
-                        </div>
-                    </div>
-                `;
+                        <ul style="margin: 0; padding-left: 1.2rem;">${resource.acciones.map(action => `<li style="margin-bottom: 0.5rem; color: #2c3e50;">${action}</li>`).join('')}</ul>
+                        <div style="margin-top: 1rem; padding: 0.5rem; background: rgba(231, 76, 60, 0.1); border-radius: 8px; text-align: center;"><strong style="color: #e74c3c;">PRIORIDAD ALTA</strong></div>
+                    </div>`;
             });
-            
-            // Acciones de prioridad media
             mediumPriorityResources.forEach(resource => {
                 html += `
                     <div class="action-card priority-medium">
                         <h4>⚡ ${resource.recurso}</h4>
                         <p style="color: #7f8c8d; margin-bottom: 1rem;"><strong>VRIO:</strong> ${resource.puntuacion}/4.0 - <em>${resource.implicacion}</em></p>
-                        <ul style="margin: 0; padding-left: 1.2rem;">
-                            ${resource.acciones.map(action => `<li style="margin-bottom: 0.5rem; color: #2c3e50;">${action}</li>`).join('')}
-                        </ul>
-                        <div style="margin-top: 1rem; padding: 0.5rem; background: rgba(243, 156, 18, 0.1); border-radius: 8px; text-align: center;">
-                            <strong style="color: #f39c12;">PRIORIDAD MEDIA</strong>
-                        </div>
-                    </div>
-                `;
+                        <ul style="margin: 0; padding-left: 1.2rem;">${resource.acciones.map(action => `<li style="margin-bottom: 0.5rem; color: #2c3e50;">${action}</li>`).join('')}</ul>
+                        <div style="margin-top: 1rem; padding: 0.5rem; background: rgba(243, 156, 18, 0.1); border-radius: 8px; text-align: center;"><strong style="color: #f39c12;">PRIORIDAD MEDIA</strong></div>
+                    </div>`;
             });
-            
             actionsContainer.innerHTML = html;
         }
         
-        // Animaciones de entrada
-        function animateTable() {
-            const rows = document.querySelectorAll('#vrioTableBody tr');
-            rows.forEach((row, index) => {
-                setTimeout(() => {
-                    row.style.opacity = '0';
-                    row.style.transform = 'translateY(20px)';
-                    row.style.transition = 'all 0.6s ease';
-                    
-                    setTimeout(() => {
-                        row.style.opacity = '1';
-                        row.style.transform = 'translateY(0)';
-                    }, 100);
-                }, index * 150);
-            });
-        }
-        
-        function animateCards() {
-            const cards = document.querySelectorAll('.action-card');
-            cards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateX(-30px)';
-                    card.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                    
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateX(0)';
-                    }, 200);
-                }, index * 200);
-            });
-        }
-        
-        // Filtros interactivos
         function addTableFilters() {
-            // Agregar funcionalidad de filtro por categoría
             const table = document.getElementById('vrioTable');
+            if (!table) return;
             const filterButtons = document.createElement('div');
             filterButtons.style.cssText = 'text-align: center; margin: 1rem 0; gap: 1rem; display: flex; justify-content: center; flex-wrap: wrap;';
-            
             const categories = [...new Set(vrioData.map(r => r.categoria))];
-            
-            // Botón "Todos"
             const allBtn = document.createElement('button');
             allBtn.textContent = 'Todos';
             allBtn.style.cssText = 'padding: 0.5rem 1rem; border: none; border-radius: 20px; background: #3498db; color: white; cursor: pointer; font-weight: bold;';
             allBtn.onclick = () => showAllRows();
             filterButtons.appendChild(allBtn);
-            
-            // Botones por categoría
             categories.forEach(category => {
                 const btn = document.createElement('button');
                 btn.textContent = category;
@@ -948,162 +461,25 @@
                 btn.onclick = () => filterByCategory(category);
                 filterButtons.appendChild(btn);
             });
-            
             table.parentNode.insertBefore(filterButtons, table);
         }
-        
+
         function showAllRows() {
-            const rows = document.querySelectorAll('#vrioTableBody tr');
-            rows.forEach(row => row.style.display = '');
+            document.querySelectorAll('#vrioTableBody tr').forEach(row => row.style.display = '');
         }
         
         function filterByCategory(category) {
-            const rows = document.querySelectorAll('#vrioTableBody tr');
-            rows.forEach(row => {
-                if (row.dataset.category === category) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+            document.querySelectorAll('#vrioTableBody tr').forEach(row => {
+                row.style.display = row.dataset.category === category ? '' : 'none';
             });
         }
         
-        // Inicializar todo cuando se carga la página
         document.addEventListener('DOMContentLoaded', function() {
-            // Renderizar contenido dinámico
             renderVRIOTable();
             renderCompetitiveAdvantages();
             renderStrategicActions();
-            
-            // Crear visualizaciones
-            setTimeout(() => {
-                createVRIOChart();
-            }, 500);
-            
-            // Agregar filtros
+            createVRIOChart();
             addTableFilters();
-            
-            // Iniciar animaciones con delay
-            setTimeout(() => {
-                animateTable();
-            }, 1000);
-            
-            setTimeout(() => {
-                animateCards();
-            }, 2000);
-            
-            // Agregar interactividad a las filas de la tabla
-            setTimeout(() => {
-                const rows = document.querySelectorAll('#vrioTableBody tr');
-                rows.forEach(row => {
-                    row.addEventListener('click', function() {
-                        // Resaltar fila seleccionada
-                        rows.forEach(r => r.style.background = '');
-                        this.style.background = 'rgba(52, 152, 219, 0.1)';
-                        
-                        // Mostrar detalles adicionales
-                        const resourceName = this.querySelector('.resource-name strong').textContent;
-                        const resource = vrioData.find(r => r.recurso === resourceName);
-                        
-                        if (resource) {
-                            // Crear modal o tooltip con información adicional
-                            showResourceDetails(resource);
-                        }
-                    });
-                });
-            }, 1500);
-        });
-        
-        function showResourceDetails(resource) {
-            // Crear overlay para mostrar detalles
-            const overlay = document.createElement('div');
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.8);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 1000;
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            `;
-            
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                background: white;
-                padding: 2rem;
-                border-radius: 15px;
-                max-width: 600px;
-                width: 90%;
-                max-height: 80vh;
-                overflow-y: auto;
-                transform: scale(0.7);
-                transition: transform 0.3s ease;
-            `;
-            
-            modal.innerHTML = `
-                <h3 style="color: #2c3e50; margin-bottom: 1rem;">${resource.recurso}</h3>
-                <p style="color: #7f8c8d; margin-bottom: 1rem;"><strong>Categoría:</strong> ${resource.categoria}</p>
-                <p style="color: #2c3e50; margin-bottom: 1.5rem;">${resource.justificacion}</p>
-                
-                <h4 style="color: #27ae60; margin-bottom: 0.5rem;">Acciones Estratégicas:</h4>
-                <ul style="margin-bottom: 1.5rem;">
-                    ${resource.acciones.map(action => `<li style="margin-bottom: 0.5rem;">${action}</li>`).join('')}
-                </ul>
-                
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <span style="background: #3498db; color: white; padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold;">
-                            VRIO: ${resource.puntuacion}/4.0
-                        </span>
-                    </div>
-                    <button id="closeModal" style="background: #e74c3c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: bold;">
-                        Cerrar
-                    </button>
-                </div>
-            `;
-            
-            overlay.appendChild(modal);
-            document.body.appendChild(overlay);
-            
-            // Animaciones de entrada
-            setTimeout(() => {
-                overlay.style.opacity = '1';
-                modal.style.transform = 'scale(1)';
-            }, 10);
-            
-            // Manejar cierre
-            const closeModal = () => {
-                overlay.style.opacity = '0';
-                modal.style.transform = 'scale(0.7)';
-                setTimeout(() => {
-                    document.body.removeChild(overlay);
-                }, 300);
-            };
-            
-            document.getElementById('closeModal').onclick = closeModal;
-            overlay.onclick = (e) => {
-                if (e.target === overlay) closeModal();
-            };
-        }
-        
-        // Agregar efectos de hover mejorados
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                document.querySelectorAll('.card').forEach(card => {
-                    card.addEventListener('mouseenter', function() {
-                        this.style.transform = 'translateY(-5px) scale(1.01)';
-                    });
-                    
-                    card.addEventListener('mouseleave', function() {
-                        this.style.transform = 'translateY(0) scale(1)';
-                    });
-                });
-            }, 2000);
         });
     </script>
 </body>

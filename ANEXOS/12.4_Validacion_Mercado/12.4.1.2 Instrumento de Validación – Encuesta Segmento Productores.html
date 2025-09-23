@@ -68,7 +68,7 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
             border-left: 5px solid var(--primary-color);
         }
-
+        
         .methodology-info h3 {
             color: var(--primary-color);
             margin-bottom: 15px;
@@ -338,9 +338,9 @@
 
         <div class="methodology-info">
             <h3>Marco Metodológico</h3>
-            <p><strong>Objetivo:</strong> Validar la propuesta de valor de GiroCampo mediante análisis del comportamiento financiero y customer journey de productores lácteos.</p>
-            <p><strong>Metodología:</strong> Análisis estadístico descriptivo, segmentación demográfica, patrones de comportamiento financiero y validación de usabilidad.</p>
-            <p><strong>Fuentes de Datos:</strong> EncuestaProductorCustomerPersona - Tabla: RespuestasFormulariosProductores (142 campos de análisis)</p>
+            <p><strong>Objetivo:</strong> Validar la propuesta de valor de GiroCampo mediante análisis del comportamiento financiero y customer journey de productores lácteos. La investigación adoptó un enfoque mixto (Hernández-Sampieri & Mendoza Torres, 2018), que combina la robustez del análisis cuantitativo para dimensionar la demanda y la profundidad del análisis cualitativo para comprender las necesidades, percepciones y barreras de los productores.</p>
+            <p><strong>Metodología:</strong> Análisis estadístico descriptivo para cuantificar la magnitud del mercado y la demanda potencial, complementado con segmentación demográfica y análisis de patrones de comportamiento para comprender las necesidades insatisfechas (Cohen & Martínez, 2004). Se evaluó la percepción de la banca digital, la cual es considerada útil, cómoda y fácil de usar, aunque persisten desafíos en la conectividad y el soporte especializado (Romero Sánchez et al., 2024).</p>
+            <p><strong>Fuentes de Datos:</strong> EncuestaProductorCustomerPersona - Tabla: RespuestasFormulariosProductores (142 campos de análisis), consistente con el diagnóstico del problema central de la exclusión financiera en el sector (Sarmiento et al., 2024).</p>
         </div>
 
         <div class="summary-stats" id="summaryStats">
@@ -874,12 +874,12 @@
 
         function generateInsights() {
             const insights = [
-                { title: "Perfil Demográfico Dominante", content: "El 45% de productores tiene entre 31-45 años con educación secundaria. Predominan fincas de 10-30 cabezas (45%) en municipios cercanos a Bogotá." },
-                { title: "Adopción Digital Progresiva", content: "85% usa smartphones, pero comodidad varía por función: trámites (3.8/5), recibir dinero (3.2/5), solicitar crédito (2.9/5). Oportunidad de mejora en UX." },
-                { title: "Dependencia de Adelantos", content: "40% depende de adelantos de procesadora, 35% solicita frecuentemente. Principal uso: alimentación animal (50%) y gastos familiares (25%)." },
-                { title: "Factores Críticos de Decisión", content: "Rapidez (4.5/5) y confianza (4.4/5) son más importantes que el monto (4.1/5). 35% prioriza facilidad vía WhatsApp/SMS." },
-                { title: "Journey de Satisfacción", content: "Mayor satisfacción en recepción de fondos (82%) y uso (78%). Pain points: evaluación (52%) y búsqueda (58%)." },
-                { title: "Segmentación Conductual", content: "25% adoptadores tempranos, 45% usuarios moderados, 30% resistentes. Estrategia diferenciada por segmento es clave." }
+                { title: "Perfil Demográfico Dominante", content: "El 45% de productores tiene entre 31-45 años con educación secundaria. Predominan fincas de 10-30 cabezas (45%) en municipios cercanos a Bogotá, lo que se alinea con la estructura de mercado atomizada del sector (Barrios et al., 2016)." },
+                { title: "Adopción Digital Progresiva pero con Barreras", content: "85% usa smartphones y 65% utiliza Nequi/Daviplata. Sin embargo, la comodidad para solicitar crédito es baja (2.9/5), reflejando la desconfianza y la brecha digital rural (Cipagauta Carvajal & Ossa Castro, 2024; Morales Chacón, 2023)." },
+                { title: "Dependencia de Adelantos y Financiamiento Informal", content: "Un 40% depende de adelantos de la procesadora y un 20% recurre a préstamos informales, validando la crítica necesidad de liquidez (Laftay & López Lozano, 2018). El principal uso es para capital de trabajo, como la comida para animales (50%)." },
+                { title: "Factores Críticos de Decisión: Confianza y Rapidez", content: "La rapidez (4.5/5) y la confianza (4.4/5) son más importantes que el monto del crédito (4.1/5). Esto es consistente con la percepción de trámites complejos y la falta de confianza en el sistema tradicional (Jiménez Zapata & Velásquez Pérez, 2015)." },
+                { title: "Journey de Satisfacción: Oportunidad en la Evaluación", content: "Los puntos de mayor frustración ('pain points') se encuentran en las fases de búsqueda (58%) y evaluación (52%), donde los productores enfrentan la burocracia y la falta de información clara del sistema tradicional. La recepción de fondos es el punto de mayor satisfacción (82%)." },
+                { title: "Segmentación Conductual: Estrategia Diferenciada", content: "La existencia de un 30% de productores 'resistentes al cambio' y un 45% de 'usuarios moderados' subraya la necesidad de una estrategia de 'go-to-market' que incluya un fuerte componente de educación y acompañamiento para superar las barreras de adopción (Chaparro-Africano & Ospina-Escobar, 2021)." }
             ];
             const container = document.getElementById('insightsContent');
             container.innerHTML = insights.map(insight => `

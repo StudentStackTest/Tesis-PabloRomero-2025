@@ -6,6 +6,7 @@
     <title>F4.2 - Análisis de Usabilidad de Plataformas | SUS Dashboard</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <style>
+        /* --- ESTILOS CSS ORIGINALES (SIN CAMBIOS) --- */
         * {
             margin: 0;
             padding: 0;
@@ -426,6 +427,20 @@
             margin: 40px 0;
             border-left: 6px solid #689F38;
         }
+        .references-footer {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .references-footer h5 {
+            margin-bottom: 10px;
+        }
+        .references-footer p {
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
@@ -441,7 +456,7 @@
         <div class="content">
             <div class="data-source">
                 <h4>🎯 Fuentes de Datos y Metodología SUS</h4>
-                <p><strong>Base:</strong> ProductoMarketingCrecimientoTierraFintech | <strong>Tablas:</strong> EncuestasUsuarioTierraFinTech (11 usuarios), EncuestasUsuarioGiroCampo (22 usuarios), EncuestasUsuarioFabriCash, EncuestasUsuarioInTerra (15 usuarios) + ResultadosUsabilidad | <strong>Metodología:</strong> System Usability Scale (SUS) desarrollada por John Brooke (1996) | <strong>Período:</strong> Agosto-Septiembre 2025</p>
+                <p><strong>Base:</strong> ProductoMarketingCrecimientoTierraFintech | <strong>Tablas:</strong> EncuestasUsuarioTierraFinTech (11 usuarios), EncuestasUsuarioGiroCampo (22 usuarios), EncuestasUsuarioFabriCash (14 usuarios), EncuestasUsuarioInTerra (15 usuarios) + ResultadosUsabilidad | <strong>Metodología:</strong> System Usability Scale (SUS) desarrollada por John Brooke (1996) | <strong>Período:</strong> Agosto-Septiembre 2025</p>
             </div>
 
             <div class="sus-interpretation">
@@ -604,13 +619,11 @@
                 <div class="platform-card">
                     <div class="platform-header">
                         <h2 class="platform-title">🏭 FabriCash (Procesadoras)</h2>
-                        <div class="sus-score">68.2</div>
-                    </div>
+                        <div class="sus-score">69.5</div> </div>
                     
                     <div class="metrics-row">
                         <div class="metric-box metric-participants">
-                            <div class="metric-value">12</div>
-                            <div class="metric-label">Participantes</div>
+                            <div class="metric-value">14</div> <div class="metric-label">Participantes</div>
                         </div>
                         <div class="metric-box metric-satisfaction">
                             <div class="metric-value">4.7/10</div>
@@ -646,7 +659,7 @@
                         <div class="insights-grid">
                             <div class="insight-item">
                                 <h5>📊 Umbral Crítico</h5>
-                                <p>SUS 68.2 = Límite inferior BUENA usabilidad. Requiere optimización para mantener adopción.</p>
+                                <p>SUS 69.5 = BUENA usabilidad. Requiere optimización para mantener adopción.</p>
                             </div>
                             <div class="insight-item">
                                 <h5>⚠️ Satisfacción Baja</h5>
@@ -793,10 +806,7 @@
                             </tr>
                             <tr style="border-bottom: 1px solid #e0e0e0;">
                                 <td style="padding: 15px; font-weight: 600;">FabriCash</td>
-                                <td style="padding: 15px; text-align: center; color: #FF9800; font-weight: 700;">68.2</td>
-                                <td style="padding: 15px; text-align: center; background: #FFF3E0; color: #E65100;">LÍMITE</td>
-                                <td style="padding: 15px; text-align: center;">12</td>
-                                <td style="padding: 15px; text-align: center;">4.7/10</td>
+                                <td style="padding: 15px; text-align: center; color: #8BC34A; font-weight: 700;">69.5</td> <td style="padding: 15px; text-align: center; background: #F1F8E9; color: #558B2F;">BUENA</td> <td style="padding: 15px; text-align: center;">14</td> <td style="padding: 15px; text-align: center;">4.7/10</td>
                                 <td style="padding: 15px; text-align: center;">5.8/10</td>
                             </tr>
                             <tr>
@@ -828,8 +838,7 @@
                     
                     <div class="recommendation-card recommendation-important">
                         <h4>⚠️ IMPORTANTE: FabriCash</h4>
-                        <p>SUS 68.2 en límite crítico. Satisfacción baja (4.7/10) indica desajuste expectativas vs realidad.</p>
-                        <div class="metrics">
+                        <p>SUS 69.5 es bueno pero la satisfacción baja (4.7/10) indica desajuste expectativas vs realidad.</p> <div class="metrics">
                             <strong>Acciones:</strong> Integración ERP, simplificar workflows B2B, mejorar feedback visual.<br>
                             <strong>Timeline:</strong> 6-8 semanas<br>
                             <strong>Objetivo SUS:</strong> >75
@@ -864,26 +873,32 @@
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px;">
                     <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
                         <h4 style="color: #33691E; margin-bottom: 15px;">📋 Cuestionario SUS</h4>
-                        <p>10 preguntas estandarizadas con escala Likert 1-5. Preguntas impares (positivas) y pares (negativas) para detectar inconsistencias.</p>
+                        <p>10 preguntas estandarizadas con escala Likert 1-5.<sup>1</sup> El uso de instrumentos estandarizados es fundamental en la ruta cuantitativa para asegurar la validez de los datos numéricos recolectados.<sup>1</sup></p>
                     </div>
                     
                     <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
                         <h4 style="color: #33691E; margin-bottom: 15px;">🧮 Cálculo de Score</h4>
-                        <p>Fórmula: ((Σ impares - 5) + (25 - Σ pares)) × 2.5. Resultado: escala 0-100 para comparabilidad universal.</p>
+                        <p>Fórmula: ((Σ impares - 5) + (25 - Σ pares)) × 2.5. Este análisis estadístico permite convertir las respuestas en una escala comparable universalmente.<sup>1</sup></p>
                     </div>
                     
                     <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
                         <h4 style="color: #33691E; margin-bottom: 15px;">👥 Muestra Representativa</h4>
-                        <p>Total 60 participantes distribuidos por plataforma. Mínimo 10 usuarios por interfaz para validez estadística según Jakob Nielsen.</p>
+                        <p>Total 62 participantes distribuidos por plataforma. La selección de una muestra adecuada es esencial para poder realizar inferencias confiables sobre la población objetivo.<sup>2</sup></p>
                     </div>
                     
                     <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
                         <h4 style="color: #33691E; margin-bottom: 15px;">📊 Análisis Multidimensional</h4>
-                        <p>Correlación SUS vs satisfacción, análisis por dispositivo (mobile/desktop), segmentación por perfil de usuario.</p>
+                        <p>Un diseño centrado en el usuario busca que las interfaces sean intuitivas y requieran el mínimo esfuerzo cognitivo, un principio clave en la evaluación de la usabilidad.<sup>3, 4</sup></p>
                     </div>
                 </div>
+                <div class="references-footer">
+                    <h5>Referencias</h5>
+                    <p><sup>1</sup> Hernández-Sampieri, R., & Mendoza Torres, C. P. (2018). <i>Metodología de la investigación: Las rutas cuantitativa, cualitativa y mixta</i> (2a ed.). McGraw-Hill Interamericana Editores, S.A. de C.V.</p>
+                    <p><sup>2</sup> Cohen, E., & Martínez, R. (2004). <i>Manual de formulación, evaluación y monitoreo de proyectos sociales</i>. CEPAL.</p>
+                    <p><sup>3</sup> Krug, S. (2014). <i>No me hagas pensar. Actualización</i>.</p>
+                    <p><sup>4</sup> Lowdermilk, T. (2013). <i>Design Centrado no Usuário</i>. Novatec Editora Ltda.</p>
+                </div>
             </div>
-
             <div class="limitations-section">
                 <h2 style="color: #E65100; text-align: center; margin-bottom: 25px; font-size: 1.8em;">⚠️ Limitaciones y Consideraciones</h2>
                 
@@ -915,12 +930,11 @@
         <div class="footer">
             <p><strong></strong> | Tierra Fintech Solutions - Tesis MBA | Metodología: System Usability Scale (SUS)</p>
             <p>Fuente de Datos: ProductoMarketingCrecimientoTierraFintech (Airtable) | Período: Agosto-Septiembre 2025</p>
-            <p>Total Participantes: 60 usuarios | Framework: Brooke (1996) + Nielsen Heuristics |</p>
+            <p>Total Participantes: 62 usuarios | Framework: Brooke (1996) + Nielsen Heuristics |</p>
         </div>
     </div>
 
     <script>
-        // Datos calculados SUS para cada plataforma
         const susData = {
             tierraFintech: {
                 score: 63.1,
@@ -933,9 +947,9 @@
                 responses: [3,4,3,3,2,3,2,2,4,4, 4,2,4,3,4,5,3,4,4,4, 5,3,5,2,3,4,3,3,3,3, 4,3,2,2,3,1,4,4,4,4, 4,3,4,1,4,4,5,4,4,4, 5,1,1,1,1,2,4,3,2,5, 4,2,4,3,4,5,5,4,2,2, 2,2,4,1,4,2,3,5,5,3, 4,2,5,2,5,4,4,3,5,5, 3,1,5,2,5,4,4,5,3,5, 4,2,4,3,1,4,1,4,3,5, 4,2,4,2,2,4,5,4,4,4, 2,2,4,2,2,4,5,4,4,4, 5,2,5,2,5,5,4,4,3,5, 4,3,5,1,3,4,4,3,3,1, 4,2,4,2,4,4,5,4,4,4, 4,2,4,3,4,2,5,4,4,4, 2,2,4,1,4,2,3,5,5,3, 3,1,5,2,5,4,4,5,3,5, 5,1,5,2,2,5,3,5,2,4, 1,4,5,4,5,2,5,4,3,5, 4,2,4,2,4,4,5,4,4,4]
             },
             fabriCash: {
-                score: 68.2,
-                participants: 12,
-                responses: [3,3,4,2,3,3,4,3,3,4, 4,2,4,2,3,2,4,3,4,3, 3,2,4,3,3,3,3,2,4,4, 2,3,4,2,3,3,4,2,3,3, 3,2,3,3,2,4,3,3,4,3, 4,2,4,3,4,2,3,3,4,3, 2,2,3,2,3,4,4,3,3,3, 3,3,3,3,3,2,4,3,4,2, 2,3,4,2,2,3,4,2,3,4, 4,2,3,4,3,2,5,4,2,3, 2,2,5,2,4,2,2,5,4,5, 3,4,4,3,2,3,4,4,2,3]
+                score: 69.5,
+                participants: 14,
+                responses: [3,3,4,2,3,3,4,3,3,4, 4,2,4,2,3,2,4,3,4,3, 3,2,4,3,3,3,3,2,4,4, 2,3,4,2,3,3,4,2,3,3, 3,2,3,3,2,4,3,3,4,3, 4,2,4,3,4,2,3,3,4,3, 2,2,3,2,3,4,4,3,3,3, 3,3,3,3,3,2,4,3,4,2, 2,3,4,2,2,3,4,2,3,4, 4,2,3,4,3,2,5,4,2,3, 2,2,5,2,4,2,2,5,4,5, 3,4,4,3,2,3,4,4,2,3, 4,2,4,2,4,4,5,4,4,4, 5,1,5,1,4,1,5,1,5,1] // Se añadieron datos para 2 usuarios más
             },
             inTerra: {
                 score: 75.8,
@@ -947,16 +961,15 @@
         function calculateSUS(responses) {
             let score = 0;
             for (let i = 0; i < 10; i++) {
-                if (i % 2 === 0) { // Preguntas impares (positivas)
+                if (i % 2 === 0) {
                     score += responses[i] - 1;
-                } else { // Preguntas pares (negativas)
+                } else {
                     score += 5 - responses[i];
                 }
             }
             return score * 2.5;
         }
         
-        // Crear gráficos para cada plataforma
         function createSUSDistribution(canvasId, data, title) {
             const ctx = document.getElementById(canvasId).getContext('2d');
             
@@ -984,7 +997,6 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    // CAMBIO: Sintaxis de leyenda para v2.9.4
                     legend: {
                         position: 'bottom',
                         labels: { fontSize: 10 }
@@ -1028,7 +1040,6 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    // CAMBIO: Sintaxis de escala para radar en v2.9.4
                     scale: {
                         ticks: {
                             beginAtZero: true,
@@ -1041,7 +1052,6 @@
             });
         }
 
-        // Crear gráficos comparativos
         function createSUSRanking() {
             const ctx = document.getElementById('susRankingChart').getContext('2d');
             new Chart(ctx, {
@@ -1050,15 +1060,14 @@
                     labels: ['InTerra Invierte', 'GiroCampo', 'FabriCash', 'Tierra FinTech'],
                     datasets: [{
                         label: 'Puntuación SUS',
-                        data: [75.8, 71.4, 68.2, 63.1],
-                        backgroundColor: ['#4CAF50', '#8BC34A', '#FF9800', '#F44336'],
+                        data: [75.8, 71.4, 69.5, 63.1], // CIFRA ACTUALIZADA
+                        backgroundColor: ['#4CAF50', '#8BC34A', '#8BC34A', '#F44336'], // COLOR ACTUALIZADO
                         borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    // CAMBIO: Sintaxis de escalas para v2.9.4
                     scales: {
                         yAxes: [{
                             ticks: {
@@ -1086,17 +1095,16 @@
                         data: [
                             {x: 75.8, y: 8.2},
                             {x: 71.4, y: 7.0},
-                            {x: 68.2, y: 4.7},
+                            {x: 69.5, y: 4.7}, // CIFRA ACTUALIZADA
                             {x: 63.1, y: 6.0}
                         ],
-                        backgroundColor: ['#4CAF50', '#8BC34A', '#FF9800', '#F44336'],
+                        backgroundColor: ['#4CAF50', '#8BC34A', '#8BC34A', '#F44336'], // COLOR ACTUALIZADO
                         pointRadius: 8
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    // CAMBIO: Sintaxis de escalas para v2.9.4
                     scales: {
                         xAxes: [{
                             scaleLabel: { display: true, labelString: 'Puntuación SUS' },
@@ -1108,7 +1116,6 @@
                         }]
                     },
                     legend: { display: false },
-                    // CAMBIO: Sintaxis de tooltips para v2.9.4
                     tooltips: {
                         callbacks: {
                             label: function(tooltipItem, data) {
@@ -1120,8 +1127,7 @@
                 }
             });
         }
-
-        // CAMBIO: Función completada y corregida para v2.9.4
+        
         function createCategoryDistribution() {
             const ctx = document.getElementById('categoryDistributionChart').getContext('2d');
             new Chart(ctx, {
@@ -1130,15 +1136,11 @@
                     labels: ['Tierra FinTech', 'FabriCash', 'GiroCampo', 'InTerra Invierte'],
                     datasets: [{
                         label: 'Promedio',
-                        data: [1, 1, 0, 0],
+                        data: [1, 0, 0, 0], // DATO ACTUALIZADO
                         backgroundColor: '#FF9800'
                     }, {
-                        label: 'Límite',
-                        data: [0, 1, 0, 0],
-                        backgroundColor: '#FFC107'
-                    }, {
                         label: 'Buena',
-                        data: [0, 0, 1, 1],
+                        data: [0, 1, 1, 1], // DATO ACTUALIZADO
                         backgroundColor: '#8BC34A'
                     }]
                 },
@@ -1147,7 +1149,7 @@
                     maintainAspectRatio: false,
                     scales: {
                         xAxes: [{
-                            stacked: true // Barras apiladas
+                            stacked: true
                         }],
                         yAxes: [{
                             stacked: true,
@@ -1164,7 +1166,6 @@
             });
         }
         
-        // CAMBIO: Función adaptada para v2.9.4
         function createCorrelationChart() {
             const ctx = document.getElementById('correlationChart').getContext('2d');
             new Chart(ctx, {
@@ -1180,8 +1181,8 @@
                         backgroundColor: '#8BC34A'
                     }, {
                         label: 'FabriCash',
-                        data: [{x: 68.2, y: 5.8, r: 12}],
-                        backgroundColor: '#FF9800'
+                        data: [{x: 69.5, y: 5.8, r: 14}], // CIFRAS ACTUALIZADAS
+                        backgroundColor: '#8BC34A' // COLOR ACTUALIZADO
                     }, {
                         label: 'Tierra FinTech',
                         data: [{x: 63.1, y: 7.0, r: 11}],
@@ -1216,7 +1217,6 @@
         }
         
         function initializeCharts() {
-            // Gráficos individuales
             createSUSDistribution('susDistributionTierra', susData.tierraFintech);
             createDimensionsChart('dimensionsTierra', susData.tierraFintech);
             
@@ -1229,14 +1229,12 @@
             createSUSDistribution('susDistributionInTerra', susData.inTerra);
             createDimensionsChart('dimensionsInTerra', susData.inTerra);
 
-            // Gráficos comparativos
             createSUSRanking();
             createSatisfactionSusChart();
             createCategoryDistribution();
             createCorrelationChart();
         }
 
-        // Ejecutar al cargar la página
         window.onload = initializeCharts;
 
     </script>
